@@ -1,0 +1,184 @@
+<div id="slider-back">
+    <div class="container">
+        <div id="brand-first-row">     
+          <div class="margin-slider">
+            <div id="brand-slider">
+              <%if products.count >= 3 %>
+                <div class="brand-collage">
+                    <div class="first-square"> 
+                      <div class="first-slider">  
+                          <ul class="first-seller-block">
+                            <li><%= image_tag products[0].images.first.nil? ? "noimage/product.png" : products[0].images.first.attachment.url(@style) %></li>
+                            <li><%= image_tag products[1].images.first.nil? ? "noimage/product.png" : products[1].images.first.attachment.url(@style) %></li>
+                            <li><%= image_tag products[2].images.first.nil? ? "noimage/product.png" : products[2].images.first.attachment.url(@style) %></li>
+                          </ul>
+                        </div>
+                    </div>     
+                    <div class="second-square"> 
+                      <div class="second-slider">  
+                        <ul class="second-seller-block">
+                          <li><%= image_tag products[0].images.first.nil? ? "noimage/product.png" : products[0].images.first.attachment.url(@style) %></li>
+                          <li><%= image_tag products[1].images.first.nil? ? "noimage/product.png" : products[1].images.first.attachment.url(@style) %></li>
+                          <li><%= image_tag products[2].images.first.nil? ? "noimage/product.png" : products[2].images.first.attachment.url(@style) %></li>
+                        </ul> 
+                      </div>
+                      <div class="third-slider">  
+                      <ul class="third-seller-block">
+                            <li><%= image_tag products[0].images.first.nil? ? "noimage/product.png" : products[0].images.first.attachment.url(@style) %></li>
+                            <li><%= image_tag products[1].images.first.nil? ? "noimage/product.png" : products[1].images.first.attachment.url(@style) %></li>
+                            <li><%= image_tag products[2].images.first.nil? ? "noimage/product.png" : products[2].images.first.attachment.url(@style) %></li>
+                        </ul> 
+                       </div> 
+                        <div class="fourth-slider">  
+                            <ul class="fourth-seller-block">
+                              <li><%= image_tag products[0].images.first.nil? ? "noimage/product.png" : products[0].images.first.attachment.url(@style) %></li>
+                              <li><%= image_tag products[1].images.first.nil? ? "noimage/product.png" : products[1].images.first.attachment.url(@style) %></li>
+                              <li><%= image_tag products[2].images.first.nil? ? "noimage/product.png" : products[2].images.first.attachment.url(@style) %></li>
+                            </ul> 
+                          </div> 
+
+                          <div class="fifth-slider">  
+                            <ul class="fifth-seller-block">
+                              <li><%= image_tag products[0].images.first.nil? ? "noimage/product.png" : products[0].images.first.attachment.url(@style) %></li>
+                              <li><%= image_tag products[1].images.first.nil? ? "noimage/product.png" : products[1].images.first.attachment.url(@style) %></li>
+                              <li><%= image_tag products[2].images.first.nil? ? "noimage/product.png" : products[2].images.first.attachment.url(@style) %></li>
+                            </ul> 
+                          </div>
+                    </div>
+                    
+                   
+                    <div class="third-square"> 
+                      <div class="sixth-slider">  
+                        <ul class="sixth-seller-block">
+                          <li><%= image_tag products[0].images.first.nil? ? "noimage/product.png" : products[0].images.first.attachment.url(@style) %></li>
+                          <li><%= image_tag products[1].images.first.nil? ? "noimage/product.png" : products[1].images.first.attachment.url(@style) %></li>
+                          <li><%= image_tag products[2].images.first.nil? ? "noimage/product.png" : products[2].images.first.attachment.url(@style) %></li>
+                        </ul> 
+                      </div>
+                    </div>
+                    <div class="fourth-square"> 
+                      <div class="seventh-slider">  
+                        <ul class="seventh-seller-block">
+                          <li><%= image_tag products[0].images.first.nil? ? "noimage/product.png" : products[0].images.first.attachment.url(@style) %></li>
+                          <li><%= image_tag products[1].images.first.nil? ? "noimage/product.png" : products[1].images.first.attachment.url(@style) %></li>
+                          <li><%= image_tag products[2].images.first.nil? ? "noimage/product.png" : products[2].images.first.attachment.url(@style) %></li>
+                        </ul> 
+                      </div> 
+                    </div>
+                </div>
+              <%end if products.present?%>
+            </div>      
+          <div class="clearboth"></div>
+        <div id="brand-logo">
+          <%= link_to (image_tag seller.try(:logo).nil? ? "logo/addidas-logo.jpg" : seller.try(:logo).url(:large)), seller_path(seller.try(:permalink))%>            
+        </div>
+        <div id="brand-title-block">
+          <h1 class="brand-title" itemprop="name"><%= seller.try(:name)%></h1>
+        </div> 
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+$(function() {
+   $('.first-seller-block').bxSlider({
+        mode: 'fade',
+        captions: false,
+        auto: true,
+        controls: false,
+        speed: 1000,
+        pager: false,
+        randomStart: true,
+        pause: 6000
+    });
+    
+    $('.second-seller-block').bxSlider({
+        mode: 'fade',
+        captions: false,
+        auto: true,
+        controls: false,
+        speed: 1000,
+        pager: false,
+        randomStart: true,
+        pause: 5000
+    });
+    $('.third-seller-block').bxSlider({
+        mode: 'fade',
+        captions: false,
+        auto: true,
+        controls: false,
+        speed: 1000,
+        pager: false,
+        randomStart: true,
+         pause: 9000
+    });
+     $('.fourth-seller-block').bxSlider({
+        mode: 'fade',
+        captions: false,
+        auto: true,
+        controls: false,
+        speed: 1000,
+        pager: false,
+        randomStart: true,
+         pause: 8000
+    });
+    $('.fifth-seller-block').bxSlider({
+        mode: 'fade',
+        captions: false,
+        auto: true,
+        controls: false,
+        speed: 1000,
+        pager: false,
+        randomStart: true,
+         pause: 7000
+    });
+    $('.sixth-seller-block').bxSlider({
+        mode: 'fade',
+        captions: false,
+        auto: true,
+        controls: false,
+        speed: 1000,
+        pager: false,
+        randomStart: true,
+        pause: 8000
+    });
+    $('.seventh-seller-block').bxSlider({
+        mode: 'fade',
+        captions: false,
+        auto: true,
+        controls: false,
+        speed: 1000,
+        pager: false,
+        randomStart: true,
+         pause: 6000
+    });
+
+
+    if(document.getElementById("categories-all-div") !== null){   
+    $('#categories-all-div').css( "min-height", $('#categories-all').position().top + $('#categories-all').height() - 21);  
+    }
+
+    if(document.getElementById("stores-all-div") !== null){
+      $('#stores-all-div').css("top", $('#lhs-stores').position().top + 15); 
+      $('#stores-all-div').css("min-height", $('#stores-all').height() + ($('#stores-all').position().top - $('#lhs-stores').position().top - 41)); 
+    }
+
+    if(document.getElementById("brands-all-div") !== null){
+      $('#brands-all-div').css("top", $('#lhs-brands').position().top + 15); 
+      $('#brands-all-div').css("min-height", $('#sidebar').height() - $('#lhs-brands').position().top - 60 );     
+    }
+     
+});
+
+</script>
+
+<style type="text/css">
+        
+        #brand-slider .bx-wrapper .bx-viewport{margin-left: 0px;}
+        .all-div{left: 135px !important; top: 36px;}
+        
+</style>

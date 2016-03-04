@@ -1,0 +1,113 @@
+<div class="notify-me">
+  <%variant_name = variant_options Spree::Variant.find(id)%>
+  <%if spree_user_signed_in?%>
+    <% unless spree_current_user.notifications.exists?(:variant_id => id) %>
+      <a href="#" onclick="return product_notify(<%= id%>);" id="notify-me" class="button"><%=Spree.t(:notify_me)%></a>
+
+    <%else%>
+      <a href="#" style="cursor: default;" id="notify-me" onclick="return false;" class="button disabled">&nbsp;&nbsp;&#x2713;Notify Me</a>
+    <%end%>
+  <%else%>
+      <a href="#" onclick="return product_notify(<%= id%>);" id="notify-me" class="button"><%=Spree.t(:notify_me)%></a> 
+  <%end%>
+</div>
+
+
+<div id="qty-slider-out-of-stock">
+    <div class="qty-substract"><div class="stymbol-minus"></div></div>
+    <div class="empty-input-os">0</div>
+    <div class="qty-add"><div class="stymbol-add"></div></div> 
+    
+ </div>
+
+
+<button id="out-of-stock" class="large primary" onclick="return false;" style="cursor: default;">
+    <span>:(</span> <div>Sorry,<br /> Out of stock </div>
+</button>    
+
+<div class="clearboth"></div>
+
+<!--
+<div style="margin-top: 30px; margin-left: 4px; font-size: 20px;">-------------------- OR ----------------------</div>
+
+ <div class="pick-up-info">
+    <h3 class="section-title">Pick up from <%= link_to @product.seller.try(:name), seller_path(@product.seller.permalink)%> Stores</h3>
+    <div  class="pick-up-info-text">
+      <h6 class="product-section-title">Cut the queue and pick-up this product from any of the following stores at your convenience.</h6>
+    </div>
+  </div>  
+-->
+
+<style>
+.qty-substract{
+    background: none repeat scroll 0 0 #C8E9ED;
+    -webkit-border-top-left-radius: 3px;
+    -webkit-border-bottom-left-radius: 3px;
+    -moz-border-radius-topleft: 3px;
+    -moz-border-radius-bottomleft: 3px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;    
+    color: #FFFFFF;
+    cursor: pointer;
+    height: 63px;
+    margin-right: 1px;
+    padding: 0px 5px 5px 8px;
+
+    
+
+}
+#qty-slider-out-of-stock div{
+    float: left;
+}
+#qty-slider-out-of-stock{
+    margin-left: 3px;
+}
+#qty-slider-out-of-stock .empty-input-os{
+      background-color: #1BC0D8;
+    color: #FFFFFF;
+    float: left;
+    font-size: 66px;
+    height: 47px;
+    padding-top: 21px;
+    text-align: center;
+    width: 100px;
+}
+.qty-substract .stymbol-minus{
+    background: url("/assets/store/remove.png") no-repeat scroll 0 0 transparent;
+    float: left;
+    height: 71px;
+    margin-top: 22px;
+    padding-right: 7px;    
+    width: 26px;
+}
+.qty-add{
+    background: none repeat scroll 0 0 #C8E9ED;
+    -webkit-border-top-right-radius: 3px;
+    -webkit-border-bottom-right-radius: 3px;
+    -moz-border-radius-topright: 3px;
+    -moz-border-radius-bottomright: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    color: #FFFFFF;
+    cursor: pointer;
+    height: 63px;
+    margin-left: 1px;
+    padding: 1px 3px 4px 6px;
+}
+
+.qty-add .stymbol-add{
+    background: url("/assets/store/add.png") no-repeat scroll 0 0 transparent;
+    float: left;
+    height: 32px;
+    margin-top: 17px;
+    padding-right: 11px;
+    width: 26px;
+}
+button#out-of-stock{ 
+    font-size: 12px;
+    height: 68px;
+    margin-left: 21px;
+    width: 121px;
+
+}
+</style>

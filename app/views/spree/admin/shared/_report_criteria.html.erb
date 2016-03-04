@@ -1,0 +1,63 @@
+    <%= search_form_for search, :url => path.to_sym  do |s| %>
+    <div class="date-range-filter field align-center">
+        <%= label_tag nil, Spree.t(:start), :class => 'inline' %>
+        <%= s.text_field :completed_at_gt, :class => 'datepicker datepicker-from' %>
+        
+        <span class="range-divider">
+          <i class="icon-arrow-right"></i>
+        </span>
+        <%if params[:permalink]%>
+            <input type="hidden" value=<%=params[:permalink]%> name="permalink" id="permalink" />
+        <%end%>
+        <input type="hidden" value='' name="frmt" id="frmt" />
+        <%= s.text_field :completed_at_lt, :class => 'datepicker datepicker-to' %>
+        <%= label_tag nil, Spree.t(:end), :class => 'inline' %>
+    </div>
+
+    <div class="actions filter-actions">
+      <%= button Spree.t(:search), 'icon-search'  %>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <%= button Spree.t(:export_to_excel), 'icon-excel'%>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <%= button Spree.t(:export_to_pdf), 'icon-pdf'%>
+    </div>
+<% end %>
+
+<script type="text/javascript">
+    $(document).ready(function(){        
+      
+        $(".seller-tab").parent().removeClass("selected")
+        $('#frmt').val('');
+        $(".datepicker").datepicker('option', 'maxDate',new Date());
+        
+        $("#q_completed_at_gt").val('<%= params[:q][:completed_at_gt].to_date.strftime("%Y-%m-%d")%>'); 
+        $("#q_completed_at_lt").val('<%= params[:q][:completed_at_lt].nil? ? Time.zone.now.end_of_day.strftime("%Y-%m-%d") : params[:q][:completed_at_lt].to_date.strftime("%Y-%m-%d")%>'); 
+        
+        $(".icon-excel").click(function(){
+            $('#frmt').val('xls');
+        });
+        $(".icon-pdf").click(function(){
+            $('#frmt').val('pdf');
+        });
+    });
+</script>
+
+<style type="text/css">
+    tr .align-center{
+        text-align: left; 
+    }
+
+    table.dataTable tr.odd{
+        background-color: #F2CBD8 !important;
+    }
+    table.dataTable tr.even{
+    background-color: #FFFFFF !important;
+    }
+
+    .datatable{
+        text-align: left;
+    }
+    #table-filter{
+        display: block !important;
+    }
+</style>

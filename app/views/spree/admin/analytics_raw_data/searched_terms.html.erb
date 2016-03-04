@@ -1,0 +1,47 @@
+<%= render :partial => 'spree/admin/shared/analytics_raw_sub_menu' %>
+<% content_for :table_filter do %>
+  <%= render :partial => 'analytics_search', :locals => {:search => @search, :path => "searched_terms_admin_analytics_raw_data"} %>
+<% end %>
+
+<% if @search_terms.present? %>
+  <table class="display" border="0" cellpadding="0" cellspacing="0" width="100%">
+    <colgroup>
+      <col style="width: 1%;">
+      <col style="width: 30%;">
+      <col style="width: 9%;">
+      <col style="width: 7%;">
+      <col style="width: 7%;">
+      <col style="width: 6%;">
+    </colgroup>
+    <thead>
+      <tr>
+        <th>#</th>      
+        <th><%= Spree.t(:seach_term) %></th>
+        <th><%= Spree.t(:user) %></th>
+        <th><%= Spree.t(:email) %></th>
+        <th ><%= Spree.t(:result_count) %></th>      
+        <th ><%= Spree.t(:search_date) %></th>      
+        <th ><%= Spree.t(:search_time) %></th>      
+      </tr>
+    </thead>
+    <tbody>
+      <% @search_terms.each_with_index do |term, index|%>
+        <tr class="align-center">
+          <td ><%= index + 1 %></td>        
+          <td><%= term.search_term %></td>
+          <td><%= term.user.try(:name) %></td>
+          <td><%= mail_to term.user.try(:email) if term.user.present?%></td>
+          <td ><%= term.result_count %></td>
+          <td ><%= "#{term.created_at.strftime('%d %b %Y')}" %></td>
+          <td ><%= term.created_at.strftime("%I:%M %p") %></td>      
+        </tr>
+      <%end%>
+    </tbody>
+  </table>
+<% else %>
+  <div class="no-objects-found">
+    <%= Spree.t(:no_search_term_found)%>
+  </div>
+<% end %>  
+
+<%= paginate(@search_terms)%>

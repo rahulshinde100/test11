@@ -1,0 +1,56 @@
+<tfoot>
+  <tr>
+    <th colspan="5" style="border-top: 2px solid black;"></th>
+  </tr>
+  <%if spree_current_user.has_spree_role? 'admin'%>    
+    <tr class="total" id="subtotal-row">
+      <td colspan = "4" style ="text-align: right; padding-right: 5px;"><b><%= Spree.t(:subtotal) %></b></td>
+      <td style="text-align:right;"><span><%= number_to_currency @order.item_total %></span></td>
+    </tr>
+
+    <% @order.adjustments.eligible.each do |adjustment| %>
+      <% next if (adjustment.originator_type == 'Spree::TaxRate') and (adjustment.amount == 0) %>
+      <% next if @order.is_free_shipping? && adjustment.source_type == 'Spree::Shipment' %>
+      <tr class="total">
+        <%if adjustment.is_free_shipping? @order %>                  
+          <td colspan = "4" style ="text-align: right; padding-right: 5px;">
+            <strong>
+              <%if adjustment.originator.promotion.code.present? %>
+                Coupon (<%= adjustment.originator.try(:promotion).try(:code)%>)
+              <%else%>
+                <%= Spree.t(:shipping)%>
+              <%end%>
+            </strong>
+          </td>
+          <td style="text-align:right;"><span><%= Spree.t(:free) %></span></td>        
+        <%else%>
+          <td colspan = "4" style ="text-align: right; padding-right: 5px;">
+            <strong>
+              <%if adjustment.source_type == 'Spree::Shipment'%>
+                <%= adjustment.label %>
+              <%elsif adjustment.source_type == "Spree::StoreCredit" %>
+                Store Credit Redeemed
+              <%elsif adjustment.originator.promotion.code.present? %>
+                Coupon (<%= adjustment.originator.try(:promotion).try(:code)%>)
+              <%else%>
+                <%= adjustment.label[11..adjustment.label.length-2] %>                  
+              <%end%>
+            </strong>
+          </td>
+          <td style="text-align:right;"><span><%= number_to_currency adjustment.amount %></span></td>        
+        <% end %>
+      </tr>
+    <% end unless @order.adjustments.eligible.blank?%>
+
+    <tr class="total">       
+      <td colspan = "4" style ="text-align: right; padding-right: 5px;"><b><%= Spree.t(:order_total) %></b></td>
+      <td style="text-align:right;"><span id="order_total"><%= number_to_currency @order.total %></span></td>
+    </tr>
+
+  <%else%>
+  <tr class="total">       
+    <td colspan = "4" style ="text-align: right; padding-right: 5px;"><b><%= Spree.t(:order_total) %></b></td>
+    <td style="text-align:right;"><%= number_to_currency line_items.sum(&:amount)%></td>
+  </tr>
+  <%end%>  
+</tfoot>

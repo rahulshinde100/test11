@@ -1,0 +1,12 @@
+$("div.flash").remove();
+$('#content').prepend("<div class='flash error'></div>");
+setTimeout('$(".flash").fadeOut(1000)', 5000);
+$("div.flash").html("This product is out of stock or you can't add more than <%= Spree::Config[:cart_item_limit].to_i %> quantity.");
+
+$("ul#nav-bar li#link-to-cart").remove();
+$("ul#nav-bar").prepend("<li id='link-to-cart' data-hook><a href='/cart'><%= escape_javascript link_to_cart %></a></li>");
+//$("#link-to-cart a").replaceWith('<%= escape_javascript link_to_cart %>');
+
+$('html, body').animate({
+    scrollTop: $(".flash").offset().top - 120
+}, 300);

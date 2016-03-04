@@ -1,0 +1,56 @@
+<table class="admin-report display" border="0" cellpadding="0" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th><%= Spree.t(:order_number) %></th>
+      <th><%= Spree.t(:total_products) %></th>
+      <th><%= Spree.t(:order_subtotal) %></th>
+      <% if spree_current_user.has_spree_role? 'admin'%>
+        <th><%= Spree.t(:shipping_charges) %></th>
+        <th><%= Spree.t(:discount_if_any) %></th>
+        <th><%= Spree.t(:order_total) %></th>
+        <!-- <th><%#= Spree.t(:gst) + " (#{@tax.to_s}%)"%></th>-->
+      <%end%>
+      
+      <th><%= Spree.t(:order_date) %></th>
+      <% if spree_current_user.has_spree_role? 'admin'%>
+        <th><%= Spree.t(:customer_name) %></th>
+      <%end%>
+      <th><%= Spree.t(:payment_mode) %></th>
+      <th><%= Spree.t(:gift_order) %></th>
+      <% if spree_current_user.has_spree_role? 'admin'%>
+        <th><%= Spree.t(:sample_product) %></th>
+      <%end%>
+    </tr>
+  </thead>
+  <tbody>
+    <% orders.each_with_index do |order, index|%>
+      <% next if totals[order.number].nil? %>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= link_to totals[order.number][:order_number], admin_order_path(order) %></td>
+        <td><%= totals[order.number][:total_number_of_products] %></td>
+        <td><%= totals[order.number][:order_value] %></td>
+        <% if spree_current_user.has_spree_role? 'admin'%>
+          <td><%= totals[order.number][:shipping_charges] %></td>
+          <td><%= totals[order.number][:discount] %></td>
+          <td><%= totals[order.number][:order_total]%></td>
+          <!-- <td><%#= totals[order.number][:taxes] %></td> -->
+          
+        <%end%>
+        
+        <td><%= totals[order.number][:order_date] %></td>
+        <% if spree_current_user.has_spree_role? 'admin'%>
+          <td><%= totals[order.number][:customer_name] %></td>
+        <%end%>
+        <td><%= totals[order.number][:payment_mode] %></td>
+        <td><%= totals[order.number][:gift_order] %></td>
+        <% if spree_current_user.has_spree_role? 'admin'%>
+          <td><%= totals[order.number][:sample_product] %></td>
+        <%end%>
+      </tr>
+    <%end%>
+  </tbody>
+</table>
+
+<%= paginate(orders)%>

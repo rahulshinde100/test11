@@ -1,0 +1,160 @@
+<div id="seller_products" class="<% if controller.controller_name == "sellers" %>seller-home-products<%end%>">
+  <div data-hook="product_show" itemscope itemtype="http://schema.org/Product">
+    <% @body_id = 'product-details' %>
+    <div class="columns alpha" data-hook="product_left_part">
+      <div class="row" data-hook="product_left_part_wrap">
+        <div id="product-images" data-hook="product_images">
+          <div id="thumbnails" data-hook>
+            <%= render :partial => 'thumbnails' %>
+          </div>
+          <div id="product-page-middle-part">   
+            <div id="main-image" data-hook>
+              <span class='zoom' id='prod-img'>
+                <%= render :partial => 'image' %>
+              </span>
+            </div>
+            <div data-hook="product_properties">
+              <%= render :partial => 'properties' %>
+            </div>
+          </div>        
+        </div>
+        <div class="clearboth"></div>
+        <div data-hook="promotions">
+          <%= render :partial => 'promotions' %>
+        </div>
+      </div>
+    </div>
+    <div class="columns six omega" data-hook="product_right_part">
+      <div class="row" data-hook="product_right_part_wrsubheader-wrapperap">
+        <% @taxons = @product.taxons
+          @taxons.each do |tx|
+            unless tx.parent.nil? || tx.parent.name.capitalize == "Categories".capitalize
+              @tax = tx.parent 
+            end
+          end %>
+        <h1 class="prod-price" itemprop="name"><%= accurate_title %></h1>
+        <div class="clearboth"></div>     
+        <p class="upai-seller">
+          <%= link_to @product.seller.try(:name), seller_path(@product.seller.permalink)%>        
+        </p>
+        <div class="cart-buttons" id="wished-variant"></div>
+        <div class="clearboth"></div>
+        <div id="product-description" data-hook="product_description">
+          <h1 class="product-title" itemprop="name">
+            <%= accurate_title %>
+          </h1>
+          <div id="cart-form" data-hook="cart_form">
+            <%= render :partial => 'cart_form' %>
+          </div>
+          <div id="stock-info">
+            <%#= render :partial => 'stock_info' %>
+          </div>
+          <!--<div id="share_social">-->
+            <%#= render :partial => 'share_social' %>
+          <!--</div>-->
+        </div>
+        <%= render :partial => 'taxons' %>
+      </div>            
+    </div>      
+    <%if @product.relations.present?%>
+      <div style="float:left;">
+        <hr class="legend-effect"/>
+        <div class="related-products">
+          <span>Related Products</span>      
+        </div>  
+        <div class="container">        
+            <ul class="inline product-listing" id="products" >
+            <%= render :partial=> 'spree/shared/related_product', :locals => {:products => @product.related_products} %>
+            </ul>
+            <div id="slider-prev"></div> 
+            <div id="slider-next"></div>        
+        </div>  
+      </div>    
+    <%end%>
+
+    <div class="ssl-paypal cart-page detail-page">
+      <%= image_tag "/assets/store/rapidssl_seal.gif", :id => "rapid-ssl" %>
+      <%= image_tag "/assets/store/paypal__secure.png", :id => "paypal-secure" %>
+    </div>     
+    <div class="clearboth"></div>
+  </div>
+</div>
+
+<script src="/js/jquery.bxslider.min.js"></script>
+
+<script>
+  $(document).ready(function(){
+    if( !navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/) ) {
+      $('#prod-img').zoom();
+    }
+    $("ul#main-nav-bar li").removeClass("main-mainu-select");
+    <%unless @tax.nil?%>
+      $("a#main-cat-<%= @tax.id%>").parent('li').addClass("main-mainu-select");
+    <%end%>
+
+    slider =  $('.bxslider-product-detail').bxSlider({
+      prevSelector: '#slider-prev',
+      nextSelector: '#slider-next',
+      prevText: '',
+      nextText: '',
+      minSlides: 1,
+      maxSlides: 5,
+      moveSlides: 1,
+      slideWidth: 133,
+      slideMargin: 32
+    });
+    
+    if(slider.getSlideCount() > 5){
+      $("#slider-next").css('display','block');
+      $("#slider-prev").css('display','block');
+      $(".container #products").css('text-align','center');
+    }
+  });
+</script>
+
+<style>
+
+  /* styles unrelated to zoom */
+  * { border:0; margin:0; padding:0; }
+  /*p { position:absolute; top:3px; right:28px; color:#555; font:bold 13px/1 sans-serif;}*/
+
+  /* these styles are for the demo, but are not required for the plugin */
+  .zoom {
+    display:inline-block;
+    position: relative;
+  }
+
+  /* magnifying glass icon */
+  .zoom:after {
+    content:'';
+    display:block;
+    width:33px;
+    height:33px;
+    position:absolute;
+    top:0;
+    right:0;
+    background:url(icon.png);
+  }
+
+  .zoom img {
+    display: block;
+  }
+
+  .zoom img::selection { background-color: transparent; }
+
+  #ex2 img:hover { cursor: url(grab.cur), default; }
+  #ex2 img:active { cursor: url(grabbed.cur), default; }
+  #footer {display: none;}
+  #content{padding-bottom: 100px;}  
+
+  #slider-prev {
+    top: 110px;
+    left: -20px;
+    display: none;
+  }
+  
+  #slider-next {
+    top: 110px;
+    display: none;
+  }
+</style>

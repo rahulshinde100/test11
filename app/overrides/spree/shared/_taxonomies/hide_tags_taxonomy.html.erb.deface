@@ -1,0 +1,41 @@
+
+<!-- replace_contents '#taxonomies' -->
+
+<% unless @taxon.nil? %>
+	
+	<% if @taxon.children.empty? %>
+        <% @taxon.parent.children.each do |taxon| %>
+        	<%count = get_taxon_product_count(taxon) %>
+			<% unless taxon.parent.name == 'Tags' %>
+		    	<h6 class='taxonomy-root'>
+
+		    	<% if taxon.name == @taxon.name %>
+		    		<a href="/view/<%= taxon.permalink %>" style = "color:#FF0000;"><%=taxon.name %><% if count > 0 %> (<%=count%>)<%end%></a>
+		    	<% else	%>
+		    		<a href="/view/<%= taxon.permalink %>"><%=taxon.name %><% if count > 0 %> (<%=count%>)<%end%></a>
+		    	<% end %>
+
+				</h6>
+		    	<%#= taxons_tree(taxonomy.root, @taxon, Spree::Config[:max_level_in_taxons_menu] || 1) %> 
+			<% end %>
+		<% end%>
+    <% else%>	
+		<% @taxon.children.each do |taxon| %>
+			<%count = get_taxon_product_count(taxon) %>
+			<% unless taxon.parent.name == 'Tags' %>
+		    	<h6 class='taxonomy-root'>
+		    		<a href="/view/<%= taxon.permalink %>"><%=taxon.name %><% if count > 0 %> (<%=count%>)<%end%></a>
+				</h6>
+		    	<%#= taxons_tree(taxonomy.root, @taxon, Spree::Config[:max_level_in_taxons_menu] || 1) %> 
+			<% end %>
+		<% end%>
+	<% end %>    
+	<% if @taxon.sellers.present? && @products.present? %>
+    <p class="store-class sidebar_store" style="margin-top:20px;margin-bottom: 0px;"> Stores</p>
+	<% @taxon.sellers.is_active.each do |seller| %>
+	    <h6 class='taxonomy-root'>
+	    	<%= link_to seller.name, seller_path(seller.permalink)%>
+		</h6>
+	<% end unless @taxon.sellers.is_active.blank?%>   
+	<%end%>
+<%end%>

@@ -1,0 +1,25 @@
+<fieldset>
+	<legend align="center">Variants</legend>
+	<% if variants.present? %>
+		<table>
+			<thead>
+				<th>Options</th>
+				<th>Price</th>
+				<th>SKU</th>			
+			</thead>
+			<tbody>
+				<% variants.each do |variant| %>
+					<tr>
+						<td><%= variant.options_text%></td>
+						<td><%= variant.price%></td>
+						<td><%= variant.sku%></td>
+					</tr>
+				<%end%>
+			</tbody>
+		</table>
+	<% else	%>
+		<div class="alpha sixteen columns no-objects-found">
+			No Variant Added Yet
+		</div>
+	<% end %>	
+</fieldset>

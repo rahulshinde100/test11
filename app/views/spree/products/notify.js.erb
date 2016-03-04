@@ -1,0 +1,72 @@
+$("#product-price").html('');
+$('#prod-img .warehouse_sale div, #prod-img .discounted_sale div').text("<%= @variant.warehouse_discount%> % OFF");
+<% if @variant.images.present? %>
+$("#large_img").attr("src","<%= @variant.images.first.attachment.url(:large)%>");
+$(".zoomImg").attr("src","<%= @variant.images.first.attachment.url(:large)%>");
+<%else%>
+            <% if @variant.product.images.present? %>
+                $("#large_img").attr("src","<%= @variant.product.images.first.attachment.url(:large)%>");
+                $(".zoomImg").attr("src","<%= @variant.product.images.first.attachment.url(:large)%>");
+            <%else%>
+                $("#large_img").attr("src","/assets/noimage/large.png");
+                $(".zoomImg").attr("src","/assets/noimage/large.png");
+            <%end%>
+<% end %>
+<% if @variant.special_price %>
+	$("#product-price").append("<div><span class='price selling special' itemprop='price' id='product-actual-price'><%= escape_javascript number_to_currency(@variant.special_price) %></span></div>");
+	$("#product-price").append("<div><span class='price selling avail-discount' itemprop='price'><%= escape_javascript display_price(@variant) %></span></div>");
+<%else%>
+	$("#product-price").append("<div><span class='price selling' itemprop='price' id='selling'><%= escape_javascript number_to_currency(@variant.price)%></span></div>");
+<%end%>
+
+<% if @variant.in_stock? %>
+        $('.upai-seller').css("margin-bottom", "10px");
+	$("#cart-buttons").show();
+        $('#qty-slider').empty();
+        $('#qty-slider').append("<ul></ul>")
+	$("#pickup-map-info").show();
+	$("#notify-variant").hide();
+	$("#product_delivery_time").show();
+	<% product_stock = @variant.stock_on_hand > 10 ? 10 : @variant.stock_on_hand %>
+	product_stock = <%= product_stock %>
+
+	var slider_image = '';
+	<%product_stock.times do |i| %>
+		<%if i==0%>
+			slider_image = "<li><div class='qty-div-box'><%= i+1%></div></li>";
+		<%else%>
+			slider_image += "<li><div class='qty-div-box'><%= i+1%></div></li>";
+		<%end%>
+	<%end%>
+	if(product_stock < 10) {
+              $("#out_of_stock_msg").html("Only "+product_stock+" items available in stock");
+              }
+        else{
+              $("#out_of_stock_msg").html("");
+        }
+
+        $('[data-hook="product_price"] .add-to-cart').show();
+	$("#qty-slider ul").html(slider_image);
+
+	$('#qty-slider ul').bxSlider({
+        mode: 'horizontal',
+        captions: false,
+        auto: false,
+        controls: true,
+        speed: 100,
+        pager: false,
+        randomStart: false,
+        infiniteLoop: false,
+        responsive: false
+    });
+    $("#wished-variant").html("<%= escape_javascript(render :partial => '/spree/products/wishlist_form', :locals => { :variant => @variant})%>");
+<%else%>
+    $('.upai-seller').css("margin-bottom", "0px");
+	$("#cart-buttons").hide();
+	$("#product_delivery_time").hide();
+	$("#notify-variant").html("<%= escape_javascript(render :partial => 'notify_me', :locals => { :id => @variant.id})%>");
+	$("#pickup-map-info").hide();
+	$("#notify-variant").show();
+<%end%>
+
+

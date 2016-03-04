@@ -1,0 +1,87 @@
+<% if spree_current_user.has_spree_role?('admin') %>
+  <div class="new-seller">
+    <%= button_link_to 'New Seller', new_admin_seller_path, :class => "button", :icon => 'icon-plus'%>
+  </div>
+  <div style="float: left; padding-top: 50px; padding-bottom: 24px;">
+    <%= form_tag admin_sellers_search_path, :method => :post do %>
+      <%= radio_button_tag :seller, 'all'%>
+      <label for="seller_all"> All </label>
+      <%= radio_button_tag :seller, 'deleted'%>
+      <label for="seller_deleted"> Deleted </label>
+      <%= radio_button_tag :seller, 'deactive'%>
+      <label for="seller_deactive"> Deactive </label>
+      <%= radio_button_tag :seller, 'active'%>
+      <label for="seller_active"> Active </label>
+
+      <%=button_tag "Filter", :class => "button"%>
+    <%end%>
+  </div>
+  <% if @sellers.present? %>
+    <div style="padding-top: 50px;" class="custom_responsive CSSTableGenerator">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Person Name</th>
+            <th>Email</th>
+            <th>Roc Number</th>
+            <th>Address</th>
+            <th class="actions"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @sellers.each_with_index do |seller, index| %>
+            <tr>
+              <td><%= index + 1 %></td>
+              <td><%= link_to seller.name, edit_admin_seller_path(seller) %></td>
+              <td><%= seller.contact_person_name%></td>
+              <td><%= mail_to seller.contact_person_email%></td>
+              <td><%= seller.roc_number%></td>
+              <td><%= raw seller.address%></td>
+              <td class="actions">
+                <% if seller.deleted_at.nil? %>
+                  <%= link_to_edit seller, :no_text => true, :class => 'edit'%>
+                  &nbsp;
+                  <%= link_to_delete seller, :no_text => true, :confirm => "Are you sure, you want to delete '#{seller.name}' Seller?"%>
+                  &nbsp;
+                  <%= link_to "", admin_seller_seller_users_path(seller), :class => 'icon-user', :title => "Users" %>
+                  &nbsp;
+                  <%= button_link_to "Stores", admin_seller_store_addresses_path(seller)%>
+                  &nbsp;
+                  <% if seller.is_active %>
+                    <%= link_to "Deactive", deactive_admin_seller_path(seller), :style => "background-color: red;", :id => "deactive", :class => "button fancybox fancybox.ajax", :confirm => "Are you sure, you want to Deactivate '#{seller.name}' Seller?"%>
+                  <%else%>
+                    <%= button_link_to "!Active", "/admin/sellers/#{seller.id}/edit?tpsdf=sdfsfs", :confirm => "Are you sure, you want to Activate '#{seller.name}' Seller?"%>
+                  <%end%>
+                <%end%>
+              </td>
+            </tr>
+          <% end%>
+        </tbody>
+      </table>
+    </div>
+  <%else%>
+    <div class="error-message" style="text-align: center;">
+      <h2>No Result</h2>
+    </div>
+  <%end%>
+<%else%>
+  <%= render :partial => "spree/admin/shared/dashboard", :locals => {:seller => spree_current_user.seller}%>
+<%end%>
+
+<script type="text/javascript">
+  //  $(".seller-tab").parents
+  $(document).ready(function(){
+<% if params[:seller] == 'deleted'%>
+      $("#seller_deleted").prop('checked', true);
+<% elsif params[:seller] == "deactive" %>
+      $("#seller_deactive").prop('checked', true);
+<% elsif params[:seller] == "active" %>
+      $("#seller_active").prop('checked', true);
+<%else%>
+      $("#seller_all").prop('checked', true);
+<% end %>
+
+  });
+</script>

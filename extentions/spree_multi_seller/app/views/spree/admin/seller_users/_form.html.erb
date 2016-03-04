@@ -1,0 +1,81 @@
+<div data-hook="admin_user_form_fields" class="row">
+  <div class="alpha five columns">
+    <%= f.label :firstname, t(:firstname) %><br />
+    <%= f.text_field :firstname, :class => 'title', :required => true %>
+  </div>
+
+  <div class="five columns">
+    <%= f.label :lastname, t(:lastname) %><br />
+    <%= f.text_field :lastname, :class => 'title', :required => true %>
+  </div>
+  <div class="five columns">
+    <%= f.label :dateofbirth, t(:dateofbirth) %><br />
+    <%= f.text_field :dateofbirth, :class => 'title datepicker' %>
+  </div>
+  <div class="omega five columns">
+    <label for="gender" style="margin-right: 15px;">Gender</label>
+    <% Spree::Gender.all.each do |gender| %>
+      <%= f.radio_button :gender_id, gender.id, :required => true %>
+      <%= f.label gender.name ,:class => gender.name %>
+    <% end %>
+  </div>
+  <div class="omega five columns">
+    <%= f.label :country, t(:country) %><br />
+    <input type="text" value="Singapore" class="title" readonly = true/>
+    <%= f.hidden_field :country_id, :value => Spree::Country.find_by_name("Singapore").id, :readonly => true %>
+<%#= f.collection_select :country_id, Spree::Country.all, :id, :name, :class => 'title' %>
+  </div>
+
+  <div class="omega five columns">
+    <%= f.label :contact, t(:contact) %><br />
+    <%= f.text_field :contact, :class => 'title contact' %>
+  </div>
+
+  <div class="alpha five columns">
+    <%= f.field_container :email do %>
+      <%= f.label :email, Spree.t(:email) %>
+      <%= f.email_field :email, :class => 'fullwidth email', :required => true %>
+      <%= error_message_on :user, :email %>
+    <% end %>
+
+    <div data-hook="admin_user_form_roles" class="field">
+      <%= label_tag nil, Spree.t(:roles) %>
+      <ul>
+        <% @roles.each do |role| %>
+          <% next unless ["seller_store", "seller"].include?(role.name) %>
+          <li>
+            <%= check_box_tag 'user[spree_role_ids][]', role.id, @seller_user.spree_roles.include?(role), :id => "user_spree_role_#{role.name}" %>
+            <label for='<%="user_spree_role_#{role.name}"%>'> <%= role.name == "seller" ? "Seller Admin" : "Store User"%></label>
+          </li>
+        <% end %>
+      </ul>
+      <%= hidden_field_tag 'user[spree_role_ids][]', '' %>
+    </div>
+  </div>
+
+  <div class="omega five columns">
+    <%= f.field_container :password do %>
+      <%= f.label :password, Spree.t(:password) %>
+      <%= f.password_field :password, :class => 'fullwidth', :required => true %>
+      <%= f.error_message_on :password %>
+    <% end %>
+
+    <%= f.field_container :password do %>
+      <%= f.label :password_confirmation, Spree.t(:confirm_password) %>
+      <%= f.password_field :password_confirmation, :class => 'fullwidth', :required => true %>
+      <%= f.error_message_on :password_confirmation %>
+    <% end %>
+  </div>
+  <div class="omega five columns">
+    <%= f.label :photo, t(:photo) %><br />
+    <%= f.file_field :photo, :class => 'title' %>
+  </div>
+</div>
+
+<div data-hook="signup_below_password_fields"></div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#user_dateofbirth").datepicker('option', 'maxDate',new Date());
+  });
+</script>

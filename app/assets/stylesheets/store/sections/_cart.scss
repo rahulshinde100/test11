@@ -1,0 +1,19 @@
+@import 'compass';
+@import 'compass/css3';
+@import 'store/my_variables';
+
+.cart-item-total, .order-total {
+
+}
+
+.cart-item-price {
+  font-weight: 400 !important;
+  font-size: 16px !important;
+}
+
+#update-cart .coupon-code-field {
+  position: absolute;
+  margin-top: 31px !important;
+  padding-left: 450px;
+  right: 210px;
+}

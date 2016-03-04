@@ -1,0 +1,9 @@
+<%= form_for @product, :url => reject_admin_product_path, :html => { :multipart => true } do |f| %>
+	<label>Enter Reason</label><span class="required">*</span><br />
+	<%= f.text_area :reject_reason, :rows => "10", :class => 'fullwidth', :required => true %>
+	<%= f.hidden_field :is_reject, :value => true %>
+	<%= f.hidden_field :is_approved, :value => false %>
+	<br/>
+      <br/>
+	<%= f.submit "Reject", :class => 'icon-cancel' %>
+<%end%>

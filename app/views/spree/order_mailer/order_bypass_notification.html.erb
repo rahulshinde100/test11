@@ -1,0 +1,16 @@
+<div>
+  <p> Dear FBA User, </p>
+  <p>We have received an order from your <%= @order.market_place.name rescue ''%> seller account on FBA. The order <u>cannot be processed</u> further as the response received from the <%= @order.market_place.name rescue 'Market Place'%> is missing the required product details.</p>
+  <p>The order is available in the <u>'Partial State'</u> in FBA for you to modify/ add products accordingly. Please take appropriate action so that the order gets into the regular processing cycle for fulfillment.  </p>
+  <p>You can add the missing products in this order by logging to FBA -> Left Hand Panel -> Action > Modify Order -> Order No. -> Modify</p>
+  <p>Order No.: <%= @order.number %> </p>
+
+  <p>FBA Tracking No.: <%= @order.fulflmnt_tracking_no %></p>
+
+ <p>For queries, reach us at help@anchanto.com.</p>
+
+
+  <p>---</p>
+  <p>Regards,</p>
+  <p>Team Anchanto</p>
+</div>

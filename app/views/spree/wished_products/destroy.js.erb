@@ -1,0 +1,4 @@
+var rowCount = $('#wishlist tr').length;
+if (rowCount == 2)
+	$('#wishlist').remove();
+$('tr#wish_<%=params[:id]%>').remove();

@@ -1,0 +1,10 @@
+<div class="alpha ten columns">
+  <%= form_for @seller, :url => deactivated_admin_seller_path(@seller.id), :method => :put, :html => { :multipart => true } do |f| %>
+	<lable>Enter Comment</lable>
+	<%= f.text_field :comment, :required => true, :class=>"fullwidth"%>
+	<%= f.hidden_field :is_active, :value => false%>
+	<%= f.hidden_field :deactivated_at, :value => Time.now %>
+	<br /><br />
+	<div class="align-center"><%= f.submit "De-activate"%></div>
+  <%end%>
+</div>

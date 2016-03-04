@@ -1,0 +1,66 @@
+<p>
+  <%= f.label :email %><br />
+  <%= f.email_field :email, :class => 'title email', :readonly => true %>
+</p>
+
+<p>
+  <label for="gender" ></label>
+    <% Spree::Gender.all.each do |gender| %>
+      <%= f.radio_button :gender_id, gender.id %>
+          <% if gender.name == "Male" %>
+          <%= f.label "Mr" ,:class => gender.name %>
+          <%else%>
+          <%= f.label "Ms" ,:class => gender.name %>
+          <%end%>
+    <% end %>
+</p>
+
+<p>
+  <%= f.label :firstname, t(:firstname) %><br />
+  <%= f.text_field :firstname, :class => 'title'%>
+</p>
+
+<p>
+  <%= f.label :lastname, t(:lastname) %><br />
+  <%= f.text_field :lastname, :class => 'title'%>
+</p>
+
+<p>
+  <%= f.label :dateofbirth, t(:dateofbirth) %><br />
+  <%= f.text_field :dateofbirth, :class => 'title datepicker', :readonly => true %>
+</p>
+
+<p>
+  <%= f.label :contact, t(:contact) %><br />
+  <%= f.text_field :contact, :class => 'title contact' %>
+</p>
+
+<p>
+  <%= f.label :country, t(:country) %><br />
+  <!-- <input type="text" value="Singapore" class="title" readonly = true/> -->
+  <%#= f.hidden_field :country_id, :value => Spree::Country.find_by_name("Singapore").id, :readonly => true %>
+  <%= f.collection_select :country_id, available_countries, :id, :name, {:selected => 160}, {:class => 'select2 fullwidth'} %>
+</p>
+
+<a href="" id = "change-pass">Want to change password?</a>
+  <div id="change-password">
+  </div>
+
+
+<div data-hook="signup_below_password_fields"></div>
+
+<script type="text/javascript">
+  var flag = true;
+  $(document).ready(function(){    
+    $("#change-pass").click(function(){
+      if(flag){
+        $('#change-password').html("<%= escape_javascript(render(:partial => 'change_password', :locals => {:f => f})) %>");
+        flag = false;
+      }else{
+        $('#change-password').empty();
+        flag = true;
+      }
+      return false;
+    });
+  });
+  </script>

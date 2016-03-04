@@ -1,0 +1,81 @@
+<% content_for :sidebar do %>
+  <div data-hook="taxon_sidebar_navigation" style = "margin-top:23px;">    
+    <%= lhs_menu(@taxons, @sellers, nil, @tx_products, @sorted_taxons, @sorted_sellers, nil)%>
+  </div>
+<%end%>
+<%if @products.count >= 2 %>  
+  <%= render :partial => '/spree/shared/sorting'%>
+<%end%>
+
+<div id="seller_products">    
+  <%if @products.present? %>  
+      <div data-hook="taxon_products"> 
+        <ul id="products" class="inline product-listing" data-hook>
+          <%= render :partial => "/spree/products/load_product" %>
+          <% reset_cycle("classes") %>
+        </ul>
+      </div>      
+      <div class="loading">
+        <%=image_tag "/assets/fancybox_loading@2x.gif"%>
+      </div>
+      <div id="load-results"></div>
+  <%else%>    
+    <h5 class="subtaxon-title" id="no-product-found-text">
+      <div>We are partnering with retailers for this product category</div>
+      <div>
+        Stay tuned, we will be soon adding few hundred products here 
+        <span class="color_span">:)</span>
+      </div>
+      <div><%=image_tag "/assets/store/greyscale.png", :width => "300" %></div>
+    </h5>
+  <%end%>
+</div>
+
+<style type="text/css">
+  #content{margin-left: 30px;}
+  @media only screen and (min-width: 958px) {
+    #content {
+      width: 784px !important;
+    }
+  }
+</style>
+<script type="text/javascript">
+  var prev_page = 0;
+  $(document).ready(function(){
+    $(window).scroll(function(){
+      var page = $(".product-row").size();
+      page = parseInt(page > 0 ? (page/5) : page);
+      var offset = $("#load-results").offset();
+      var scrollFromTop = 0;
+      var targetDivFromTop = 0;
+      var next_page = page + 1;
+      scrollFromTop = $(window).scrollTop() + 500;
+      targetDivFromTop = offset.top.toFixed(0);
+      if(scrollFromTop >= targetDivFromTop){
+          if(next_page != prev_page){
+            prev_page = next_page;
+            $(".loading").addClass("show_loading");
+            url = "?page="+ next_page;
+            url += "&seq=<%= params[:seq]%>&sort=<%= params[:sort] if params[:sort].present?%>";
+            $.ajax({
+              url: url,
+              success: function(resp){
+                $("#load_products_"+(page+1)).html(resp);
+                $(".loading").removeClass("show_loading");
+              }
+            }).done(function() {
+                $(".loading").removeClass("show_loading");
+                }).fail(function() {
+                $(".loading").removeClass("show_loading");
+                });
+          }
+      }
+    });
+  });
+</script>
+<style type="text/css">
+.taxon-color a{
+  color: red;
+}
+#seller_products{float: left;}
+</style>

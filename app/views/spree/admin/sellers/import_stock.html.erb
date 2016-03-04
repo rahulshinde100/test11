@@ -1,0 +1,60 @@
+<% if spree_current_user.has_spree_role?('admin') %>
+    <% content_for :page_title do %>
+          <%= Spree.t(:import_and_export_stock) %>
+    <% end %>
+<% end %>
+
+<% if spree_current_user.has_spree_role?('admin') %>
+   <% content_for :page_actions do %>
+         <%= button_link_to 'back to sellers list', admin_sellers_path, :class => "button", :icon => 'icon-arrow-left'%>
+   <% end %>
+
+<% STOCKOPTION.values.each do |val| %>
+      <% checked_val = (STOCKOPTION[1] == val) ? true : false %>
+      <%= radio_button :product, :stock_config_type, val , :checked=>checked_val, :onclick=>"show_import_form(this);" %>
+      &nbsp;&nbsp;<%= val.humanize.split.map(&:capitalize).join(' ') %>&nbsp;&nbsp;&nbsp;&nbsp;
+<% end %>
+
+<div id="import_stock_file">
+<%= form_tag import_product_stock_admin_stock_transfers_path, multipart: true do %>
+  <fieldset class="no-border-top">
+    <br>
+    <div>
+      <p><%= Spree.t(:select_seller)%></p>
+      <%= select_tag :seller_id, options_from_collection_for_select(@sellers, "id", "name") %>
+    </div>
+    <br>
+    <div id='stock_file'>
+      <p><%= Spree.t(:select_file)%></p>
+       <%= file_field_tag :file, :required => true %>
+    </div>
+    <br>
+    <a href="/sample-files/Sample Bulk Stock Upload File.xls" download="Sample Bulk Stock Upload File.xls">
+      <i class="icon-download">Download Stock Import Sample File</i>
+    </a>
+    <br>
+    <div class="filter-actions actions" data-hook="buttons">
+      <%= submit_tag "Import Stock", :class => "button icon-upload", :onclick=>"return confirm('Do you really want to import stock?');" %>
+    </div>
+  </fieldset>
+<% end %>
+</div>
+
+<div id="export_stock_file" style="display:none;">
+   <%= form_tag export_product_stock_admin_stock_transfers_path, multipart: true do %>
+   <fieldset class="no-border-top">
+    <br>
+    <div>
+      <p><%= Spree.t(:select_seller)%></p>
+      <%= select_tag :seller_id, options_from_collection_for_select(@sellers, "id", "name") %>
+    </div>
+    <div class="filter-actions actions" data-hook="buttons">
+      <%= submit_tag "Export Stock", :class => "button icon-download" %>
+    </div>
+   </fieldset>
+<% end %>
+</div>
+
+<% end %>
+
+

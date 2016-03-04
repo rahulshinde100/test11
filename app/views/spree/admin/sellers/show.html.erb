@@ -1,0 +1,32 @@
+<% content_for :page_title do %>
+  <%= "#{@seller.name}" %>
+<% end %>
+<% content_for :page_action do %>
+    <%= button_link_to "Edit Profile", edit_admin_seller_path(@seller.id), :icon => 'icon-plus'%>
+<% end %>    
+    <div class="custom_table">
+        <fieldset class="seller_account">
+            <legend align="center">PROFILE | <%= link_to 'EDIT', edit_admin_seller_path(@seller.id)%></legend>
+            <%= render :partial => "account", :locals => {:seller => @seller} %>
+        </fieldset>
+    </div>
+<% if spree_current_user.has_spree_role?('admin')%>
+    <div class="custom_table">
+        <fieldset class="seller_account">
+            <legend align="center">PRODUCTS</legend>
+            <%= render :partial => "products", :locals => {:seller => @seller} %>
+        </fieldset>
+    </div>
+
+<div class="custom_table">
+    <fieldset class="seller_account">
+        <legend align="center">ORDERS</legend>
+        <%= render :partial => "orders", :locals => {:seller => @seller} %>
+    </fieldset>
+</div>
+<%end%>
+<style type="text/css">
+a{
+    color: #169AAD !important;
+}
+</style>

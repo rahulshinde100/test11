@@ -1,0 +1,26 @@
+<%if spree_current_user.has_spree_role?("admin") || params[:return].blank?%>
+  <% content_for :page_title do %>
+    <%= Spree.t(:editing_stock_location) %> <i class="icon-arrow-right"></i>
+    <%= @stock_location.name %>
+  <% end %>
+
+  <% content_for :page_actions do %>
+    <li><%= link_to_with_icon 'icon-arrow-left', Spree.t(:back_to_stock_locations_list), admin_stock_locations_path, :class => 'button' %></li>
+  <% end %>
+<%else%>
+  <%= render :partial => 'spree/admin/shared/seller_sub_menu', :locals => { :seller => spree_current_user.seller, :title => "Stock Locations" } %>
+<%end%>
+
+<%= render :partial => 'spree/shared/error_messages', :locals => { :target => @stock_location } %>
+
+<%= form_for [:admin, @stock_location] do |f| %>
+  <fieldset class="no-border-top">
+    <%= render :partial => 'form', :locals => { :f => f } %>
+    <div class="form-buttons filter-actions actions" data-hook="buttons">
+      <%= button Spree.t('actions.update'), 'icon-refresh' %>
+      <span class="or"><%= Spree.t(:or) %></span>
+      <%= button_link_to Spree.t('actions.cancel'), params[:return], :icon => 'icon-remove' %>
+    </div>
+
+  </fieldset>
+<% end %>

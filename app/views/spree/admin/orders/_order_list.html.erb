@@ -1,0 +1,53 @@
+<% unless @orders.empty? %>
+  <div class="CSSTableGenerator">
+  <table class="index responsive" id="listing_orders" data-hook>
+    <thead>
+      <tr data-hook="admin_orders_index_headers">
+        <th>#</th>
+        <th>Order #</th>
+        <th>FBA Order #</th>
+        <th>FBA Tracking #</th>
+        <th>Seller</th>
+        <th width="110">Customer Name</th>
+        <th>Order Date</th>
+        <th>Total</th>
+        <th>FBA State</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @page = params[:page] ? params[:page].to_i : 0 %>
+      <% @orders.each_with_index do |order, index| %>
+          <tr height="40" data-hook="admin_orders_index_rows" class="state-<%= order.state.downcase %> <%= cycle('odd', 'even') %>">
+            <% start_value = ((@page == 0 ? 0 : (@page - 1)) * Spree::Config[:orders_per_page]) rescue 0 %>
+            <td><%= start_value + index + 1 %></td>
+            <td><%= link_to order.market_place_order_no, admin_order_path(order), :title => "Click here" %></td>
+            <td><%= order.cart_no.present? ? order.cart_no : "-" %></td>
+            <td>
+              <% if order.fulflmnt_tracking_no.present? %>
+                 <%= link_to order.fulflmnt_tracking_no, "#{FULFLMNT_PATH}/order/#{order.fulflmnt_tracking_no}", :target => "_blank" %>
+              <% else %>
+                  -
+              <% end %>
+            </td>
+            <td><%= order.seller_id.present? ? order.seller.try(:name) : "-" %></td>
+            <td><%= order.ship_address.present? ? order.ship_address.try(:firstname) : "-" %></td>
+            <td><%= order.order_date.present? ? order.order_date.strftime('%d %b %Y %H:%M') : "-" %></td>
+            <td>
+              <% if spree_current_user.has_spree_role?('seller')%>
+              <% else %>
+                <%= order.display_total.to_html %>
+              <% end %>
+            </td>
+            <td><%= order.fulflmnt_state.present? ? order.fulflmnt_state.humanize : "-" %></td>
+          </tr>
+      <% end %>
+    </tbody>
+  </table>
+  </div>
+<% else %>
+  <div class="no-objects-found">
+    <%= Spree.t(:no_orders_found) %>
+  </div>
+<% end %>
+
+<%= paginate @orders %>

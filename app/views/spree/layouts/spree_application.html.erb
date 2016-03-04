@@ -1,0 +1,53 @@
+<!doctype html>
+<!--[if lt IE 7 ]> <html class="ie ie6" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie ie7" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie ie8" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie ie9" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if gt IE 9]><!--><html lang="<%= I18n.locale %>"><!--<![endif]-->
+  <head data-hook="inside_head">
+    <%= render :partial => 'spree/shared/head' %>
+  </head>
+  <body class="<%= body_class %> <%if current_page?(root_url)%>home-page-slider-body<%end%>" id="<%= @body_id || 'default' %>" data-hook="body">
+    <div class="container">
+      <%= render :partial => 'spree/shared/header' %>
+      <div id="wrapper" class="row" data-hook>
+        <div id="home-products" class="<% if controller.controller_name == "sellers" %>seller-home-products<%end%>"  >
+          <%= render :partial => 'spree/shared/sidebar' if content_for? :sidebar %>
+          <div id="content" class="columns <%= !content_for?(:sidebar) ? "sixteen" : "twelve" %>" data-hook>
+            <%= flash_messages %>
+            <%= yield %>
+          </div>
+        </div>
+      </div>
+      <%= render :partial => 'spree/shared/footer' %>
+    </div>
+    <%#= render :partial => 'spree/shared/google_analytics' %>
+    <script>
+      Spree.api_key = <%= raw(try_spree_current_user.try(:spree_api_key).to_s.inspect) %>;
+    </script>
+
+    <%= render :partial => 'spree/shared/snapengage' %>
+
+   
+
+  </body>
+
+  <%if spree_current_user %>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        <%if spree_current_user && spree_current_user.sign_in_count == 1 && (spree_current_user.current_sign_in_at + 30.seconds) > Time.now && spree_current_user.store_credits_total > 0%>
+          $.fancybox("<br/><strong>Welcome to Ship.li<br/>Hurray! You have received $<%= spree_current_user.store_credits_total %> store credit on sign-up.</strong>");
+        <% end %>
+        <%if spree_current_user && spree_current_user.sign_in_count == 1 && (spree_current_user.current_sign_in_at + 60.seconds) > Time.now && !@referral.blank? && @referral["ambassador"]["balance_money"].to_i >= 10%>
+          $.fancybox("<br/><strong>Coupan of S$10 added to your account, Please check coupon code <a href='<%=ambassadors_path%>'>here</a></strong>");
+        <%end%>
+      });
+    </script>
+  <style type="text/css">
+    .fancybox-inner{
+      text-align: center;
+      width: 430px !important;
+    }
+  </style>
+<%end%>
+</html>

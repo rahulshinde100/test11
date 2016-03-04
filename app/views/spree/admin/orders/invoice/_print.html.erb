@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<%#= stylesheet_link_tag "admin/html-invoice.css" , :media => "all" %>
+<link href="/stylesheets/html-invoice.css?body=1" media="all" rel="stylesheet" type="text/css" />
+<title><%= "Customer Invoice" %></title>
+</head>
+
+<body style="font-family: Helvetica Neue,Helvetica,Helvetica,Arial,sans-serif;font-weight:400;text-rendering :optimizelegibility;color:#000000;">
+  <div class="a4" style = "margin: 0 auto; width: 650px;  height: auto;">    
+    <div id="header" style="text-align: right;">
+      <%= render :partial => "spree/admin/orders/invoice/header" %>
+      <%unless @order.delivery_date.nil? %>
+        <div style="margin-bottom: 5px; margin-top: -12px;">Delivery Date : <%= @order.delivery_date.strftime("%d/%m/%Y")%></br>
+        Delivery Time : <%= @order.delivery_time %>          
+        </div>
+      <%end%>
+    </div>
+    <%if spree_current_user.has_spree_role? 'admin'%>
+      <div class="address" style ="border-top: 2px solid black;">
+        <%= render :partial => "spree/admin/orders/invoice/address" %>
+      </div>
+    <%end%>
+    <div class="wrapper" style ="border-top: 2px solid black; height: auto; float: left; margin-bottom: 40px; width: 100%;">
+      <div class="line_items">
+      	<table cellspacing="0" style="width:100%;">
+          <%
+          if spree_current_user.has_spree_role? 'seller'
+            seller = spree_current_user.seller
+            line_items = @order.seller_line_items(seller)
+            pickup_items = @order.seller_line_items(seller).where(:is_pick_at_store => true).flatten
+          else
+            line_items = @order.line_items
+            pickup_items = @order.pickup_items
+          end
+          if @order.send_as_gift %>
+              <%= render :partial => "spree/admin/orders/invoice/line_items_invoice_gift", :locals => {:line_items => line_items} %>
+              </table> 
+              <p id="message" style="font-style: italic;">"<%= @order.greating_message%>"</p>
+              <div style="float: right;">
+                <label>Compliments from</label>
+                <p style="margin: 8px 10px 0px 40px;">
+                  <%= raw @order.billing_address.user_address %></br>
+                  <%unless @order.billing_address.phone == '(not given)' %>
+                    &#9742;&nbsp;<%= @order.billing_address.phone%>
+                  <%end%>
+                </p>
+              </div>
+          <%else%>
+  	      	<% if pickup_items.present? %>
+  	      		<%= render :partial => "spree/admin/orders/invoice/line_items_mix", :locals => {:line_items => line_items} %>    
+  	      	<%else%>
+  	      		<%= render :partial => "spree/admin/orders/invoice/line_items_delivery", :locals => {:line_items => line_items} %>
+  	      		<%= render :partial => "spree/admin/orders/invoice/line_items_pickup", :locals => {:line_items => line_items} if @order.pickup_items.present?%>
+  	      	<%end%>	      	
+        		<%= render :partial => "spree/admin/orders/invoice/totals_invoice", :locals => {:line_items => line_items}%>
+            </table> 
+          <%end%>
+      </div>                  
+    </div>      
+    <div style="clear=left;"></div>
+    <p style="text-align: justify; width: 660px; font-size: 12px; padding-top: 10px; clear: both;">
+      <label class="bold"> Return Policy -</label> We want you to be happy with your purchase. If your order arrives damaged, expired or you aren’t satisfied with the product, we want to make it up to you. We have a 14-day Return Policy (please read the <b>Return Policy</b> on our website for terms & conditions).
+        To return an item, contact us at <%= mail_to "help@ship.li"%> or &#9742; +65 6822 9476. Please include your Order Number and state the reason for your return or exchange. 
+      </p>
+    <div class="footer">
+      <%= render :partial => "spree/admin/orders/invoice/footer" %>
+    </div>
+  </div>
+</body>
+</html>
+
+<style>
+    @page Section1 {
+size:8.27in 11.69in; 
+margin:.5in .5in .5in .5in; 
+mso-header-margin:.5in; 
+mso-footer-margin:.5in; 
+mso-paper-source:0;
+}
+
+
+
+.body {
+page:Section1;
+}
+
+.sample-div{
+    background-color: #F3E2A9;
+    border: 1px solid #F3E2A9;
+    border-radius: 17px 17px 17px 17px;
+    box-shadow: -5px 7px 10px gray;
+    clear: both;
+    font-size: 12px;
+    width: 50%;
+}
+
+    </style>

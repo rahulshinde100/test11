@@ -1,0 +1,148 @@
+<h1><%= accurate_title %></h1>
+<div id="my-account-tabs">
+  <ul class="nav">
+    <li class="nav-one"><a href="#account_summary" class="current"><strong>Profile</strong></a></li>
+    <li class="nav-one"><a href="#account-my-orders" ><strong>Order History</strong></a></li>
+    <li class="nav-one"><a href="#account-my-wishlist" ><strong>Wishlist</strong></a></li>
+    <li class="nav-one"><a href="#account-store-credit" ><strong>Store Credit</strong></a></li>
+    <li class="nav-one"><a href="#account-refer-a-friend" ><strong>Referral rewards</strong></a></li>
+    <!--<li class="nav-one"><a href="#account-reviews" ><strong>Reviews</strong></a></li>-->
+  </ul>
+
+  <div class="list-wrap">
+    <div data-hook="account_summary" class="account-summary" id="account_summary">
+      <div class="custom_wishlist">
+        <table id="user-info">
+          <% unless spree_current_user.gender.nil? %>
+            <tr>
+              <td><%= Spree.t(:honorific) %></td>
+              <td>
+                <%= spree_current_user.gender.try(:name) == "Male" ? "Mr" : "Ms"%>
+              </td>
+            </tr>
+          <%end%>
+          <%unless spree_current_user.firstname.nil?%>
+            <tr><td><%= Spree.t(:first_name) %></td><td><%= spree_current_user.try(:firstname)%></td></tr>
+          <%end%>
+          <%unless spree_current_user.lastname.nil?%>
+            <tr><td><%= Spree.t(:last_name) %></td><td><%= spree_current_user.try(:lastname)%></td></tr>
+          <%end%>
+          <%unless spree_current_user.dateofbirth.nil?%>
+            <tr><td><%= Spree.t(:date_of_birth) %></td><td><%= spree_current_user.try(:dateofbirth).to_date.strftime("%d-%m-%Y")%></td></tr>
+          <%end%>
+          <tr><td><%= Spree.t(:email) %></td><td><%= spree_current_user.try(:email) %></td></tr>
+          <%unless spree_current_user.contact.nil?%>
+            <tr><td><%= Spree.t(:contact) %></td><td><%= spree_current_user.contact.nil? ? "Not Specified" : spree_current_user.try(:contact) %></td></tr>
+          <%end%>
+          <tr><td><%= Spree.t(:country) %></td><td><%= spree_current_user.country.nil? ? "Not Specified" : spree_current_user.try(:country).try(:name) %></td></tr>
+        </table>
+      </div>
+      <button onclick="location.href='/account/edit'">Edit</button>
+
+    </div>
+
+    <div class="account-my-orders hide" id="account-my-orders">
+
+      <h3><%= Spree.t(:my_orders) %></h3>
+      <% if @orders.present? %>
+        <table class="order-summary">
+          <thead>
+            <tr>
+              <th class="order-number"><%= Spree.t(:order_number) %></th>
+              <th class="order-date"><%= Spree.t(:order_date) %></th>
+              <th class="order-status"><%= Spree.t(:status) %></th>
+              <th class="order-payment-state"><%= Spree.t(:payment_state) %></th>
+              <th class="order-shipment-state"><%= Spree.t(:shipment_state) %></th>
+              <th class="order-total"><%= Spree.t(:total) %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @orders.each do |order| %>
+              <tr class="<%= cycle('even', 'odd') %>" style="text-transform: uppercase;">
+                <td class="order-number"><%= link_to order.number, "", :onclick => "custom_height('.order-detail-#{order.number}');return false;" %></td>
+                <td class="order-date"><%= l order.completed_at.to_date %></td>
+                <td class="order-status"><%= Spree.t(order.state).titleize %></td>
+                <td class="order-payment-state"><%= Spree.t("payment_states.#{order.payment_state}") if order.payment_state %></td>
+                <td class="order-shipment-state"><%= Spree.t("shipment_states.#{order.shipment_state}") if order.shipment_state %></td>
+                <td class="order-total"><%= order.display_total %></td>
+              </tr>
+
+              <tr>
+                <td class="order-detail-<%=order.number%> order-detail-tab" style ="display :none;background-color:#EDEDED;" colspan="6">
+                  <%= render :partial => 'order_details', :locals => { :order => order } %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <% @orders.each do |order| %>
+          <div style="display: none;" class="order-small-tab order-detail-<%=order.number%>"><%= render :partial => 'order_details', :locals => { :order => order } %></div>
+        <%end%>
+      <% else %>
+        <p><%= Spree.t(:you_have_no_orders_yet) %></p>
+      <% end %>
+
+    </div>
+
+    <div id="account-my-wishlist" class="hide">
+      <% if @user.wishlist.wished_products.size > 0 %>
+        <div id="account-my-wishlist" class="custom_wishlist">
+          <h3><%= Spree.t(:my_wishlist) %></h3>
+
+          <%= render :partial => 'wishlists' %>
+          <br/>
+          <%= link_to Spree.t(:continue_shopping), products_path, :class => "button" %>
+          <%= link_to "Empty Wishlist", clear_wishlists_path(), :confirm => "This action will remove all Products from your wishlist, Are you sure ?", :class => "button" unless @user.wishlist.wished_products.size == 0 %>
+          <% if respond_to?(:email_to_friend_url) %>
+    <%#= link_to Spree.t('email_to_friend.send_to_friend'), email_to_friend_url('wishlist', @user.wishlist), :class => "button" unless @user.wishlist.wished_products.size == 0  %>
+          <% end %>
+        </div>
+      <%else%>
+        <p><%= Spree.t(:your_wishlist_is_empty) %></p>
+        <%= link_to Spree.t(:continue_shopping), products_path, :class => "button" %>
+
+      <%end%>
+    </div>
+
+    <div id="account-store-credit" class="hide" data-hook="">
+      <%= render :partial => "spree/users/store_credits"%>
+    </div>
+
+    <div id="account-refer-a-friend" class="hide" data-hook="">
+      <h3>Referral rewards</h3>
+      <div id="reward-box">
+        <div class="clearboth"></div>
+        <div>Balance:&nbsp;<strong><%=number_to_currency @balance_money%></strong></div>
+        <div>Friends Invited:&nbsp;<strong><%=@unique_referrals%></strong></div>
+        <%if @balance_money.to_i >= 10%>
+          <div>Use <strong><%= @ambassador_promo.code %></strong> to redeem your rewards <div style="font-size: 14px;"><a href="#" title="Check Promotion Terms & Conditions">(You can use S$10 with one order of S$100 & above, simply redeem <%=@ambassador_promo.code%> code at checkout.)</a></div></div>
+        <%end%>
+      </div>
+      <div class="clearboth"></div>
+      <a href="<%=ambassadors_path%>" title="Know more" style="font-size: 14px; color: #FBA433">know more >></a>
+    </div>
+
+    <!--<div id="account-reviews" class="hide" data-hook="">
+      <h3>My Reviews</h3>
+      <div id="review-box">
+        <div class="clearboth"></div>
+            <%#= render :partial => "spree/shared/account_reviews"%>
+      </div>
+      <div class="clearboth"></div>      
+    </div>-->
+
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    <% if @user.store_credits_total > 0 %>
+      $.fancybox("<br/><strong style='text-align: center;'><%=raw @message%></strong>");
+    <% end %>
+  });
+</script>
+<style type="text/css">
+.fancybox-inner{
+  text-align: center;
+}
+</style>

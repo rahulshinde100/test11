@@ -1,0 +1,20 @@
+<%= render :partial => "sub_menu_report"%>
+
+<% content_for :page_title do %>
+  <%= Spree.t(:listing_reports) %>
+<% end %>
+  <fieldset data-hook="reports">
+    <legend align="center">Admin :: Reports</legend>
+  <%= field_container :select, :type do %>
+    <%= label :select, :type, "Report Type:" %><br />
+    <%= select_tag :select_type, options_for_select(REPORTTYPES.collect {|p| [ p[:name], p[:id] ] }, {:class=>'select2'}), :onchange=>"loadReportForm(this);" %>
+  <% end %>
+  <div id="report_form">
+  	<%= render "weekly_report_form" %> 
+  </div>	
+</fieldset>  
+<script type="text/javascript">
+	$(document).ready(function() {
+	  loadReportForm($("#select_type"));
+	});
+</script>

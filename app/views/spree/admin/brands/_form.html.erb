@@ -1,0 +1,26 @@
+<div data-hook="admin_brand_form_fields">
+  <%= f.field_container :name do %>
+    <%= f.label :name, raw(Spree.t(:name) + content_tag(:span, ' *', :class => 'required')) %><br/>
+    <%= f.text_field :name, :class => 'fullwidth', :required => true %>
+    <%= error_message_on :brand, :name%>
+  <% end %>
+
+  <%= f.field_container :description do %>
+    <%= f.label :description, Spree.t("description") %><br />
+    <%= f.text_area :description, {:rows => "10", :class => 'fullwidth custom_text_area'} %>
+    <%= error_message_on :brand, :description%>
+  <% end %>
+
+  <%= image_tag f.object.logo.url(:small) if f.object.present? && f.object.logo.present?%>
+  <%= f.field_container :logo do %>
+    <%= f.label :logo, Spree.t("logo") %><br />
+    <%= f.file_field :logo, :class => 'fullwidth'%>
+    <%= error_message_on :brand, :description %>
+  <% end %>
+  <%= image_tag f.object.banner.url(:small) if f.object.present? && f.object.banner.present?%>
+  <%= f.field_container :banner do %>
+    <%= f.label :banner, Spree.t("banner") %><br />
+    <%= f.file_field :banner, :class => 'fullwidth'%>
+    <%= error_message_on :brand, :description %>
+  <% end %>
+</div>

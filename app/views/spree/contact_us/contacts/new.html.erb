@@ -1,0 +1,108 @@
+<% content_for :head do -%>
+  <meta name="title" content="<%= t('contact_us') %>">
+<% end -%>
+
+<% content_for :sidebar do %>
+  <% if "products" == @current_controller && @taxon %>
+    <%= render :partial => "spree/shared/filters" %>
+  <% else %>
+    <%= render :partial => "spree/shared/taxonomies" %>
+  <% end %>
+<% end %>
+
+<%= render :partial => 'spree/shared/error_messages', :locals => { :target => @contact } %>
+
+<div id="contact-address">
+  <div>
+    <div>Anchanto Pte Ltd</div>
+    <div>4 Leng Kee Road #04-04A SiS Building</div>
+    <div>Singapore 159088</div>
+    <div>Telephone: +65 6822 9476</div>
+    <div>E-mail: <a href="mailto:admin@anchanto.com">admin@anchanto.com</a></div>
+  </div>
+  <div id="map-canvas" style="height: 300px; width: 300px; margin-top: 30px; font-size: 12px; line-height: 20px;"></div>
+</div>
+<div class="clearboth"></div>
+
+<link href="/maps/documentation/javascript/examples/default.css" rel="stylesheet">
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+
+<script>
+  function initialize() {
+    var myLatlng = new google.maps.LatLng(1.293101,103.813577);
+    var mapOptions = {
+      zoom: 12,
+      center: myLatlng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+
+    var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+    var contentString = '<div>'+ 
+      '<div>Anchanto Pte Ltd</div>'+
+      '<div>4 Leng Kee Road #04-04A SiS Building</div>'+
+      '<div>Singapore 159088</div>'+
+      '<div>Telephone: +65 6822 9476</div>'+
+      '<div>E-mail: <a href="mailto:admin@anchanto.com">admin@anchanto.com</a></div>'+
+      '</div>';
+
+    var infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+
+    var marker = new google.maps.Marker({
+      position: myLatlng,
+      map: map,
+      title: 'Anchanto Pte Ltd'
+    });
+      
+    google.maps.event.addListener(marker, 'click', function() {
+      infowindow.open(map,marker);
+    });
+  }
+
+  google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>
+
+
+<h1 class="contact_us"><%= t('contact_us') %></h1>
+
+
+<div class="contact-form" >
+  <%= form_for @contact, :url => contact_us_path, :html => { :novalidate => '' } do |f| %>
+    <% if SpreeContactUs.require_name %>
+      <p>
+        <%= f.label :name %>
+        <span class="required">*</span><br/>
+        <%= f.text_field :name, class: 'required' %>
+      </p>
+    <% end %>
+    <p>
+      <%= f.label :email %>
+      <span class="required">*</span><br/>
+      <%= f.email_field :email, class: 'required email' %>
+    </p>
+    <% if SpreeContactUs.require_subject %>
+      <p>
+        <%= f.label :subject %>
+        <span class="required">*</span><br/>
+        <%= f.text_field :subject, class: 'required' %>
+      </p>
+    <% end %>
+    <p>
+      <%= f.label :message %>
+      <span class="required">*</span><br/>
+      <%= f.text_area :message, class: 'required', style: 'resize:none;' %>
+    </p>
+    <p>
+      <%= f.submit t('submit'), :alt => t('submit'), :id => 'contact_us_contact_submit', :title => t('submit') %>
+    </p>
+  <% end %>
+</div>
+
+<div class="contact-image" style="float:right" >
+  <%@lat = 1.3667
+  @long =103.7500 %>
+  <%#= image_tag "https://maps.google.com/maps/api/staticmap?size=450x300&sensor=false&zoom=16&markers=#{@lat}%2C#{@long}" %>
+</div>

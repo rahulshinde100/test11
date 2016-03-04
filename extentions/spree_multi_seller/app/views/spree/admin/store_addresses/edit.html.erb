@@ -1,0 +1,13 @@
+<%= render :partial => 'spree/admin/shared/seller_sub_menu', :locals => { :seller => @seller, :title => "Store Addresses" } %>
+
+<%= form_for [:admin, @seller, @store_address], :html => { :multipart => true } do |f| %>
+  <fieldset data-hook="edit_seller">
+    <legend align="center">Edit Store Address</legend>
+      <%= render :partial => "form", :locals => {:f => f} %>
+      <div class="form-buttons filter-actions actions" data-hook="buttons">
+        <%= button "Update", 'icon-ok' %>
+        <span class="or"><%= Spree.t(:or) %></span>
+        <%= link_to_with_icon 'icon-remove', Spree.t('actions.cancel'), admin_seller_store_addresses_path(@seller), :class => 'button' %>
+      </div>
+  </fieldset>
+<%end%>

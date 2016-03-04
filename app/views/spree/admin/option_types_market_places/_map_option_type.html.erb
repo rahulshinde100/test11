@@ -1,0 +1,59 @@
+<a href="javascript:void(0);" onclick="closePopup('mapping_categories');" class="close-link red">x</a>
+
+
+<div data-hook="admin_inside_taxonomy_form" class="field align-center">
+  <label for="market_place"><h6>Market Place Option Type Mapping</h6></label>
+</div>
+
+<div data-hook="admin_inside_taxonomy_form" class="field align-center">
+  <br /><br />
+  <label for="market_place">Select Market Place: </label>
+  <%= collection_select(:option_types, :market_place_id, @market_places, :id, :name, {:class=>'select2'}) %>
+  <br /><br />
+  <label for="market_place">Enter Option Type: </label>
+  <input type="text" name="option_type" id="option_type" size="60" />
+  <input type="hidden" name="option_type_id" id="option_type_id" />
+  <%#= collection_select(:market_place_id, @market_places, :id, :name, {:class=>'select2'}, {:onChange=>"preMappedCategories('#{@taxon.id}');"}) %>
+  <br />
+  <br />
+  <label for="market_place">Name: </label>
+  <input type="text" name="name" id="name" size="60" />
+  <br /><br />
+  <%= button_link_to Spree.t(:map_option_type), "javascript:void(0)", :id=>"map_new", :icon => 'icon-plus', :onClick=>"mappedNewOptionType();" %>
+  <%= button_link_to Spree.t(:cancel), "javascript:void(0)", :icon => 'icon-remove', :onClick=>"closePopup('mapping_categories');" %>
+</div>
+
+<script type="text/javascript">
+    // Load product variants
+    $('#option_type').autocomplete({
+        source: '/admin/option_types_market_places/search_option_type',
+        minLength: 2,
+        select: function (event, ui) {
+            $("#option_type_id").val(ui.item.id);
+            $.ajax({
+                type: 'GET',
+                url: "/admin/option_types_market_places/get_mapped_name?market_place_id=" + $("#option_types_market_place_id").val() + "&option_type_id=" + ui.item.id ,
+
+                success: function(r){
+                    console.log(r);
+                    $("#name").val(r);
+
+                }
+            });
+        }
+    });
+        $("#option_types_market_place_id").change(function(){
+            if($("#option_type_id").val()){
+                $.ajax({
+                    type: 'GET',
+                    url: "/admin/option_types_market_places/get_mapped_name?market_place_id=" + $("#option_types_market_place_id").val() + "&option_type_id=" + $("#option_type_id").val() ,
+
+                    success: function(r){
+                        console.log(r);
+                        $("#name").val(r);
+
+                    }
+                });
+            }
+        });
+</script>

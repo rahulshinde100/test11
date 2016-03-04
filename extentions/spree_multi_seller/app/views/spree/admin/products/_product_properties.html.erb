@@ -1,0 +1,29 @@
+<fieldset>
+	<legend align="center"><%= Spree.t(:product_properties)%></legend>
+	<% if product_properties.present? %>
+		<table>
+			<thead>
+	        <tr data-hook="product_properties_header">
+	          <th><%= Spree.t(:property) %></th>
+	          <th><%= Spree.t(:value) %></th>          
+	        </tr>
+	      </thead>
+			<tbody>
+				<% product_properties.each do |property| %>
+					<tr class="product_property fields">				  
+					  <td class='property_name'>
+					    <%= property.property_name%>
+					  </td>
+					  <td class='value'>
+					    <%= property.value%>
+					  </td>				  
+					</tr>
+				<%end%>
+			</tbody>
+		</table>
+	<% else	%>
+		<div class="alpha sixteen columns no-objects-found">
+			No Properties Added Yet
+		</div>
+	<% end %>		
+</fieldset>

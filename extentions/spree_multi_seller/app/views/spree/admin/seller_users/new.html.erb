@@ -1,0 +1,18 @@
+<%= render :partial => 'spree/admin/shared/seller_sub_menu', :locals => { :seller => @seller, :title => "Users" } %>
+<%= render :partial => 'spree/shared/error_messages', :locals => { :target => @seller_user } %>
+
+<% if params[:exists] == 'true' %>
+	<%= render :partial => "exists_user", :locals => {:seller_user => @seller_user} %>
+<%else%>
+	<%= form_for [:admin, @seller, @seller_user], :url => admin_seller_seller_users_path(@seller) do |f| %>
+	  <fieldset data-hook="new_seller">
+	    <legend align="center">New Seller User</legend>
+	    <%= render :partial => "form", :locals => {:f => f} %>
+	    <div class="form-buttons filter-actions actions custom-top" data-hook="buttons">
+	      <%= button "Add User", 'icon-ok' %>
+	      <span class="or"><%= Spree.t(:or) %></span>
+	      <%= link_to_with_icon 'icon-remove', Spree.t('actions.cancel'), admin_seller_seller_users_path(@seller), :class => 'button' %>
+	    </div>
+	  </fieldset>
+	<%end%>
+<%end%>

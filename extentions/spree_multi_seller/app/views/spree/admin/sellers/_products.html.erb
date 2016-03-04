@@ -1,0 +1,48 @@
+<% if @products.any? %>
+  <table class="index" id="listing_products">
+    <colgroup>
+       <col style="width: 15%;">
+       <col style="width: 10%;">
+       <col style="width: 20%;">
+       <col style="width: 10%;">
+       <col style="width: 20%;">
+       <col style="width: 20%;">
+       <col style="width: 2%;">
+    </colgroup>
+    <thead>
+      <tr data-hook="admin_products_index_headers">
+        <th><%= Spree.t(:sku) %></th>
+        <th colspan="2"><%= Spree.t(:product) %></th>
+        <th><%= Spree.t(:retail_price) %></th>
+        <th>Available Stock</th>
+        <th>Market Places</th>
+        <th data-hook="admin_products_index_header_actions">Edit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @products.each do |product| %>
+          <tr <%= "style='color: red;'" if product.deleted? %> id="<%= spree_dom_id product %>" data-hook="admin_products_index_rows" class="<%= cycle('odd', 'even') %>">
+            <td align="center"><%= product.sku rescue '' %></td>
+            <td align="center"><%= (mini_image(product) rescue "") %></td>
+            <td align="center"><%= link_to product.try(:name), edit_admin_product_path(product) %></td>
+            <td align="center"><%= product.display_price.to_html rescue '' %></td>
+            <td align="center"><%= raw product.total_in_hand_stock < 10 ? "<label style='color:red;font-weidth:bold;'>#{product.total_in_hand_stock}</label>" : product.total_in_hand_stock%></td>
+            <td align="center"><%= product.try(:market_places).present? ? product.try(:market_places).pluck(:name).join(', ') : "-" %></td>
+            <td align="center" data-hook="admin_products_index_row_actions">
+              <% unless product.deleted? %>
+                <%= link_to '', edit_admin_product_path(product), :no_text => true, :class => 'edit icon_link with-tip icon-edit no-text'%>
+              <%else%>
+                Product is Deleted
+              <%end%>
+            </td>
+          </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <div class="no-objects-found">
+    <%= Spree.t(:no_results) %>
+  </div>
+<% end %>
+
+<%= paginate @products %>

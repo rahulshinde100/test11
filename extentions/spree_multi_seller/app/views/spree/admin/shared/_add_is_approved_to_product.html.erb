@@ -1,0 +1,32 @@
+<% if spree_current_user.has_spree_role? 'admin'%>
+	<%= f.field_container :seller_id do %>
+		<%= f.label :seller_id, "Seller" %><span class="required">*</span><br />
+		<%= f.collection_select(:seller_id, Spree::Seller.is_active, :id, :name, { :include_blank => 'None' }, { :class => 'select2' }) %>
+		<%= f.error_message_on :seller_id %>
+	<% end %>
+  <%end%>
+	<%= f.field_container :is_approved do %>
+		<%= f.label :is_approved, "Approved" %>
+		<%= f.check_box :is_approved , :class => 'custom_checkbox' %>
+		<%= f.error_message_on :is_approved %>
+	<% end %>
+
+<%= f.hidden_field :updated_by, :value => spree_current_user.id%>
+<textare id="seller_labels" style="display:none;" />
+<input type="hidden" id="search_seller_id" value="" />
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#search_seller_id").val(<%=@product.try(:seller_id)%>);
+    $.ajax({
+        url: "/admin/labels.json?seller_id=<%=@product.try(:seller_id)%>",
+        quietMillis: 200,
+        datatype: 'json',
+        success: function (data) {
+          data = JSON.stringify(data);
+          $("#seller_labels").text(data);
+        }
+      });
+  });
+</script>

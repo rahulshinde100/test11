@@ -1,0 +1,51 @@
+<% is_inflate = @product.is_quantity_inflated %>
+<% content_for :page_actions do %>
+  	<% if is_inflate %>
+      <li>
+  	    <%= button_link_to "Stock Settings", "javascript:void(0);", {:icon => 'icon-cog', :id => 'stock_setting', :onclick=>"alert('Stock setting is set to fixed quantity until quantity inflation promotion is running on marketplaces')"} %>
+  	  </li>  
+  	<% else %>  
+      <li>
+        <%= button_link_to "Sync FBA", "javascript:void(0);", {:icon => 'icon-cog', :id => 'sync_fba', :onclick=>"syncWithFba('#{@product.id}');"} %>
+      </li>
+      <li>
+  	    <%= button_link_to "Stock Settings", "javascript:void(0);", {:icon => 'icon-cog', :id => 'stock_setting', :onclick=>"loadStockSettingProductFrom('#{@product.id}');"} %>
+  	  </li>  
+  	<% end %>
+    <%= button_link_to Spree.t(:back_to_products_list), session[:return_to] || admin_products_url, :icon => 'icon-arrow-left' %>
+<% end %>
+
+<%= render :partial => 'spree/admin/shared/product_sub_menu' %>
+
+<%= render :partial => 'spree/admin/shared/product_tabs', :locals => { :current => 'Stock Management' } %>
+
+<%= render :partial => 'spree/shared/error_messages', :locals => { :target => @product } %>
+<% if is_inflate %>
+  <div class="red">
+  	<b>Product is on promotion | Stock is inflated on marketplaces</b>
+  </div>
+  <br />
+<% end %>  	
+<div class="one">
+  <%
+    @allocated_stock = product_market_place_stock(@product)
+    @fba_stock = fba_stock_calculate(@product)
+  %>
+  <div class="">
+  	<h5>
+    <label for="stock_count">Stock Count- </label> <b><%= @fba_stock %></b>&nbsp;&nbsp;
+    <label for="allocated_stock_count">Allocated Stock Count- </label> <b><%= @allocated_stock.values.sum %></b>
+    </h5>
+  </div>
+  <%= hidden_field :stock, :count, :value=>@fba_stock %>
+  <%= hidden_field :allocated_stock, :count, :value=>@allocated_stock.values.sum %>
+  <br />
+</div>
+<div id = "product_variants">
+  <%= render :partial=>"manage_variant_stock" %>
+</div>
+<div class="black_overlay"></div>
+<div id="stock_setting_form">
+  <span class="close-link"><a href="javascript:void(0);" onclick="showHideStockSettingForm('close');">X</a></span>
+  <div id="stock_setting_product_form"></div>
+</div>

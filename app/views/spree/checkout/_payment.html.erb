@@ -1,0 +1,80 @@
+<fieldset id="payment" data-hook>  
+  <div data-hook="checkout_payment_step">
+    <% @order.available_payment_methods.each do |method| %>
+    <p>
+      <label>
+        <%= radio_button_tag "order[payments_attributes][][payment_method_id]", method.id, method == @order.available_payment_methods.first %>
+        <%= Spree.t(method.name, :scope => :payment_methods, :default => method.name) %>
+      </label>
+    </p>
+    <% end %>    
+    <p class='field coupon_code' data-hook='coupon_code' >
+      <% if Spree::Promotion.with_code.count > 0 %>        
+        <%= form.text_field :coupon_code, :placeholder => "Enter Coupon Code" %>      
+        <input type="hidden" name="coupon_return_payment" id="coupon_return_payment" value="" />
+        <%= button_tag :class => 'primary',  :id => 'update-button', :onclick =>"$('#coupon_return_payment').val('true');" , :type => :submit do  %>
+            <%= Spree.t(:redeem_coupon) %>
+        <% end %>
+      <% end %>
+    </p>    
+    <ul id="payment-methods" data-hook>
+      <% @order.available_payment_methods.each do |method| %>
+        <li id="payment_method_<%= method.id %>" class="<%= 'last' if method == @order.available_payment_methods.last %>" data-hook='test'>
+          <fieldset class="paypal_button">
+            <%= render :partial => "spree/checkout/payment/#{method.method_type}", :locals => { :payment_method => method } %>
+          </fieldset>
+        </li>
+      <% end %>
+    </ul>
+    <br style="clear:both;" />    
+  </div>
+</fieldset>
+<br class="space" />
+<div class="ssl-paypal cart-page checkout-page">
+  <%= image_tag("/assets/store/rapidssl_seal.gif", :id => "rapid-ssl")%>
+  <%=image_tag("/assets/store/paypal__secure.png", :id => "paypal-secure")%>
+</div>
+
+<style type="text/css">
+  #checkout-summary{
+    width: 45% !important;
+  }
+
+  #order_store_credit_amount{
+    width: 40% !important;
+  }
+  #payment{
+    padding-left: 0px !important;
+  }
+
+  .coupon_code{    
+    width: 142px;
+  }
+
+  .ssl-paypal.cart-page.checkout-page {
+    float: none !important;
+    margin-left: -15px;
+    margin-top: -25px !important;
+    padding-top: 0 !important;
+  }
+
+  #rapid-ssl{
+    margin-left: 30px;
+  }
+
+  .payment{
+    margin-top: -30px;
+  }
+</style>
+
+<script type="text/javascript">
+
+  $(document).ready(function(){
+    $("#ppx").attr("src","/assets/store/express-checkout-hero-sg.png"); 
+    $('#ppx').attr("height","104px");
+    $('#ppx').attr("width","200px");
+    $('#ppx').css('margin-left','15px');
+    $('#ppx').css('margin-top','-25px');   
+  });
+
+</script>

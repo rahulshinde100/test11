@@ -1,0 +1,337 @@
+<%= render :partial => 'spree/admin/shared/configuration_menu' %>
+<%= render :partial => 'spree/shared/error_messages', :locals => { :target => @stock_transfer } %>
+
+<% content_for :page_title do %>
+  <%= Spree.t('new_stock_transfer') %>
+<% end %>
+
+<% content_for :page_actions do %>
+  <li>
+    <%= button_link_to Spree.t('back_to_stock_transfers_list'), admin_stock_transfers_path, :icon => 'icon-arrow-left' %>
+  </li>
+<% end %>
+
+<script type='text/template' id='transfer_variant_template'>
+  {{#each variants}}
+    <tr>
+      <td id="variant_name">{{name}}</td>
+      <td class="align-center">{{quantity}}</td>
+      <td class="align-center">
+        <button class='icon-trash transfer_remove_variant button'
+                data-variant-id='{{id}}'>remove</button>
+      </td>
+      <input type='hidden' id='variant[]' name='variant[]' value='{{id}}'/>
+      <input type='hidden' id='quantity[]' name='quantity[]' value='{{quantity}}'/>
+    </tr>
+  {{/each}}
+</script>
+
+<%= form_tag admin_stock_transfers_path, :method => :post, :multipart => true, :id => "add_variant_in_inventory" do %>
+  <fieldset class="twelve columns alpha">
+    <legend align="center"><%= Spree.t('transfer_stock')%></legend>
+
+    <div class="row" data-hook="admin_stock_movements_form_fields" style="float:left;">
+      <%if spree_current_user.has_spree_role?("admin")%>
+        <div class="alpha four columns">
+          <div class="field" id="seller_id_field">
+            <%= label_tag :seller_id, "Seller" %>
+            <%= select_tag :seller_id, options_from_collection_for_select(Spree::Seller.is_active, "id", "name"), class: 'select2 fullwidth' %>
+          </div>
+        </div>
+      <%end%>
+
+      <div class="<%unless spree_current_user.has_spree_role?("admin")%>alpha<%end%> four columns">
+        <div class="field" id="stock_movement_reference_field">
+          <%= label_tag 'reference', raw("#{Spree.t('reference')} (#{Spree.t('optional')})") %>
+          <%= text_field_tag :reference, '', class: 'fullwidth' %>
+        </div>
+      </div>
+
+      <div class="four columns omega">
+        <div class="field checkbox" id="receive_stock_field">
+          <label for="receive_stock">
+            <%= check_box_tag :transfer_receive_stock %>
+            <%= Spree.t('receive_stock') %>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" data-hook="admin_stock_movements_form_fields">
+      <div class="alpha four columns">
+        <div class="field" id="transfer_source_location_id_field">
+          <%= label_tag :transfer_source_location_id, Spree.t('source') %>
+          <%= select_tag :transfer_source_location_id, {}, class: 'select2 fullwidth' %>
+        </div>
+      </div>      
+      
+      <div class="four columns omega">
+        <div class="field" id="transfer_destination_location_id_field">
+          <%= label_tag :transfer_destination_location_id, Spree.t('destination') %>
+          <%= select_tag :transfer_destination_location_id, {}, class: 'select2 fullwidth' %>
+        </div>
+      </div>
+    </div>
+
+    <fieldset class="no-border-bottom" id="add-variant-to-transfer">
+      <legend align="center"><%= Spree.t('add_variant') %></legend>
+
+      <div class="alpha six columns">
+        <div class="field" id="stock_movement_variant_id_field">
+          <%= label_tag 'variant_id', Spree.t('variant') %>
+          <%= select_tag 'transfer_variant', {}, class: 'fullwidth' %>
+        </div>
+      </div>
+      <div class="four columns">
+        <div class="field" id="stock_movement_quantity_field">
+          <%= label_tag 'quantity', "Quantity Received" %>
+          <%= number_field_tag 'transfer_variant_quantity', 1, class: 'fullwidth', min: 0 %>
+        </div>
+      </div>
+      <div class="two columns omega">
+        <div class="custom_add">
+          <%= button Spree.t('add'), 'icon-plus button transfer_add_variant' %>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="no-border-bottom" id="incoming-inventory-info" style="display:none;">
+      <legend align="center">Incoming Inventory Info</legend>
+      
+      <div class="row" data-hook="admin_stock_movements_form_fields">
+        <div class="alpha four columns">
+          <div class="field" id="damaged_quantity_count">
+            <%= label_tag :damaged_quantity, "Damaged Quantity" %>
+            <%= text_field_tag :damaged_quantity, '', class: 'fullwidth' %>
+          </div>
+        </div>
+
+        <div class="four columns">
+          <div class="field" id="invenroty_received_date">
+            <%= label_tag :received_date, "Received Date" %>
+            <%= text_field_tag :received_date, '', class: 'fullwidth datepicker'%>
+          </div>
+        </div>
+
+        <div class="four columns omega">
+          <div class="field" id="received_quantity_count">
+            <%= label_tag :usable_quantity, "Usable Quantity" %>
+            <%= text_field_tag :usable_quantity, '', class: 'fullwidth', :readonly => true%>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" data-hook="admin_stock_movements_form_fields">
+        <div class="alpha four columns">
+          <div class="field" id="inventory_delivery_order">
+            <%= label_tag :delivery_order, "DO" %>
+            <%= text_field_tag :delivery_order, '', class: 'fullwidth'%>
+          </div>
+        </div>
+
+        <div class="four columns">
+          <div class="field" id="purchase_order">
+            <%= label_tag :purchase_order, "PO" %>
+            <%= text_field_tag :purchase_order, '', class: 'fullwidth' %>
+          </div>
+        </div>
+
+        <div class="four columns omega">
+          <div class="field" id="incoming_total_order_cost">
+            <%= label_tag :total_order_cost, "Total Order Cost" %>
+            <%= text_field_tag :total_order_cost, '', class: 'fullwidth' %>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" data-hook="admin_stock_movements_form_fields">
+        <div class="alpha four columns">
+          <div class="field" id="inventory_received_by">
+            <%= label_tag :received_by, "Received By" %>
+            <%= text_field_tag :received_by, '', class: 'fullwidth'%>
+          </div>
+        </div>
+
+        <div class="omega four columns">
+          <div class="field" id="inventory_expiry_date">
+            <%= label_tag :expiry_date, "Expiry Date" %>
+            <%= text_field_tag :expiry_date, '', class: 'fullwidth datepicker'%>
+          </div>
+        </div>
+
+        <div class="four columns omega">
+          <div class="field" id="attache_delivery_order_scan_copy">
+            <%= label_tag :delivery_order_scan_copy, "Upload DO Scan copy" %>
+            <%= file_field_tag :delivery_order_scan_copy %>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+
+    <div class="no-objects-found">No variants added for transfer. Please, add one.</div>
+
+    <div id="transfer-variants-table" class="twelve columns alpha custom_responsive" style="display:none">
+      <table class="index sortable">
+        <colgroup>
+          <col style="width: 60%" />
+          <col style="width: 20%" />
+          <col style="width: 20%" />
+        </colgroup>
+        <thead data-hook="transfer_variants_header">
+          <th><%= Spree.t(:name) %></th>
+          <th><%= Spree.t(:quantity) %></th>
+          <th><%= Spree.t(:remove) %></th>
+        </thead>
+        <tbody id="transfer_variants_tbody">
+        </tbody>
+      </table>
+    </div>
+
+    <div class="filter-actions actions" data-hook="buttons">
+      <%= button Spree.t('transfer_stock'), 'icon-plus transfer_transfer' %>
+    </div>
+  </fieldset>
+<% end %>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+  
+  
+
+    var seller_id = $("#seller_id").val();
+      $.ajax({
+        url: "/admin/stock_transfers/get_stcok_locations",
+        type: "GET",
+        data: {"seller_id" : seller_id},
+        dataType: "html",
+        success: function(data) {
+          setTimeout(function(){
+            data = jQuery.parseJSON(data);
+            $("#transfer_source_location_id").html(data.text);
+            $("#transfer_destination_location_id").html(data.text);
+
+            $("#s2id_transfer_source_location_id .select2-choice").text($("#transfer_source_location_id option:first").text());
+            $("#s2id_transfer_destination_location_id .select2-choice").text($("#transfer_source_location_id option:first").text());
+
+            if (data.count == 1){
+              $("#transfer_receive_stock").trigger("change");
+              $("#transfer_receive_stock").attr("checked","true");
+            }
+         }, 1000);
+
+         
+        }
+      });
+
+  $('#transfer_variant').select2();
+  
+  <%if !(spree_current_user.has_spree_role?("admin"))%>
+    $('#transfer_source_location_id_field').css('display','none');
+    $('#stock_movement_reference_field').parent('div.columns').removeClass('columns');
+    $('#stock_movement_reference_field').css('margin-right','-66px');
+    $('#stock_movement_reference_field').css('width','93%');    
+  <% end %>  
+
+    $("#transfer_receive_stock").click(function(){
+      if($(this).is(":checked")){
+        $("#incoming-inventory-info").show();
+        $.each(["transfer_variant_quantity", "received_date", "received_by"], function(i, f){
+          $("<span id='required' class='required'>*</span>").insertBefore("#" + f);
+          $("#" + f).attr("required", "required");            
+        });
+      }else{
+        $("#incoming-inventory-info").hide();
+        $.each(["transfer_variant_quantity", "received_date", "received_by"], function(i, f){
+          $("#required").remove();
+          $("#" + f).removeAttr("required", "required");
+        })
+      }
+    });
+
+    $("#damaged_quantity").focusout(function(){
+      var total = 0;
+      var d = parseInt($(this).val());
+      var r = parseInt($("#transfer_variant_quantity").val());
+      d = ($.isNumeric(d) == true) ? d : 0;
+      r = ($.isNumeric(r) == true) ? r : d;
+      if(d > r){
+        alert("Damage Quantity should not greater than Recieved Quantity");
+        $(this).focus();
+        $(this).val(0);
+      }
+      total = (r - d) < 0 ? r : (r - d);
+      $("#usable_quantity").val(total);
+    });
+
+    $("#seller_id").change(function(){
+      var seller_id = $(this).val();
+      $.ajax({
+        url: "/admin/stock_transfers/get_stcok_locations",
+        type: "GET",
+        data: {"seller_id" : seller_id},
+        dataType: "html",
+        success: function(data) {
+          setTimeout(function(){
+            data = jQuery.parseJSON(data);
+            $("#transfer_source_location_id").html("");
+            $("#transfer_destination_location_id").html("");
+            $("#transfer_source_location_id").html(data.text);
+            $("#transfer_destination_location_id").html(data.text);
+
+            $("#s2id_transfer_source_location_id .select2-choice").text($("#transfer_source_location_id option:first").text());
+            $("#s2id_transfer_destination_location_id .select2-choice").text($("#transfer_source_location_id option:first").text());
+
+            if (data.count == 1){
+             $("#transfer_receive_stock").trigger("change");
+             $("#transfer_receive_stock").attr("checked","true");
+            }
+            else
+            {
+              $("#transfer_receive_stock").trigger("click");
+            }
+          }, 1000);
+            
+        }
+      });
+    });
+
+    $(".transfer_add_variant").click(function(){
+        if($("#s2id_transfer_source_location_id .select2-choice").text()==  $("#s2id_transfer_destination_location_id .select2-choice").text())
+        {
+          alert("Source and Destination can not be same ");
+          return false;
+        }
+    if( ($("#s2id_transfer_source_location_id .select2-choice").text() == " ") || ($("#s2id_transfer_destination_location_id .select2-choice").text() == " "))
+      {
+        alert("You have to select source as well as destination for stock transfer");
+        return false;
+      }
+    });
+    
+
+    $("#transfer_variant_quantity").focusout(function(){
+      var total = 0;
+      var r = parseInt($(this).val());
+      var d = parseInt($("#damaged_quantity").val());
+      d = ($.isNumeric(d) == true) ? d : 0;
+      r = ($.isNumeric(r) == true) ? r : d;
+      if(d > r){
+        alert("Damage Quantity should not greater than Recieved Quantity");
+        $("#damaged_quantity").focus();
+        $("#damaged_quantity").val(0);
+      }
+      total = (r - d) < 0 ? r : (r - d);
+      $("#usable_quantity").val(total);
+    });
+
+    <%unless spree_current_user.has_spree_role?("admin")%>
+      <%if spree_current_user.seller.stock_locations.length <= 1%>
+        $("#incoming-inventory-info").show();
+        $.each(["transfer_variant_quantity", "received_date", "received_by"], function(i, f){            
+          $("<span class='required'>*</span><br />").insertBefore("#" + f);
+          $("#" + f).attr("required", "required");              
+        })
+      <%end%>
+    <%end%>
+  });
+</script>

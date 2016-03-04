@@ -1,0 +1,1 @@
+$("#<%=params[:line_item_id]%>").html("<%= escape_javascript( render :partial => 'pick_up', :locals => {:line_item => @line_item} )%>")

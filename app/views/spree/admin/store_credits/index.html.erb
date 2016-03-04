@@ -1,0 +1,80 @@
+<%= render :partial => 'spree/admin/shared/configuration_menu' %>
+
+<div id="email_message">
+  <%= render :partial => 'update_email_message'%>
+</div>
+
+
+<div style="padding-top: 50px; padding-bottom: 24px;">
+  <%= form_tag admin_store_credits_path, :method => :get do %>
+    <%= radio_button_tag :sc, 'all'%>
+    <label for="sc_all"> All </label>
+    <%= radio_button_tag :sc, 'manually'%>
+    <label for="sc_manually"> Manually </label>
+    <%= radio_button_tag :sc, 'promo'%>
+    <label for="sc_promo"> Promotion </label>
+    <%= radio_button_tag :sc, 'expired'%>
+    <label for="sc_expired"> Expired </label>
+    <%=button_tag "Filter", :class => "button"%>
+  <%end%>
+</div>
+<h1 class="page-title "> <%= Spree.t("listing_store_credits") %></h1><br>
+
+<table class="index">
+  <thead>
+    <tr>
+      <th><%= Spree.t("user") %></th>
+      <th><%= Spree.t("amount") %></th>
+      <th><%= Spree.t("remaining_amount") %></th>
+      <th><%= Spree.t("reason") %></th>
+      <th style="width: 90px;"><%= Spree.t("Expires at") %></th>
+      <th class="actions"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @store_credits.each do |store_credit|%>
+      <tr id="<%= dom_id store_credit %>">
+        <td><%= link_to store_credit.user.email, admin_user_url(store_credit.user) if store_credit.user.present? %></td>
+        <td><%= number_to_currency store_credit.amount %></td>
+        <td><%= number_to_currency store_credit.remaining_amount %></td>
+        <td><%= store_credit.reason %></td>
+        <td style="width: 90px;"><%= store_credit.expires_at.strftime("%d %b %Y") if store_credit.expires_at.present?%></td>
+        <td class="actions">
+          <%if store_credit.expires_at.present? && store_credit.expires_at < Time.now %>
+            <%= Spree.t(:Expired) %>
+          <%else%>
+            <% if store_credit.remaining_amount > 0 %>
+              <% if store_credit.amount == store_credit.remaining_amount %>
+                <%= link_to_edit store_credit, :no_text => true %> &nbsp;
+              <% else %>
+                <%= Spree.t(:was_partially_used) %>
+              <% end %>
+              <%= link_to_delete store_credit, :no_text => true %>
+            <% else %>
+              <%= Spree.t(:was_fully_used) %>
+            <% end %>
+          <%end%>
+      </tr>
+    <% end %>
+    <% if @store_credits.empty? %>
+      <tr><td colspan="4"><%= Spree.t(:none) %></td></tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @store_credits %>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    <% if params[:sc] == 'manually'%>
+      $("#sc_manually").prop('checked', true);
+    <% elsif params[:sc] == 'promo' %>
+      $("#sc_promo").prop('checked', true);
+    <%elsif params[:sc] == "expired"%>
+      $("#sc_expired").prop('checked', true);
+    <%else%>
+      $("#sc_all").prop('checked', true);
+    <% end %>
+  });
+</script>

@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title><%=@subject%></title>
+	<link rel="stylesheet" type="text/css" href="emailstyles.css" />
+	<link href="https://fonts.googleapis.com/css?family=Arvo:400,700" rel="stylesheet" type="text/css">
+
+	
+	<!-- Targeting Windows Mobile -->
+	<!--[if IEMobile 7]>
+	<style type="text/css">
+	
+	</style>
+	<![endif]-->   
+
+	<!-- ***********************************************
+	****************************************************
+	END MOBILE TARGETING
+	****************************************************
+	************************************************ -->
+
+	<!--[if gte mso 9]>
+		<style>
+		/* Target Outlook 2007 and 2010 */
+		</style>
+	<![endif]-->
+</head>
+<body>
+<div id="template-box">
+	<p><div class="columns four" data-hook=""><a title="Home" id="logo" href="http://www.ship.li">ship.li</a></div></p>
+	<p><div>Dear <%= @store.seller.name %></div></p>
+	<div>
+		The Order (<%=@order.number%>) is pickup today from </br><%= raw @store.address.gsub(/<\/br>/, ', ')%>
+
+	</div>
+	
+	<%= render :partial => 'spree/shared/email_footer'%>
+</div>
+</body>
+</html>

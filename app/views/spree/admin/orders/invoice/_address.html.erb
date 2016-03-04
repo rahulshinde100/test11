@@ -1,0 +1,28 @@
+<%
+bill_address = @order.bill_address
+ship_address = @order.ship_address
+
+addresses = [[ "#{bill_address.firstname} #{bill_address.lastname}", "#{ship_address.firstname} #{ship_address.lastname}"]]
+addresses << [ bill_address.address1 , ship_address.address1 ]
+addresses << [ bill_address.address2 , ship_address.address2 ] unless bill_address.address2.blank? or ship_address.address2.blank? or (bill_address.address2 =~ /\d{3,6}-\d/) or (ship_address.address2 =~ /\d{3,6}-\d/)
+addresses << [ "#{bill_address.zipcode} #{bill_address.city}", "#{ship_address.zipcode} #{ship_address.city}" ]
+addresses << [ bill_address.phone , ship_address.phone ]
+%>
+<table class="address">
+  <tr>
+    <%unless @order.send_as_gift %>
+    <td width="45%" class="billing_header bold"><%=Spree.t(:billing_address)%></td>
+    <td width="22%"></td>
+    <%end%>
+    <td width="45%" class="shiping_header bold"><%=Spree.t(:shipping_address)%></td>
+  </tr>
+  <% addresses.each_with_index do |row, index| %>
+    <tr>
+      <%unless @order.send_as_gift %>
+      <td height="15px" width="45%" class="billing" class="cell"><%= raw "&#9742;&nbsp;" if index == addresses.size-1%><%=row[0] if row[0] != "(not given)" %> </td>
+        <td width="22%"></td>
+      <%end%>
+      <td height="15px" width="45%" class="shiping_header" class="cell"> <%= raw "&#9742;&nbsp;" if index == addresses.size-1%><%=row[1] if row[1] != "(not given)" %> </td>
+    </tr>
+  <% end %>
+</table>

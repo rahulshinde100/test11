@@ -1,0 +1,38 @@
+<div class="review" itemprop="reviews" itemscope itemtype="http://schema.org/Review">
+  <% if Spree::Reviews::Config[:show_email] && review.user %>
+    <% if review.user.firstname %>
+        <span itemprop="author" class="review-author"><%= review.user.firstname %></span>
+    <%else%>
+        <span itemprop="author" class="review-author" ><%= review.user.email %></span>
+    <%end%>
+  <% else %>
+    <span itemprop="author" class="review-author"><%= review.name %></span>
+  <% end %>  
+  <span class="reviews-rating" title="<%= txt_stars(review.rating) %>">
+    <%= render :partial => "spree/reviews/stars", :locals => {:stars => review.rating} %>
+  </span>
+  <span itemprop="name"><%= review.title %></span>
+ 
+  <span class="attribution"><span itemprop="datePublished"><%= review.created_at.to_date.strftime("%-d %B, %Y")    %></span></span>
+    <% if review.user == spree_current_user%>
+         <%= link_to 'Remove', [@product, review], :confirm => 'Are you sure to remove your review?', :method => :delete , :class => "delete-review" %>
+    <%end%>
+   <br/>
+  <meta itemprop="reviewRating" content="<%= review.rating %>" />  
+  <div itemprop="reviewBody" class="review-comment">
+    <%= simple_format(review.review) %>
+  </div>
+  <% if review.approved == false && review.block_review.nil? %>
+    <div class="wait-sorry-message waiting" >Waiting for approval..</div>
+  
+  <% elsif !review.block_review.nil? %>
+        <div class="wait-sorry-message blocked">Sorry! Your review is blocked by ship.li admin due to following reason</div>
+        <div class="block-reason"><%= review.block_review.block_comment %></div>
+  <%end%>  
+    
+  <% if Spree::Reviews::Config[:feedback_rating] && (!Spree::Reviews::Config[:require_login] || spree_current_user) %>
+  <div class="feedback_review" id="feedback_review_<%= review.id %>">
+    <%= render :partial => "spree/feedback_reviews/form", :locals => {:review => review} %>
+  </div>
+  <% end %>
+</div>

@@ -1,0 +1,89 @@
+<%= render :partial => 'spree/admin/shared/product_sub_menu' %>
+
+<%= render :partial => 'spree/admin/shared/product_tabs', :locals => {:current => 'Variants'} %>
+
+<div id="new_variant" data-hook></div>
+
+<% if @variants.any? %>
+  <div class="CSSTableGenerator">
+  <table class="index sortable" data-sortable-link="<%= update_positions_admin_product_variants_path(@product) %>">
+    <thead data-hook="variants_header">
+      <tr>
+        <th><%= Spree.t(:options) %></th>
+        <th width="80"><%= Spree.t(:retail_price) %></th>
+        <th><%= Spree.t(:sku) %></th>
+        <th>Family SKU</th>
+        <th>UPC</th>
+        <th width="60">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @variants.each do |variant| %>
+      <tr height ="40" id="<%= spree_dom_id variant %>" <%= 'style="color:red;"' if variant.deleted? %> data-hook="variants_row" class="<%= cycle('odd', 'even')%>">
+        <td><%= variant.options_text %></td>
+        <td><%= number_to_currency variant.price %></td>
+        <td>
+          <% v_sku = (variant.sku.length > 18)? variant.sku[0..18]+'...' : variant.sku  %>
+         <label title="<%= variant.sku %>"> <%= v_sku %></label> </td>
+        <td>
+          <% if variant.try(:parent_id).present? %>
+          <% @parent = variant.get_parent %>
+          <% if @parent.is_master? %>
+                  <% sku = (@parent.sku.length > 18)? @parent.sku[0..18]+'...' : @parent.sku  %>
+              <%= link_to sku, edit_admin_product_path(:id => @parent.product.permalink), :title => @parent.sku %>
+          <% else %>
+                  <% sku = (@parent.sku.length > 18)? @parent.sku[0..18]+'...' : @parent.sku  %>
+              <%= link_to sku, edit_admin_product_variant_path(:product_id => @parent.product.permalink, :id => @parent.id), :title => @parent.sku %>
+          <% end %>
+              <% else %>
+          NA
+          <% end %>
+        </td>
+        <td>
+          <% if variant.upc.present?  %>
+              <% upc = (variant.upc.length > 18)? variant.upc[0..18]+'...' : variant.upc %>
+              <label title="<%= variant.upc %>"> <%= upc %></label>
+          <% else %>
+            -
+          <% end %>
+           </td>
+        <td>
+          <%= link_to_edit(variant, :no_text => true) unless variant.deleted? %>
+          <!--%#= link_to '', admin_product_variant_url(@product, variant), :no_text => true, :method => :delete, :class => 'icon-trash', :confirm => 'Are you sure, you want to delete this variant?' unless variant.deleted? %-->
+        </td>
+      </tr>
+      <% end %>
+      <% unless @product.has_variants? %>
+        <tr><td colspan="5"><%= Spree.t(:none) %></td></tr>
+      <% end %>
+    </tbody>
+  </table>
+  </div>
+<% else %>
+  <div class="alpha twelve columns no-objects-found"><%= Spree.t(:no_results)%>.</div>
+<% end %>
+
+<% if @product.empty_option_values? %>
+  <p class='first_add_option_types no-objects-found' data-hook="first_add_option_types">
+    <%= Spree.t(:to_add_variants_you_must_first_define) %>
+    <%= Spree.t(:option_types) %>
+    <%= Spree.t(:and) %>
+    <%= Spree.t(:option_values) %>
+  </p>
+<% else %>
+  <% content_for :page_actions do %>
+    <ul class="inline-menu" data-hook="toolbar">
+      <li><%= button_link_to Spree.t(:back_to_product_list), session[:return_to] || admin_products_url, :icon => 'icon-arrow-left' %></li>
+      <li id="new_var_link" data-hook>
+        <%= link_to_with_icon('icon-plus',
+                              Spree.t(:new_variant),
+                              new_admin_product_variant_url(@product),
+                              :remote => :true,
+                              :'data-update' => 'new_variant',
+                              :class => 'button'
+                             ) %>
+      </li>
+    </ul>
+  <% end %>
+
+<% end %>

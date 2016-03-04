@@ -1,0 +1,24 @@
+<%= render :partial => 'spree/admin/shared/configuration_menu' %>
+<br class='clear' />
+<div class='toolbar'>
+  <ul class='actions header-action-links inline-menu'>
+    <li style="float: right;">
+      <%= button_link_to Spree.t("back_to_brands"), admin_brands_url, :icon => 'icon-arrow-left' %>
+    </li>
+  </ul>
+  <br class='clear' />
+</div>
+<div data-hook="admin_brand_new_form_header">
+  <%= render "spree/shared/error_messages", :target => @brand %>
+</div>
+<fieldset>
+<legend align="center">BRAND :: NEW BRAND</legend>
+<div data-hook="admin_brand_new_form" >
+  <%= form_for(:brand, :url => collection_url) do |f| %>
+    <%= render :partial => "form", :locals => { :f => f } %>
+    <div data-hook="admin_brand_new_form_buttons">
+      <%= render :partial => "spree/admin/shared/new_resource_links" %>
+    </div>
+  <% end %>
+</div>
+</fieldset>

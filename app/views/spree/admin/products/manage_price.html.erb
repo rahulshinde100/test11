@@ -1,0 +1,86 @@
+<% content_for :page_actions do %>
+  <li><%= button_link_to Spree.t(:back_to_products_list), session[:return_to] || admin_products_url, :icon => 'icon-arrow-left' %></li>
+<% end %>
+
+<%= render :partial => 'spree/admin/shared/product_sub_menu' %>
+
+<%= render :partial => 'spree/admin/shared/product_tabs', :locals => { :current => 'Price Management' } %>
+
+<%= render :partial => 'spree/shared/error_messages', :locals => { :target => @product } %>
+
+<div>
+<% if @market_places.present? %>
+  <%
+    @variants = @product.variants.present? ? @product.variants : Spree::Variant.where("product_id=?", @product.id)
+  %>
+  <div class="">
+  	<h5>
+    <label for="cost_price">Cost Price- </label> <b><%= @product.cost_price.present? ? number_to_currency(@product.cost_price) : 0.0 %></b>&nbsp;&nbsp;
+    <label for="retail_price">Retail Price- </label> <b><%= @product.price.present? ? number_to_currency(@product.price) : 0.0 %></b>
+    </h5>
+  </div>
+  <br />
+  <table class="CSSTableGenerator">
+    <tr>
+      <th>SKU</th>
+      <th>Name</th>
+      <th>MP</th>
+      <th>Selling Price</th>
+      <th>Special Price</th>
+      <!-- <th>Settlement Price</th> -->
+      <th>Action</th>
+    </tr>
+    <% @variants.each do |variant| %>
+      <% smp = Spree::SellersMarketPlacesProduct.where("seller_id=? AND product_id=? AND market_place_id=?", @product.seller.id, @product.id, @market_places.first.id).first
+               market_place = @market_places.first
+               @price_management = Spree::PriceManagement.where("variant_id=? AND market_place_id=?", variant.id, market_place.id).first rescue nil
+      %>
+      <% if @price_management.present? %>
+        <%= form_for [:admin, @price_management] do |f| %>
+          <tr>
+            <td rowspan=<%= @market_places.count %>><%= variant.sku %></td>
+            <td rowspan=<%= @market_places.count %>><%= variant.options_text %></td>
+            <td><%= @market_places.first.name %></td>
+            <td><%= text_field "selling_price", "#{variant.id.to_s}"+"_"+"#{market_place.id.to_s}", :name=>"selling_price[#{variant.id}][#{market_place.id}]", :size=>"8", :value => number_with_precision(@price_management.selling_price, :precision => 2).to_f, :required => true %></td>
+            <td><%= text_field "special_price", "#{variant.id.to_s}"+"_"+"#{market_place.id.to_s}", :name=>"special_price[#{variant.id}][#{market_place.id}]", :size=>"8", :value => number_with_precision(@price_management.special_price, :precision => 2).to_f %></td>
+            <!-- <td><%#= text_field "settlement_price", "#{variant.id.to_s}"+"_"+"#{market_place.id.to_s}", :name=>"settlement_price[#{variant.id}][#{market_place.id}]", :size=>"8", :value => number_with_precision(@price_management.settlement_price, :precision => 2).to_f %></td> -->
+            <td><%= button Spree.t(:submit) %></td>
+            <input type="hidden" value="<%= market_place.id %>" name="market_place_id">
+            <input type="hidden" value="<%= variant.id %>" name="variant_id">
+          </tr>
+        <% end %>
+        <% else %>
+          <tr>
+            <td rowspan=<%= @market_places.count %>><%= variant.sku %></td>
+            <td rowspan=<%= @market_places.count %>><%= variant.options_text %></td>
+            <td><%= market_place.name %></td><td>-</td><td>-</td><td>-</td>
+          </tr>
+      <% end %>
+      <% @market_places.offset(1).each_with_index do |mp, index| %>
+        <%
+            smp = Spree::SellersMarketPlacesProduct.where("seller_id=? AND product_id=? AND market_place_id=?", @product.seller.id, @product.id, mp.id).first
+            @price_management = Spree::PriceManagement.where("variant_id=? AND market_place_id=?", variant.id, mp.id).first rescue nil
+        %>
+        <% if @price_management.present? %>
+          <%= form_for [:admin, @price_management] do |f| %>
+            <tr>
+              <td><%= mp.name %></td>
+              <td><%= text_field "selling_price", "#{variant.id.to_s}"+"_"+"#{mp.id.to_s}", :name=>"selling_price[#{variant.id}][#{mp.id}]", :size=>"8", :value => number_with_precision(@price_management.selling_price, :precision => 2).to_f, :required => true %></td>
+              <td><%= text_field "special_price", "#{variant.id.to_s}"+"_"+"#{mp.id.to_s}", :name=>"special_price[#{variant.id}][#{mp.id}]", :size=>"8", :value => number_with_precision(@price_management.special_price, :precision => 2).to_f %></td>
+              <!-- <td><%#= text_field "settlement_price", "#{variant.id.to_s}"+"_"+"#{mp.id.to_s}", :name=>"settlement_price[#{variant.id}][#{mp.id}]", :size=>"8", :value => number_with_precision(@price_management.settlement_price, :precision => 2).to_f %></td> -->
+              <td><%= button Spree.t(:submit) %></td>
+              <input type="hidden" value="<%= mp.id %>" name="market_place_id">
+              <input type="hidden" value="<%= variant.id %>" name="variant_id">
+            </tr>
+          <% end %>
+        <% else %>
+          <tr><td><%= mp.name %></td><td>-</td><td>-</td><td>-</td></tr>
+        <% end %>
+      <% end %>
+   <% end %>
+</table>
+<% else %>
+   <div class="no-objects-found">Please list product on Market Place</div>
+ <% end %>
+</div>
+

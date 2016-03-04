@@ -1,0 +1,9 @@
+<div data-hook="new_seller_attrs" class="row">
+  <% if @categories.present? %>
+	<% @categories.each do |taxonomy| %>
+		<% next if @seller.categories.include?(taxonomy)%>
+	  <label for='<%="seller_category_#{taxonomy.name}"%>'><%= taxonomy.name %> </label>
+	  <%= check_box_tag 'seller_category[taxonomy_id][]', taxonomy.id, @seller.categories.include?(taxonomy), :id => "seller_category_#{taxonomy.name}"  %>
+	<% end %>
+  <% end %>
+</div>

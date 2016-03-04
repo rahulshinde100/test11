@@ -1,0 +1,78 @@
+<%if request.original_url.include? 'business.ship.li'%>
+    <div id="styled-white-strip" >
+    </div>
+
+    <div class="business-header">
+        <div class="container">
+            <figure id="logo" class="columns six" data-hook>
+                <%= link_to image_tag("/assets/store/Ship.li.Logo.black.png"), root_url %>
+            </figure>
+
+            <div class="business-message">
+                <h1>Business Central</h1>
+                <div>grow your business beyond Store</div>
+            </div>
+
+            <div id="nav-business-menu">
+                <ul>
+                    <li>
+                        <a href="" onclick="return false" id="sell-on">
+                            Sell on Channel Manager
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" onclick="return false" id="how-it-works">
+                            How it works
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" onclick="return false" id="order-fulfil">    Order Fulfilment
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" onclick="return false" id="faq">
+                            FAQs
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" onclick="return false" id="sign-up-login">   Sign-up / Login
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        #content{padding-top: 0px;}
+    </style>
+
+    <script type="text/javascript">
+        $('.business-header').scrollToFixed();
+    </script>
+<%else%>
+    <style type="text/css">
+        #logo{
+            font-family: "Arvo", Verdana;
+            font-weight: 700;
+        }
+        nav #main-nav-bar, nav#top-nav-bar{
+    	   text-align: left;
+        }
+        .page-wrapper #main_nav_bar_container .columns.seven{
+            width: 100%;
+        }
+    </style>
+
+    <div id="styled-white-strip" class="fullwidth">
+      <div class="container alpha columns eight">
+        <figure id="logo" class="" data-hook>
+          <%= link_to image_tag("/assets/store/anchanto-logo.png", height: '40', width: '45'), root_url %>
+        </figure>
+        <div class="project-name"><span class="">Channel Manager</span></div>
+        <div id="right-align-box"><%= render :partial => 'spree/shared/nav_bar' %></div>
+      </div>
+    </div>
+
+    <div class="clearboth"></div>
+<%end%>

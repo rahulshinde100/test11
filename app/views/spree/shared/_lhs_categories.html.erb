@@ -1,0 +1,22 @@
+<h6><%= @taxon.name.capitalize if @taxon.present?%></h6>	
+<div class="arrow-right"></div>
+  <div id="sub-categories-all-div">
+    <ul class="lhs-ul">
+      <% sorted_taxons.each.with_index do |taxon, index|  %>
+        <% count = products.in_taxon(taxon).count %>
+        <li>
+          <%= link_to count <= 0 ? taxon.name.capitalize : "#{taxon.name.capitalize}",seo_url(taxon), :class => "lhs-ul-a" %>
+          <% if taxon.children.present? %>
+            <ul class="lhs-sub-ul">
+              <% taxon.children.each do |child_taxon| %>
+                <% child_count = products.in_taxon(child_taxon).count %>
+                <li>
+                    <%= link_to "#{child_taxon.name.capitalize}" , seo_url(child_taxon) %>
+                </li>
+              <% end %>
+            </ul>
+          <% end %>
+        </li>
+      <% end%>
+    </ul>
+  </div>

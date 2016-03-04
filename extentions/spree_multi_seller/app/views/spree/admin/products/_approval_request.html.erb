@@ -1,0 +1,39 @@
+<% if @collection.any? %>
+  <div class="custom_responsive CSSTableGenerator">
+  <table class="index" id="listing_products">
+    <thead>
+      <tr>
+        <th>Image</th>
+        <th><%=Spree.t(:name)%></th>
+        <th><%=Spree.t(:seller)%></th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @collection.each do |product| %>
+          <tr>
+            <td><%= (mini_image(product) rescue "") %></td>
+            <td><%= link_to product.try(:name), edit_admin_product_path(product) %></td>
+            <td><%= product.seller.try(:name)%></td>
+            <td width="150">
+                <%= button_link_to "Approve", approved_admin_product_path(product), :method => :PUT, :icon => 'icon-ok'  %>
+                <!-- <%#= link_to "Reject", reject_reason_admin_product_path(product), :no_text => true, :class => "icon-remove button fancybox fancybox.ajax" %> -->
+            </td>
+          </tr>
+      <% end %>
+    </tbody>
+  </table>
+  </div>
+<% else %>
+  <div class="no-objects-found">
+    <%= Spree.t(:no_results) %>
+  </div>
+<% end %>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#sub_nav").find("li.selected").removeClass();
+    $(".unapprove").parent().addClass("selected");
+  });
+</script>

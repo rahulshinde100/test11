@@ -1,0 +1,69 @@
+/* 
+    Document   : tabs
+    Created on : 3 Jul, 2013, 3:16:03 PM
+    Author     : anchanto
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* Tab styles */
+
+
+#description-tabs p { font-size: 15px; margin: 0 0 20px 0; }
+#description-tabs #page-wrap { width: 440px; margin: 80px auto; }
+#description-tabs h1 { font: bold 40px Sans-Serif; margin: 0 0 20px 0; }
+
+/* Generic Utility */
+#description-tabs .hide { position: absolute; top: -9999px; left: -9999px; }
+
+
+/* Specific to example one */
+
+#description-tabs #description-tabs-all {  padding: 10px; margin: 0 0 20px 0; border: 1px solid #dedede; }
+
+#description-tabs #description-tabs-all .nav { overflow: hidden; margin: 0 0 10px 0; }
+#description-tabs #description-tabs-all .nav li {  float: left; margin: 0 10px 0 0; }
+#description-tabs #description-tabs-all .nav li.last { margin-right: 0; }
+#description-tabs #description-tabs-all .nav li a { display: block; padding: 5px; background: #959290; color: white; font-size: 13px; text-align: center; border: 0; text-transform: uppercase; padding-left: 10px; padding-right: 10px;}
+#description-tabs #description-tabs-all .nav li a:hover { background-color: #111; }
+
+#description-tabs #description-tabs-all ul { list-style: none; }
+#description-tabs #description-tabs-all ul li a { display: block; border-bottom: 1px solid #666; padding: 4px; color: #666; }
+#description-tabs #description-tabs-all ul li a:hover { background: #fe4902; color: white; }
+#description-tabs #description-tabs-all ul li:last-child a { border: none; }
+
+#description-tabs #description-tabs-all a.current{ background-color:  #111 !important;}
+
+#description-tabs #description-tabs-all .list-wrap{ margin-top: 20px; margin-bottom: 20px;}
+
+
+
+
+
+
+/*  Store Map Tabs */
+#store-map p , #my-account-tabs p{ font-size: 15px; margin: 0 0 20px 0; }
+#store-map #page-wrap, #my-account-tabs #page-wrap { width: 440px; margin: 80px auto; }
+#store-map h1 , #my-account-tabs h1 { font: bold 40px Sans-Serif; margin: 0 0 20px 0; }
+
+/* Generic Utility */
+#store-map .hide, #my-account-tabs .hide { position: absolute; top: -9999px; left: -9999px; }
+
+
+/* Specific to example one */
+
+#store-map, #my-account-tabs {  padding: 10px; margin: 0 0 20px 0; }
+
+#store-map .nav, #my-account-tabs .nav { overflow: hidden; margin: 0 0 10px 0; }
+#store-map .nav li, #my-account-tabs .nav li {  float: left; margin: 0 10px 0 0; }
+#store-map .nav li.last,#my-account-tabs .nav li.last { margin-right: 0; }
+#store-map .nav li a, #my-account-tabs .nav li a{ display: block; padding: 5px; background: #959290; color: white; font-size: 13px; text-align: center; border: 0; text-transform: uppercase; padding-left: 10px; padding-right: 10px;}
+#store-map .nav li a:hover,#my-account-tabs .nav li a:hover { background-color: #111; }
+
+#store-map ul, #my-account-tabs ul { list-style: none; }
+#store-map ul li a:hover , #my-account-tabs ul li a:hover { background: #fe4902; color: white; }
+#store-map ul li:last-child a,#my-account-tabs  ul li:last-child a { border: none; }
+
+#store-map a.current,#my-account-tabs a.current{ background-color:  #111 !important;}
+
+#store-map .list-wrap,#my-account-tabs .list-wrap{ margin-top: 20px; margin-bottom: 20px;}

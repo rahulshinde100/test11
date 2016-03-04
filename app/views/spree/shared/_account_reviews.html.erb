@@ -1,0 +1,84 @@
+
+<% @reviews = Spree::Review.where(:user_id => spree_current_user.id)%>
+<% if @reviews.any? %>
+	<table class="index">
+		<colgroup>
+			<col colspan="2" style="width: 2%;">
+			
+                        <col style="width: 30%;">
+			<col style="width: 22%;">
+			<col style="width: 10%;">
+			<col style="width: 5%;">
+                        <col style="width: 6%;">
+			<col style="width: 12%;">
+			
+		</colgroup>
+		<thead>
+			<tr>
+                                <th colspan="2"><%= Spree.t('item') %></th>
+                                <th><%= Spree::Review.human_attribute_name(:created_at) %></th>				
+				<th><%= Spree::Review.human_attribute_name(:rating) %></th>
+                                <th><%= Spree::Review.human_attribute_name(:comment) %></th>
+				
+				
+				
+                                <th><%= Spree::Review.human_attribute_name(:status) %></th>
+                                <th><%= Spree::Review.human_attribute_name(:actions) %></th>
+				
+			</tr>
+		</thead>
+		<tbody>
+		<%- @reviews.each do |review| -%>
+			<tr id="<%= dom_id review %>">
+                                <td>
+                                        <% if review.product.images.length == 0 %>
+                                          <%= (mini_image(review.product.product) rescue "") %>
+                                        <% else %>
+                                          <%= image_tag review.product.images.first.attachment.url(:mini) %>
+                                        <% end %>
+                                      </td>
+                                      
+                                      <td >
+					<% if review.product %>
+						<h4><%= link_to review.product.name, product_path(review.product) %></h4>
+                                                 by <%= review.product.try(:seller).try(:name)%>       
+                                                 <% permalink = review.product.try(:taxons).first.permalink%> 
+                                                 <div class="category-block"><span><%= permalink.split('/')[1] unless permalink.split('/')[1].nil?%></span> &raquo; <span><%= permalink.split('/')[2] unless permalink.split('/')[2].nil? %></span></div>
+					<% end %>
+				</td>	
+                                <td>
+					<%= l review.created_at, :format => :long %>
+				</td>
+				<td>
+					<%= "#{review.rating} out of 5"  %>
+				</td>
+                                <td>
+                                        <%= "<span style='color:red'>No comment</span>".html_safe   if review.review.blank? %>
+					<%= review.review %>
+				</td>
+				
+					
+                                <td style="text-align:center;">
+                                     <% if review.approved == false && review.block_review.nil?%>
+                                        <span class="orange icon-waiting">Unapproved</span>
+                                     <%elsif !review.block_review.nil?%>
+                                        <span class="icon-block red">Blocked</span>
+                                     <%else%>   
+                                        <span class="green icon-check">Approved</span>
+                                     <%end%>
+                                     
+                                </td>
+				<td class="actions" style="text-align: center;">
+					 <%= link_to image_tag('store/delete-icon.png', :size => '20x20'), [review.product, review], :confirm => 'Are you sure to remove your review?', :method => :delete , :class => "delete-review" %>
+				</td>
+			</tr>
+		<% end %>
+		</tbody>
+	</table>
+<% else %>
+	<div class="no-objects-found">
+		<%= Spree.t(:no_results) %>
+	</div>
+<% end %>
+
+<%#= paginate @reviews -%>

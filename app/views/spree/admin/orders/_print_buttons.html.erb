@@ -1,0 +1,5 @@
+<% content_for :page_actions do %>
+	<% if @order.completed_at? %>
+	  <%= button_link_to(t(:invoice_print), spree.admin_order_invoice_path(@order)) %>
+	<% end %>
+<% end %> 

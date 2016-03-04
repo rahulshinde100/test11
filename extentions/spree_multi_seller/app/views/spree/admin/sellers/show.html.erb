@@ -1,0 +1,78 @@
+<% content_for :page_title do %>
+  <%= "#{@seller.name}" %> | My Profile
+<% end %>
+  <% content_for :page_action do %>
+    <%= button_link_to "Edit Profile", edit_admin_seller_path(@seller), :icon => 'icon-plus'%>
+  <% end %>
+
+
+<div>
+  <fieldset>
+    <%= render :partial => "account", :locals => {:seller => @seller} %>
+  </fieldset>
+</div>
+
+<div>
+  <fieldset>
+    <%unless @seller.bank_detail.nil?%>
+      <div class="span-wrapper">
+        <div class="summary">
+          <span>Name</span>
+          <label><%= @seller.bank_detail.name %></label><br/>
+          <span>Branch</span>
+          <label><%= @seller.bank_detail.branch %></label><br/>
+          <span>Address</span>
+          <label><%= @seller.bank_detail.address  %></label><br/>
+          <span>Account Number</span>
+          <label><%= @seller.bank_detail.account_number %></label><br/>
+          <span>IFSC Code</span>
+          <label><%= @seller.bank_detail.ifsc_code %></label><br/><br/>
+
+          <%= button_link_to "Delete Bank", admin_seller_bank_detail_path(@seller, @seller.bank_detail), :method => :delete, :style => "margin-right: 10px; float: left;", :confirm => "Are you sure, you want to delete this info?"%>
+          <%= button_link_to "Edit Bank", edit_admin_seller_bank_detail_path(@seller, @seller.bank_detail), :icon => 'icon-plus'%>
+        </div>
+      </div>
+
+    <%else%>
+      <% content_for :page_title do %>
+        <%= "#{@seller.name}" %>
+      <% end %>
+      <% content_for :page_action do %>
+          <%= button_link_to "Add Bank Details", new_admin_seller_bank_detail_path(@seller), :icon => 'icon-plus'%>
+      <% end %>
+      <div>No Bank details available</div>
+    <%end%>
+  </fieldset>
+</div>
+<div>
+  <fieldset>
+    <legend>ORDERS</legend>
+    <%= render :partial => "orders", :locals => {:seller => @seller} %>
+  </fieldset>
+</div>
+
+<div>
+  <fieldset>
+    <legend>PRODUCTS</legend>
+    <%= render :partial => "products", :locals => {:seller => @seller} %>
+  </fieldset>
+</div>
+<div>
+  <fieldset>
+    <legend>STORES</legend>
+    <%= render :partial => "stores", :locals => {:seller => @seller} %>
+  </fieldset>
+</div>
+<div>
+  <fieldset>
+    <legend>USERS</legend>
+    <%= render :partial => "users", :locals => {:seller => @seller} %>
+  </fieldset>
+</div>
+<div>
+  <fieldset>
+    <legend>CATEGORY</legend>
+    <%= render :partial => "categories", :locals => {:seller => @seller} %>
+  </fieldset>
+</div>
+

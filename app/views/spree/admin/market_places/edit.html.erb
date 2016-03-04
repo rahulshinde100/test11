@@ -1,0 +1,16 @@
+<% content_for :page_title do %>
+  <%= "Editing Market Place ''#{@market_place.name}'' " %>
+<% end %>
+<%= render :partial => 'spree/shared/error_messages', :locals => { :target => @market_place } %>
+<%= form_for [:admin, @market_place], :html => { :multipart => true } do |f| %>
+  <fieldset data-hook="update_market_place">
+    <legend align="center"><%= "Market Place :: Edit Market Place" %></legend>
+    <%= render :partial => "form", :locals => {:f => f} %>
+     <div class="clear"></div>
+    <div class="form-buttons filter-actions actions" data-hook="buttons">
+      <%= button "Update", 'icon-ok' %>
+      <span class="or"><%= Spree.t(:or) %></span>
+      <%= link_to_with_icon 'icon-remove', Spree.t('actions.cancel'), admin_market_places_path, :class => 'button' %>
+    </div>
+  </fieldset>
+<%end%>

@@ -1,0 +1,9 @@
+
+<!--<li id="home-link" data-hook><%= link_to t(:home), root_path %></li>-->
+<nav class="columns sixteen">
+<% get_taxonomies.each do |taxonomy| %>
+   <% if taxonomy.name == "Categories"%>
+     <%= taxons_tree(taxonomy.root, @taxon, Spree::Config[:max_level_in_taxons_menu] || 1) %>
+   <%end%>
+ <%end%>
+</nav>

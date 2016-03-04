@@ -1,0 +1,19 @@
+<% content_for :page_title do %>
+  <%= seller.name %> | <%= title %>
+<% end %>
+<% content_for :page_action do %>
+  	<% if seller.id.nil? %>    	
+       	<%= button_link_to "Stores", '', :icon => 'icon-plus', :id => 'store' %>
+	  	<%= button_link_to "Add Bank", '', :icon => 'icon-plus', :id => 'abank' if seller.bank_detail.nil? %>
+	  	<%= button_link_to "Edit Bank", '', :icon => 'icon-plus', :id => 'ebank' unless seller.bank_detail.nil?%>
+	  	<%= button_link_to "Categories", '', :icon => 'icon-plus', :id => 'category' %>
+	  	<%= button_link_to "Users", '', :icon => 'icon-plus', :id => 'user'%>
+	<%else%>
+		<%= button_link_to (can? :create, Spree::Seller) ? "Seller Details" : "Dashboard", admin_seller_path(seller.id), :icon => 'icon-plus', :id => "seller-detail"%>
+	  	<%= button_link_to "Stores", admin_seller_store_addresses_path(seller), :icon => 'icon-plus', :id => 'store' %>
+	  	<%= button_link_to "Add Bank", new_admin_seller_bank_detail_path(seller), :icon => 'icon-plus', :id => 'abank' if seller.bank_detail.nil?%>
+	  	<%= button_link_to "Edit Bank", edit_admin_seller_bank_detail_path(seller, seller.bank_detail), :icon => 'icon-plus', :id => 'ebank'  unless seller.bank_detail.nil?%>
+	  	<%= button_link_to "Categories", admin_seller_seller_categories_path(seller), :icon => 'icon-plus', :id => 'category' %>
+	  	<%= button_link_to "Users", admin_seller_seller_users_path(seller), :icon => 'icon-plus', :id => 'user' %>
+	 <%end%>
+<% end %>

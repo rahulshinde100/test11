@@ -1,0 +1,22 @@
+<%current_var = @product.variants_and_option_values(current_currency).present? ? @product.variants.first : @product %>
+<%if current_var.special_price.present? && @product.is_new_arrival == true %>
+    <% if current_var.warehouse_discount > 0 %>
+    <div class="<%= @product.is_warehouse ? 'warehouse_sale' : 'discounted_sale'%>">
+        <div><%= current_var.warehouse_discount%>% OFF</div>
+    </div>
+    <%end%>
+<% elsif current_var.special_price.any? %>
+    <% if current_var.warehouse_discount > 0 %>
+    <div class="<%= @product.is_warehouse ? 'warehouse_sale' : 'discounted_sale'%>">
+        <div><%= current_var.warehouse_discount%> % OFF</div>
+    </div>
+    <%end%>
+  <% elsif @product.is_new_arrival == true %>
+    <div class="main_new_arrival_activated"></div>
+<%end%>
+
+<% if image %> 
+   <%= image_tag image.attachment.url(:large), :itemprop => "image" %>
+<% else %>
+  <%= large_image(@product ,  :itemprop => "image", :id => 'large_img') %>
+<% end %>

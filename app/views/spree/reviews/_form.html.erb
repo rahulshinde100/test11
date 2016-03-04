@@ -1,0 +1,43 @@
+
+<%= form_for :reviews, url: product_reviews_path(@product) do |f| %>
+  <%#= render "spree/shared/error_messages", :target => review %>
+
+  <p class="review_rating_field">
+    <%= f.label :rate_here %> <span class="required">*</span><br />
+    <%= render :partial => "spree/reviews/stars", :locals => {:stars => review.rating, :edit_enabled => true} %>
+  </p>
+  
+  <p class="review_review_field">
+    <%= f.label :your_comment %><br />
+    <%= f.text_area :review, :wrap => "virtual", :rows => "10", :cols => "50" %>
+  </p>
+
+  <p class="review_submit">
+    <%= f.submit Spree.t(:submit_your_review), :class => "button bg_darkfirst" %>
+  </p>
+
+   <p class="review_cancel">
+        <%= link_to "Cancel" , "" , :id => "cancel-review" , :onclick => 'return false;' , :class => "button big_button" %>
+   </p>
+<% end %>
+<script>
+    
+        $('#cancel-review').click(function(){
+            
+            $('#post-review').hide();
+            $('#write-review').show();
+
+            
+        });
+
+        $('.bg_darkfirst').click(function(){
+            
+            var radio_buttons = $("input[name='review[rating]']");
+            if( radio_buttons.filter(':checked').length == 0){
+                alert('Please rate the product');
+                return false;
+            } 
+        });
+
+
+</script>

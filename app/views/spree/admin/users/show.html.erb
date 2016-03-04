@@ -1,0 +1,95 @@
+<% content_for :page_actions do %>
+    <li>
+      <%= button_link_to Spree.t(:back_to_abandoned_carts), abandoned_carts_admin_analytics_raw_data_path %>
+    </li>
+     <li>
+      <%= button_link_to Spree.t(:back_to_users_list), admin_users_path %>
+    </li>
+<%end%>
+<div id="my-account-tabs">
+  <div class="list-wrap">
+    <div data-hook="account_summary" class="account-summary" id="account_summary">
+      <h3><%= @user.firstname.present? ? "#{@user.firstname}'s profile" : "users profile"%></h3>
+      <div class="custom_wishlist">
+        <table id="user-info">
+          <% unless @user.gender.nil? %>
+            <tr>
+              <td><%= Spree.t(:honorific) %></td>
+              <td>
+                <%= @user.gender.try(:name) == "Male" ? "Mr" : "Ms"%>
+              </td>
+            </tr>
+          <%end%>
+          <%unless @user.firstname.nil?%>
+            <tr><td><%= Spree.t(:firstname) %></td><td><%= @user.try(:firstname)%></td></tr>
+          <%end%>
+          <%unless @user.lastname.nil?%>
+            <tr><td><%= Spree.t(:lastname) %></td><td><%= @user.try(:lastname)%></td></tr>
+          <%end%>
+          <%unless @user.dateofbirth.nil?%>
+            <tr><td><%= Spree.t(:date_of_birth) %></td><td><%= @user.try(:dateofbirth).to_date.strftime("%d-%m-%Y")%></td></tr>
+          <%end%>
+          <tr><td><%= Spree.t(:email) %></td><td><%= @user.try(:email) %></td></tr>
+          <%unless @user.contact.nil?%>
+            <tr><td><%= Spree.t(:contact) %></td><td><%=@user.try(:contact)%></td></tr>
+          <%end%>
+          <tr><td><%= Spree.t(:country) %></td><td><%=@user.try(:country).try(:name)%></td></tr>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="account-my-orders hide" id="account-my-orders">
+
+      <h3><%= @user.firstname.present? ? "#{@user.firstname}'s Orders" : "users #{Spree.t(:orders)}"%></h3>
+      <% if @user.orders.present? %>
+        <table class="order-summary">
+          <thead>
+            <tr>
+              <th class="order-number"><%= Spree.t(:order_number) %></th>
+              <th class="order-date"><%= Spree.t(:order_date) %></th>
+              <th class="order-status"><%= Spree.t(:status) %></th>
+              <th class="order-payment-state"><%= Spree.t(:payment_state) %></th>
+              <th class="order-shipment-state"><%= Spree.t(:shipment_state) %></th>
+              <th class="order-total"><%= Spree.t(:total) %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @user.orders.complete.each do |order| %>
+              <tr class="<%= cycle('even', 'odd') %>" style="text-transform: uppercase;">                
+                <td class="order-number"><%= link_to order.number, admin_order_path(order)%></td> 
+                <td class="order-date"><%= order.completed_at.to_date %></td>
+                <td class="order-status"><%= Spree.t(order.state).titleize %></td>
+                <td class="order-payment-state"><%= Spree.t("payment_states.#{order.payment_state}") if order.payment_state %></td>
+                <td class="order-shipment-state"><%= Spree.t("shipment_states.#{order.shipment_state}") if order.shipment_state %></td>
+                <td class="order-total"><%= order.display_total %></td>
+              </tr>
+              
+              <tr>
+                <td class="order-detail-<%=order.number%> order-detail-tab" style ="display :none" colspan="6">
+                  <%= render :partial => '/spree/users/order_details', :locals => { :order => order } %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <% @user.orders.each do |order| %>
+        <div style="display: none;" class="order-small-tab order-detail-<%=order.number%>"><%= render :partial => '/spree/users/order_details', :locals => { :order => order } %></div>
+        <%end%>
+      <% else %>
+        <p><%= Spree.t(:you_have_no_orders_yet) %></p>
+      <% end %>
+
+    </div>
+<div id="account-my-wishlist" class="hide">
+        <% if @user.wishlist.wished_products.size > 0 %>
+<div id="account-my-wishlist" class="custom_wishlist">
+      <h3><%= @user.firstname.present? ? "#{@user.firstname}'s wishlist" : "users wishlist"%></h3>
+        <%= render :partial => 'wishlists' %>
+  </div>
+<%else%>
+  <p><%= @user.firstname.present? ? "#{@user.firstname}'s wishlist is empty" : "users wishlist is empty" %></p>
+<%end%>
+    </div>
+  </div>
+</div>

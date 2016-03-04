@@ -1,0 +1,97 @@
+<% if @taxon.icon.present? && @taxon.parent.try(:name) == @taxon.taxonomy.try(:name) %>
+  <div class="category-banner">
+    <%= image_tag @taxon.icon.url(:original) unless @taxon.icon.nil?%>
+  </div>
+<%end%>
+
+<h1 class="taxon-title"><%= @taxon.name %></h1>
+<!-- SIDE BAR -->
+<% content_for :sidebar do %>
+  <div data-hook="taxon_sidebar_navigation" style = "margin-top:23px;">
+    <%= lhs_menu(@taxons, @sellers, @brands, @load_products.uniq, @sorted_taxons, @sorted_sellers, @sorted_brands)%>
+  </div>
+<%end%>
+
+
+<!-- SORTING OPTIONS-->
+<%if @products.count >= 2 && (@is_parent_taxon)%>
+  <%= render :partial => '/spree/shared/sorting'%>
+<%end%>
+
+<div id="seller_products">
+  <%if @products.present? %>
+    <% if @is_parent_taxon %>
+      <div data-hook="taxon_products">
+        <%= render :partial => 'spree/shared/product_new', :locals => { :products => @products, :taxon => @taxon } %>
+      </div> 
+      <div class="loading">
+        <%=image_tag "/assets/fancybox_loading@2x.gif"%>
+      </div>
+      <div id="load-results"></div>  
+    <%else%>
+      <% unless params[:keywords].present? %>
+        <div data-hook="taxon_children">
+
+          <%= render :partial => 'taxon', :collection => @taxons %>      
+        </div>    
+      <% end %>
+    <% end %>    
+
+  <%else%>    
+    <h5 class="subtaxon-title" id="no-product-found-text">
+      <div>We are partnering with retailers for this product category</div>
+      <div>
+        Stay tuned, we will be soon adding few hundred products here 
+        <span class="color_span">:)</span>
+      </div>
+      <div><%= image_tag "/assets/store/greyscale.png", :width => "300" %></div>
+    </h5>
+  <%end%>
+</div>
+<style type="text/css">
+  #content{margin-left: 30px;}
+  #seller_products{float: left;}  
+  .sorting{margin-right: 6px;}
+</style>
+
+  <script type="text/javascript">
+    var prev_page = 0;
+    $(document).ready(function(){
+      //$(function(){
+      $("img").lazyload();
+      //});
+      <% if @is_parent_taxon %>
+      $(window).scroll(function(){
+        var page = $(".product-row").size();
+        page = parseInt(page > 0 ? (page/6) : page);
+        var offset = $("#load-results").offset();
+        var scrollFromTop = 0;
+        var targetDivFromTop = 0;
+        var next_page = page + 1;
+        
+        scrollFromTop = $(window).scrollTop() + 500;
+        targetDivFromTop = offset.top.toFixed(0);
+        if(scrollFromTop >= targetDivFromTop){
+            if((next_page != prev_page) && (next_page <= <%= @total_pages%> && <%= @total_pages%> > 1 )){
+              prev_page = next_page;
+              $(".loading").addClass("show_loading");
+              url = "?page="+ next_page;
+              url += "&seq=<%= params[:seq]%>&sort=<%= params[:sort] if params[:sort].present?%>";
+              $.ajax({
+                url: url,
+                success: function(resp){
+                  $("#load_products_"+(page+1)).html(resp);
+                  $(".loading").removeClass("show_loading");
+                }
+              }).done(function() {
+                $(".loading").removeClass("show_loading");
+                }).fail(function() {
+                $(".loading").removeClass("show_loading");
+                });
+            }
+        }
+      });
+      <%end%>
+    });
+  </script>
+

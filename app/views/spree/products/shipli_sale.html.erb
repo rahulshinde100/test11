@@ -1,0 +1,95 @@
+<% content_for :sidebar do %>
+  <div data-hook="taxon_sidebar_navigation" style = "margin-top:23px;">    
+    <%= lhs_menu(@taxons, @sellers, @brands, @tx_products, @sorted_taxons, @sorted_sellers, @sorted_brands)%>
+  </div>
+<% end %> 
+<%if @products.count >= 2 %>  
+  <%= render :partial => '/spree/shared/sorting'%>
+<%end%>
+  <div id="home-products">
+    <% if @products.count > 0%>
+      <div class="prod-cat-box">
+        <hr class="legend-effect" />
+        <div class="cat-name-home"><span><%=@heading%></span></div>
+        <%if controller.action_name == "warehouse_sale"%>
+            <div class="cat-name-home warehouse-sale-message">Warehouse Sale products delivered to your doorstep</div>
+        <%end%>
+        <ul id="products" class="inline product-listing" data-hook>
+          <%= render :partial => "/spree/products/load_product" %>
+          <% reset_cycle("classes") %>
+        </ul>
+      </div>
+    <%end%>
+  </div>
+  <div class="loading">
+    <%=image_tag "/assets/fancybox_loading@2x.gif"%>
+  </div>
+  <div id="load-results"></div>
+
+
+
+<script type="text/javascript">
+  var prev_page = 0;
+  $(document).ready(function(){
+
+    if(document.getElementById("categories-all-div") !== null){   
+    $('#categories-all-div').css( "min-height", $('#categories-all').position().top + $('#categories-all').height() - 21);  
+    }
+
+    if(document.getElementById("stores-all-div") !== null){
+      $('#stores-all-div').css("top", $('#lhs-stores').position().top + 15); 
+      $('#stores-all-div').css("min-height", $('#stores-all').height() + ($('#stores-all').position().top - $('#lhs-stores').position().top - 41)); 
+    }
+
+    if(document.getElementById("brands-all-div") !== null){
+      $('#brands-all-div').css("top", $('#lhs-brands').position().top + 15); 
+      $('#brands-all-div').css("min-height", $('#sidebar').height() - $('#lhs-brands').position().top - 60 );     
+    }
+     
+
+
+    $(window).scroll(function(){
+      var page = $(".product-row").size();
+      page = parseInt(page > 0 ? (page/5) : page);
+      var offset = $("#load-results").offset();
+      var scrollFromTop = 0;
+      var targetDivFromTop = 0;
+      var next_page = page + 1;
+      // var url = "<%#= controller.action_name == 'warehouse_sale' ? '/warehouse' : '/discounts'%>";
+      scrollFromTop = $(window).scrollTop() + 500;
+      targetDivFromTop = offset.top.toFixed(0);
+      if(scrollFromTop >= targetDivFromTop){
+          if(next_page != prev_page){
+            prev_page = next_page;
+            $(".loading").addClass("show_loading");
+            url = "?page="+ next_page;
+            url += "&seq=<%= params[:seq]%>&sort=<%= params[:sort] if params[:sort].present?%>";
+            <%if params[:brand].present? %>
+              url += "&brand=<%=params[:brand]%>";
+            <%end%>
+            <%if params[:retailer].present? %>
+              url += "&retailer=<%=params[:retailer]%>";
+            <%end%>
+            $.ajax({
+              url: url,
+              success: function(resp){
+                $("#load_products_"+(page+1)).html(resp);
+                $(".loading").removeClass("show_loading");
+              }
+            }).done(function() {
+                $(".loading").removeClass("show_loading");
+                }).fail(function() {
+                $(".loading").removeClass("show_loading");
+                });
+          }
+      }
+    });
+  });
+</script>
+
+
+
+<style>
+  #content{margin-left: 30px;}
+    .all-div{ top: 32px;}
+</style>

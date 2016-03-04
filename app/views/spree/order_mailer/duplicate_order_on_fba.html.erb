@@ -1,0 +1,11 @@
+<div>
+  <p> Dear <%= @order.seller.name.capitalize rescue "User" %>, </p>
+  <p>We have received an order from <%= @order.market_place.name rescue ''%> e-store on FBA.</p>
+  <p>Order can not be created on fba as this Order number has already been taken.  </p>
+  <p>Order No.: <%= @order.number %> </p>
+
+
+  <p>---</p>
+  <p>Regards,</p>
+  <p>Team Channel Manager</p>
+</div>

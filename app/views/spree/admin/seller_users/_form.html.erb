@@ -1,0 +1,57 @@
+<div data-hook="admin_user_form_fields" class="row">
+  <div class="alpha five columns field">
+    <%= f.label :firstname, t(:firstname) %><span class="required">*</span><br />
+    <%= f.text_field :firstname, :class => 'fullwidth', :required => true %>
+  </div>
+  <div class="five columns field">
+    <%= f.label :lastname, t(:lastname) %><span class="required">*</span><br />
+    <%= f.text_field :lastname, :class => 'fullwidth', :required => true %>
+  </div>
+  <div class="five columns field omega">
+    <%= f.label :contact, t(:contact) %><span class="required">*</span><br />
+    <%= f.text_field :contact, :class => 'contact phone fullwidth', :required => true %>
+  </div>
+  <div class="alpha five columns" style="clear:left">
+    <%= f.field_container :email do %>
+      <%= f.label :email, Spree.t(:email) %><span class="required">*</span>
+      <%= f.email_field :email, :class => 'fullwidth email', :required => true %>
+      <%= error_message_on :user, :email %>
+    <% end %>
+  </div>
+  <div class="five columns">
+    <%= f.field_container :password do %>
+      <%= f.label :password, Spree.t(:password) %><span class="required">*</span>
+      <%= f.password_field :password, :class => 'fullwidth', :required => true %>
+      <%= f.error_message_on :password %>
+    <% end %>
+  </div>
+  <div class="five columns omega">
+    <%= f.field_container :password do %>
+      <%= f.label :password_confirmation, Spree.t(:confirm_password) %><span class="required">*</span>
+      <%= f.password_field :password_confirmation, :class => 'fullwidth', :required => true %>
+      <%= f.error_message_on :password_confirmation %>
+    <% end %>
+  </div>
+  <div class="alpha five columns" style="clear:left">
+    <div data-hook="admin_user_form_roles" class="field">
+      <%= label_tag nil, Spree.t(:roles) %><span class="required">*</span>
+      <ul>
+        <% @roles.each do |role| %>
+          <% next unless ["seller_store", "seller"].include?(role.name) %>
+          <li>
+            <%= radio_button_tag 'user[spree_role_ids][]', role.id, @seller_user.spree_roles.include?(role), :id => "user_spree_role_#{role.name}", :required => true %>
+            <label for='<%="user_spree_role_#{role.name}"%>'> <%= role.name == "seller" ? "Seller Admin" : "Store User" %></label>
+          </li>
+        <% end %>
+      </ul>
+      <%= hidden_field_tag 'user[spree_role_ids][]', '' %>
+    </div>
+  </div>
+</div>
+<div data-hook="signup_below_password_fields"></div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#user_dateofbirth").datepicker('option', 'maxDate',new Date());
+  });
+</script>

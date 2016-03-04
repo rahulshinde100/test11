@@ -1,0 +1,117 @@
+<html>
+    <head>
+        <title>Order Email</title>        
+    </head>
+    <body>
+        <div style="color: #808080; margin: 0 auto; text-align: center; width: 590px; ">    
+            <div style="font-size: 18px; margin-top: 40px;">
+                We've got your order, sit back and relax. We are on it.
+            </div>
+            <div style="width: 100%; margin-top: 20px;">
+                <img src="https://www.ship.li/assets/store/logo_blue.png"/>
+            </div>
+            <div style="background: none repeat scroll 0 0 #FBA433; color: #FFFFFF; font-size: 20px; height: 35px; margin-top: 10px; padding-top: 12px; width: 100%;">
+                Here are your order details
+            </div>
+            <div style="border-bottom:1px solid #156CA2; color: #808080; float:left; font-size:13px; margin-top: 10px; width:100%;">
+                <div style="float:left; margin-bottom: 10px; text-align:justify;">
+                    Name: <span style="text-transform:capitalize;"><%= "#{@order.ship_address.try(:firstname)} #{@order.ship_address.try(:lastname)}" %> </span><%= "| Contact Number #{@order.ship_address.try(:phone)}" unless @order.ship_address.try(:phone) == "(not given)" %><br/>
+                    Order Number: <%= @order.number%><br/>
+                    <%="Date: #{@order.completed_at.strftime('%d %B %Y')} at #{@order.completed_at.strftime('%I:%M %P')}" if @order.completed_at.present?%>
+                </div>
+                <div style="float:none; margin-bottom: 10px; text-align:right;">
+                <%= "Delivery Date: #{@order.delivery_date.strftime('%d').to_i.ordinalize} #{@order.delivery_date.strftime('%b')} from #{@order.delivery_time.split('-').first} till #{@order.delivery_time.split('-').last}" if @order.delivery_time.present? %>
+                </div>
+            </div>
+            <%@order.line_items.each do | item |%>
+                <div style="border-bottom:1px solid #156CA2; color: #808080; float:left; font-size:13px; margin-top: 10px; width:100%;">
+                    <div style="float:left; margin-bottom:10px; text-align:justify; width:71%;">
+                        <span style="text-transform:capitalize;"><%= item.variant.try(:name)%></span> <%= raw "- #{(item.variant.options_text)}" if item.variant.options_text.present?%><br/>
+                        From <%= item.product.seller.try(:name)%> : to be shipped to your address
+                    </div>
+                    <div style="float:none; margin-bottom:10px; text-align:right;">
+                        <span style="text-decoration:line-through;"><%= "Original Price #{number_to_currency item.variant.price}" if item.variant.special_price.present?%></span><br/>
+                        <%= "Sale Price #{number_to_currency item.price} "%><br/>
+                        X <%= item.quantity%> Units
+                    </div>
+                </div>
+            <%end%>
+            <div style="border-bottom:1px solid #156CA2; color: #808080; float:left; font-size:13px; margin-top: 10px; width:100%;">
+                <div style="float:left; margin-bottom:10px; text-align:right; width: 82%;">
+                    Sub Total<br/>
+                    Shipping<br/>
+                    <%@order.adjustments.eligible.each do |adjustment| %>
+                        <% if adjustment.source_type == "Spree::StoreCredit" %>
+                            <%= raw "#{adjustment.label} <br/>"%>
+                            <%next%>
+                        <%end%>
+                        <%next if adjustment.is_free_shipping?(@order) || adjustment.originator_type != "Spree::PromotionAction" %>
+                        <%=raw "#{adjustment.label[11..adjustment.label.length-2]} <br/>"%>
+                    <%end%>
+                    <b>Total</b>
+                </div>
+                <div style="float:none; margin-bottom:10px; text-align:right;">
+                    <%= number_to_currency @order.item_total%><br/>
+                    <span style="text-transform:capitalize;"><%= @order.is_free_shipping? ? "FREE" : number_to_currency(@order.shipments.collect(&:cost).sum) %></span><br/>
+                    <%@order.adjustments.eligible.each do |adjustment| %>
+                        <% if adjustment.source_type == "Spree::StoreCredit" %>
+                            <%=raw number_to_currency "#{adjustment.amount} <br/>"%>
+                            <%next%>
+                        <%end%>
+                        <%next if adjustment.is_free_shipping?(@order) || adjustment.originator_type != "Spree::PromotionAction" %>
+                        <%=raw number_to_currency "#{adjustment.amount} <br/>"%>
+                    <%end%>
+                    <b><%= number_to_currency @order.total%></b>
+                </div>
+            </div>
+            <div style="color:#808080; float:left; font-size:13px; margin-top: 10px; margin-bottom: 10px; width:100%;">
+                <div style="float:left; margin-bottom:10px; text-align:justify; width:40%;">
+                    Billing Address <br/>
+                    <%= @order.ship_address.try(:address1)%>
+                    <%=raw "<br/> #{@order.ship_address.try(:address2)}" unless @order.ship_address.try(:address2).nil? %><br/>
+                    <%= "#{@order.ship_address.try(:country).try(:name)} - #{@order.ship_address.try(:zipcode)}" %>
+                </div>
+                <div style="float:left; margin-bottom:10px; text-align:left;">
+                    Shipping Address<br/>
+                    <%= @order.bill_address.try(:address1)%>
+                    <%=raw "<br/> #{@order.bill_address.try(:address2)}" unless @order.bill_address.try(:address2).nil? %><br/>
+                    <%= "#{@order.bill_address.try(:country).try(:name)} - #{@order.bill_address.try(:zipcode)}" %>
+                </div>
+            </div><br/>
+            <div style="color: #808080; font-size: 18px; text-align:center;">
+                sit back and relax, we are working on<br/>
+                delivering this order on <%= "#{@order.delivery_date.strftime('%d').to_i.ordinalize} #{@order.delivery_date.strftime('%b %Y')} between #{@order.delivery_time.split('-').first} to #{@order.delivery_time.split('-').last}"%>
+            </div>
+            <%if @order.pickup_items.present? %>
+                <div style="color:#156CA2; font-size: 18px; margin-top: 20px; text-align:center;">
+                    By the way, you have one or more self collection in this order
+                </div>
+            <%end%>
+            <div style="color: #808080; font-size: 13px; margin-top: 20px; text-align:center;">
+                Need some more info ?<br/>
+                Call us at 9488-7440 or email to help@ship.li
+            </div>
+            <div style="color: #808080; font-size: 17px; margin-top:20px; text-align:center;">
+                Now that you're part of the ship.li family, you're in for a real treat !
+            </div>
+            <div style="color: #1ABC9C; font-size: 21px; margin-top:10px; text-align:center;">
+                <b>
+                    We heart you, get FREE Delivery on your second order just add coupon code "HeartShipliAgain" on checkout
+                </b>
+            </div>
+            <div style="float: right; font-style: italic; font-weight: bold; margin-top: 10px;">
+                Thank you<br/>
+                - team ship.li
+            </div>
+            <div style="background: none repeat scroll 0 0 #FBA433; color: #FFFFFF; font-size: 20px; margin-left: 210px; margin-top: 60px; padding: 10px; width: 32%;">
+                <b>
+                    Something more to order ?
+                </b>
+            </div>
+            <div class="clearboth " style="height: 15px;"></div>
+            <div style="color: #777; font-style: italic; margin-top: 10px;">
+                We heart our customers, please send us feedback on anything we can improve.
+            </div>
+        </div>
+    </body>
+</html>

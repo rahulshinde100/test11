@@ -1,0 +1,17 @@
+<% content_for :page_title do %>
+  <%= @seller.name %> | <%= "Stock Setting" %>
+<% end %>
+<% content_for :page_action do %>
+  	<%= button_link_to ('back to '+"#{@seller.name}"+' market places'), "/admin/sellers/"+@seller.id.to_s+"/seller_market_places", :class => "button", :icon => 'icon-arrow-left'%>
+    <%= button_link_to 'back to sellers list', admin_sellers_path, :class => "button", :icon => 'icon-arrow-left'%>
+<% end %>
+
+<%= render :partial => 'spree/shared/error_messages', :locals => { :target => @seller } %>
+<div class="stock_setting_form">
+  <%= render :partial=> "stock_setting_form" %>	
+</div>	
+<script type="text/javascript">
+  $( document ).ready(function() {
+    show_percentage_table($("#seller_stock_config_type_field input[type='radio']:checked"));
+  });  
+</script>

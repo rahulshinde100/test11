@@ -1,0 +1,67 @@
+<div class="columns five" id="search-bar-new">
+  <%= form_tag (@seller.present? ? "#{with_subdomain(@seller.permalink)}/products" : spree.products_path), :method => :get, :remote => true do %>
+    <input type="text" name="keywords" id="keywords" style=""  placeholder="Search thousands of products" style="display: none;"/>
+    <%if @seller.present?%>
+        <input type="hidden" name="retailer" id="retailer" value="<%= @seller.permalink%>"> 
+    <%end%>
+   <%end%>
+   <a href="#">
+   </a>
+</div>
+
+
+<script type="text/javascript">
+  var options = {
+    script:"/products/search?json=true&retailer="+$("#retailer").val()+"&",
+    varname:"keywords",
+    json:true,
+    maxresults: 5
+    //callback: function (obj) { document.getElementById('testid').value = obj.id; }
+  };
+  var as_json = new AutoSuggest('keywords', options);
+
+  <% unless @seller.present? || controller.controller_name == "checkout" || !current_page?(root_url)%>
+
+    $(function() {
+      if( $(document).scrollTop() > 200 ){
+        if($('#search-bar-new').css('opacity') == 0){
+          $('#search-bar-new').fadeTo(160, 1.00);
+          $('#search-bar-new').css("display", "block");
+          $('#main-search-box').fadeTo(100, 0.00);
+          $('#as_autocomplete-ajax').fadeOut(100);
+        }
+      }
+      else{
+        if($('#search-bar-new').css('opacity') == 1){
+          $('#main-search-box').fadeTo(100, 1.00);
+          $('#search-bar-new').fadeTo(160, 0.00);
+          $('#search-bar-new').css("display", "none");
+          $('#as_keywords').fadeOut(100);
+        }
+      }
+    });
+
+    $(window).scroll(function () {
+      if( $(document).scrollTop() > 200 ){
+        if($('#search-bar-new').css('opacity') == 0){
+          $('#search-bar-new').fadeTo(160, 1.00);
+          $('#main-search-box').fadeTo(100, 0.00);
+          $('#search-bar-new').css("display", "block");
+          $('#as_autocomplete-ajax').fadeOut(100);
+        }
+      }
+      else{
+        if($('#search-bar-new').css('opacity') == 1){
+          $('#main-search-box').fadeTo(100, 1.00);
+          $('#search-bar-new').fadeTo(160, 0.00);
+          $('#search-bar-new').css("display", "none");
+          $('#as_keywords').fadeOut(100);
+        }
+      }
+    });
+  <%else%>
+    $(function() {
+      $('#search-bar-new').css("display", "block");
+    });
+  <%end%>
+</script>

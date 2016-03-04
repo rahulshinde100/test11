@@ -1,0 +1,99 @@
+<!--%# if spree_current_user.has_spree_role? 'seller'%-->
+	<!--%#= tab(:dashboard, :url => spree.admin_sellers_path, :icon => 'icon-user seller-tab') %-->
+<!--%# end %-->
+
+<% if can? :admin, Spree::Order %>
+  <%= tab :orders, :payments, :creditcard_payments, :shipments, :credit_cards, :return_authorizations, :icon => 'icon-shopping-cart' %>
+<% end %>
+
+<!--%#= tab(:reports, :url => spree.admin_kits_path, :icon => 'icon-file') if spree_current_user.has_spree_role?("admin") %-->
+
+<% if can? :admin, Spree::Product %>
+  <%= tab :products, :option_types, :properties, :prototypes, :variants, :product_properties, :icon => 'icon-th-large' %>
+<% end %>
+
+<% if can? :manage, Spree::Kit %>
+  <%= tab(:kits, :url => spree.admin_kits_path, :icon => 'icon-th') %>
+<% end %>
+
+<% if can? :manage, Spree::SellerMarketPlace %>
+	<%= tab(:market_places, :url => spree.admin_seller_market_places_path(spree_current_user.seller.id), :icon => 'icon-signal') if spree_current_user.has_spree_role?('seller') %>
+<%end%>
+
+<%if can? :admin, Spree::Promotion %>
+  <%= tab(:promotions, :url => spree.admin_promotions_path, :icon => 'icon-bullhorn') %>
+<%end %>
+
+<% if spree_current_user.has_spree_role?('seller')%>
+  <%= tab(:my_profile, :url => spree.admin_seller_path(spree_current_user.seller.id), :icon => 'icon-user') %>
+<% end %>
+
+<!--%#= tab(:analytics_data, :icon => 'icon-signal', :url => admin_analytics_raw_data_path) if spree_current_user.has_spree_role?("admin") %-->
+
+<% if spree_current_user.has_spree_role? 'admin'%>
+	<%= tab(:sellers, :url => spree.admin_sellers_path, :icon => 'icon-group seller-tab') %>
+      <!--%#= tab(:market_places, :url => spree.admin_market_places_path, :icon => 'icon-signal') %-->
+
+	<li id = "more" class="tab-with-icon" data-hook='more' style="text-align:center;">
+<!-- 		<a class="icon_link with-tip icon-chevron-down" href="#">
+			<span class="text">More</span>
+		</a> -->
+		<div style="display:none;position:absolute;background-color:#18adc2;z-index:1;text-align:left;" class="more-sub-menu">
+			<ul class="dropdown-menu">
+				<div id="cms" data-hook="cms"/>
+				<div id = "news-letter" data-hook="news-letter"/>
+			</ul>
+		</div>
+	</li>
+
+<% end %>
+
+<% if can? :manage, Spree::User %>
+  <%= tab(:users, :url => spree.admin_users_path, :icon => 'icon-user') %>
+<% end %>
+
+<% if can? :manage, Spree::MarketPlace %>
+	<%= tab(:market_places, :url => spree.admin_market_places_path, :icon => 'icon-signal') if spree_current_user.has_spree_role?('admin') %>
+<%end%>
+
+<% if can? :admin, Spree::Admin::ReportsController or spree_current_user.has_spree_role? 'seller' %>
+  <%= tab :reports, :icon => 'icon-file'  %>
+<% end %>
+
+<%= tab :configurations, :general_settings, :mail_methods, :image_settings, :tax_categories, :tax_rates, :tax_settings, :zones, :countries, :states,:payment_methods, :taxonomies, :shipping_methods, :shipping_categories, :stock_transfers, :stock_locations, :trackers, :review_settings,
+    :authentication_methods,:editor_settings, :label => 'configuration', :icon => 'icon-wrench', :url => spree.edit_admin_general_settings_path %>
+
+<%= tab(:all_reports, :url => admin_all_reports_path, :icon => 'icon-file') %>    
+
+<% if spree_current_user.has_spree_role? 'seller'%>
+	<style type="text/css">
+		#admin-menu li {
+    		width: 14%;
+		}
+		#admin-menu #top-navigation-bar li a {
+			padding-left: 0px;
+		}
+	</style>
+<% end %>
+
+ 
+
+
+<script type="text/javascript">
+	$('#more').hover(function(){
+		$('#more').addClass("more-active");
+		$('.more-sub-menu').css('display','block');
+	},function(){
+		$('#more').removeClass("more-active");
+		$('.more-sub-menu').css('display','none');
+	});
+</script>
+
+<style type="text/css">
+	#admin-menu li div.dropdown {
+		display: block;
+    	position: absolute;
+    	right: 117px;
+    	top: 0;
+	}
+</style>

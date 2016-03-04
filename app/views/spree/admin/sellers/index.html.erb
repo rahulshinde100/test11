@@ -1,0 +1,95 @@
+<% if spree_current_user.has_spree_role?('admin') %>
+    <% content_for :page_title do %>
+        <%= Spree.t(:listing_sellers) %>
+    <% end %>
+<% end %>
+
+<% if spree_current_user.has_spree_role?('admin') %>
+<% content_for :page_actions do %>
+   <%= button_link_to 'Import & Export Stock', import_stock_admin_sellers_path, :class => "button", :icon => 'icon-cloud-download'%>
+  &nbsp;
+  <div class="new-seller">
+    <%= button_link_to 'New Seller', new_admin_seller_path, :class => "button", :icon => 'icon-plus'%>
+  </div>
+<% end %>
+
+  <div style="padding-top: 20px; padding-bottom: 20px;">
+    <%= form_tag admin_sellers_search_path, :method => :post do %>
+      <%= radio_button_tag :seller, 'all'%>
+      <label for="seller_all"> All </label>&nbsp;&nbsp;&nbsp;
+<!--       <%#= radio_button_tag :seller, 'deleted'%>
+      <label for="seller_deleted"> Deleted </label>&nbsp;&nbsp; -->
+      <%= radio_button_tag :seller, 'active'%>
+      <label for="seller_active"> Active </label>&nbsp;&nbsp;&nbsp;
+      <%= radio_button_tag :seller, 'deactive'%>
+      <label for="seller_deactive"> Deactive </label>&nbsp;&nbsp;&nbsp;
+      <%=button_tag "Filter", :class => "button icon-refresh" %>
+    <%end%>
+  </div>
+
+  <% if @sellers.present? %>
+    <div class="custom_responsive CSSTableGenerator">
+      <table>
+        <thead>
+          <tr height="50">
+            <th>Seller</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+            <th>Users</th>
+            <th>Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @sellers.each_with_index do |seller, index| %>
+            <tr class="<%if seller.deleted_at%>deleted-items<%end%>" height="40">
+              <td><%= seller.name %><!--%#= link_to seller.name, admin_seller_path(seller.id) %--></td>
+              <td><%= seller.contact_person_name%></td>
+              <td><%= mail_to seller.contact_person_email%></td>
+              <td>
+                  <% if seller.is_completed? %>
+                    <% if seller.is_active %>
+                      <%= button_link_to "Deactive", deactive_admin_seller_path(seller.id), :id => "deactive", :style => "background-color: red; padding-top:9px; font-weight:400!important;",:class => "button fancybox fancybox.ajax", :confirm => "Are you sure, you want to Deactivate '#{seller.name}' Seller?" %>
+                      <%= button_link_to "Market Places", admin_seller_seller_market_places_path(seller.id), :icon => 'icon-plus', :id => 'market_place' %>
+                    <%else%>
+                      <%= button_link_to "Active", active_admin_seller_path(seller.id), :style => "font-weight:400!important;", :confirm => "Are you sure, you want to Activate '#{seller.name}' Seller?"%>
+                    <%end%>
+                  <%else%>
+                      <%= button_link_to "Active", '#', :style => "font-weight:400!important;" , :onclick => "alert('#{seller.incomplete_message}');"%>
+                  <%end%>
+              </td>
+              <td align="center">
+                <%= link_to "", admin_seller_seller_users_path(seller), :class => 'icon-user icon_link with-tip no-text', :title => "Users" %>
+              </td>
+              <td align="center">
+                <%= link_to '', edit_admin_seller_path(seller.id),:no_text => true, :class => 'edit icon_link with-tip icon-edit no-text'%>
+              </td>
+            </tr>
+          <% end%>
+        </tbody>
+      </table>
+    </div>
+  <%else%>
+    <div class="no-objects-found field" style="text-align: center;">
+      No Sellers Found
+    </div>
+  <%end%>
+<%else%>
+  <br/><br/>
+  <%= render :partial => "spree/admin/shared/dashboard", :locals => {:seller => spree_current_user.seller} %>
+<%end%>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+<% if params[:seller] == 'deleted'%>
+      $("#seller_deleted").prop('checked', true);
+<% elsif params[:seller] == "deactive" %>
+      $("#seller_deactive").prop('checked', true);
+<% elsif params[:seller] == "active" %>
+      $("#seller_active").prop('checked', true);
+<%else%>
+      $("#seller_all").prop('checked', true);
+<% end %>
+
+  });
+</script>

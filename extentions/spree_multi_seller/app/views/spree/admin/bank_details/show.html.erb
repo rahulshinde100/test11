@@ -1,0 +1,31 @@
+<%= render :partial => 'spree/admin/shared/seller_sub_menu', :locals => { :seller => @seller, :title => "Bank Details" } %>
+
+<%unless @bank_detail.nil?%>
+  <div class="span-wrapper">
+    <div class="summary">
+      <span>Name</span>
+      <label><%= @bank_detail.name %></label><br/>
+      <span>Branch</span>
+      <label><%= @bank_detail.branch %></label><br/>
+      <span>Address</span>
+      <label><%= @bank_detail.address  %></label><br/>
+      <span>Account Number</span>
+      <label><%= @bank_detail.account_number %></label><br/>
+      <span>IFSC Code</span>
+      <label><%= @bank_detail.ifsc_code %></label><br/><br/>
+      
+      <%= button_link_to "Delete Bank", admin_seller_bank_detail_path(@seller, @seller.bank_detail), :method => :delete, :style => "margin-right: 10px; float: left;", :confirm => "Are you sure, you want to delete this info?"%>
+      <%= button_link_to "Edit Bank", edit_admin_seller_bank_detail_path(@seller, @seller.bank_detail), :icon => 'icon-plus'%>
+    </div>
+  </div>
+
+<%else%>
+  <% content_for :page_title do %>
+    <%= "#{@seller.name}" %>
+    <div class="seller-menu" style="float: right;">
+      <%= button_link_to "Add Bank Details", new_admin_seller_bank_detail_path(@seller), :icon => 'icon-plus'%>
+    </div>
+  <% end %>
+
+  <div>No Bank details available</div>
+<%end%>

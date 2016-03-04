@@ -1,0 +1,21 @@
+<%= render "spree/shared/routes" %>
+<script>
+    Spree.routes.market_place_search = "<%= spree.api_market_places_url(:format => 'json') %>";
+    Spree.routes.seller_search = "<%= spree.api_sellers_url(:format => 'json') %>";
+    Spree.routes.variants_search = "<%= spree.api_search_for_promotion_url(:format => 'json') %>";
+//    Spree.routes.variants_search = "<%#= spree.api_variants_url(:format => 'json') %>";
+    Spree.routes.taxons_search = "<%= spree.api_taxons_url(:format => 'json') %>";
+//    Spree.routes.product_search = "<%#= spree.api_search_for_promotion_url(:format => 'json') %>";
+    Spree.routes.product_search = "<%= spree.api_products_url(:format => 'json') %>";
+    Spree.routes.option_type_search = "<%= spree.api_option_types_url(:format => 'json') %>";
+    Spree.routes.orders_api = "<%= spree.api_orders_url(:format => 'json') %>";
+    Spree.routes.checkouts_api = "<%= spree.api_checkouts_url(:format => 'json') %>";
+
+    Spree.routes.variants_api = "<%= spree.api_variants_url(:format => 'json') %>";
+    Spree.routes.payments_api = "<%= spree.api_order_payments_url(:format => 'json') if params[:order_id] %>";
+    var parhName = window.location.pathname;
+    if (parhName.indexOf("promotion") >= 0){
+    }
+    Spree.routes.stock_items_api = "<%= spree.api_stock_location_stock_items_url(:format => 'json') if params[:stock_location_id] %>";
+
+</script>

@@ -1,0 +1,20 @@
+<%= render :partial => 'spree/admin/shared/seller_sub_menu', :locals => { :seller => @seller, :title => "Product Categories" } %>
+
+<% if Spree::Taxon.count == @seller.categories.count%>
+  <div align="center">
+    <h2> No Categories are available</h2></br>
+    <%= button_link_to "Back", admin_seller_seller_categories_path(@seller)%>
+  </div>
+<%else%>
+  <%= form_for [:admin, @seller, @seller_category] do |f| %>
+    <fieldset data-hook="new_seller">
+      <legend align="center">Categories</legend>
+      <%= render :partial => "form", :locals => {:f => f} %>
+      <div class="form-buttons filter-actions actions" data-hook="buttons">
+        <%= button "Save & Continue", 'icon-ok' %>
+        <span class="or"><%= Spree.t(:or) %></span>
+        <%= link_to_with_icon 'icon-remove', Spree.t('actions.cancel'), admin_seller_seller_categories_path(@seller), :class => 'button' %>
+      </div>
+    </fieldset>
+  <%end%>
+<%end%>

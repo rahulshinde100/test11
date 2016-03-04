@@ -1,0 +1,48 @@
+<tr>
+   <td colspan="7"><p>&nbsp</p></td> 
+</tr>
+<thead>
+  <tr data-hook="cart_adjustments_headers">
+    <th class="cart-adjustment-header" colspan="7" ><%= Spree.t(:order_adjustments) %></th>
+  </tr>
+</thead>
+<tbody id="cart_adjustments" data-hook>
+  <% @order.adjustments.eligible.each do |adjustment| %>
+    <% next if (adjustment.originator_type == 'Spree::TaxRate') and (adjustment.amount == 0) %>
+    <% next if @order.is_free_shipping? && adjustment.source_type == 'Spree::Shipment' %>
+    <%if adjustment.is_free_shipping? @order %>
+      <tr>
+        <td colspan="4" align="right">
+          <%if adjustment.originator.promotion.code.present? %>
+            Coupon (<%= adjustment.originator.try(:promotion).try(:code)%>)
+          <%else%>
+            <%= Spree.t(:shipping)%>:
+          <%end%>
+        </td>
+        <td colspan="2" align="right"><%= Spree.t(:free_shipping) %></td>        
+      </tr>
+    <%else%>
+      <tr>
+        <td colspan="4" align="right">
+          <%if adjustment.source_type == 'Spree::Shipment'%>
+            <%= adjustment.label %>
+          <%elsif adjustment.source_type == "Spree::StoreCredit" %>
+            Store Credit
+          <%elsif adjustment.originator.promotion.code.present? %>
+            Coupon (<%= adjustment.originator.try(:promotion).try(:code)%>)
+          <%else%>
+            <%= adjustment.label[11..adjustment.label.length-2] %>                  
+          <%end%>
+        </td>
+        <td colspan="2" align="right"><%= number_to_currency adjustment.amount %></td>
+      </tr>
+    <% end unless @order.adjustments.eligible.blank?%>
+    <tr>
+  <% end %>
+</tbody>
+
+<style type="text/css">
+#summary-order-charges td:last-child:before, #order-charges td:last-child:before{
+  content: "" !important;
+}
+</style>

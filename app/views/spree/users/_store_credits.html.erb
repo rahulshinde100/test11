@@ -1,0 +1,74 @@
+<% if @user.has_store_credit? %>
+  <h3><%= Spree.t("store_credits") %></h3>
+  <p>
+    <%= Spree.t('current_store_credit') %>: <strong><%= number_to_currency @user.store_credits_total %></strong>
+  </p>
+  <table class="index" width="50%">
+    <thead>
+      <tr>
+        <th style="text-align:center;"><%= Spree.t("credit") %></th>
+        <th style="width: 93px; text-align:center;">
+          <%= Spree.t("expiry date") %>
+        </th>      
+        <th class="actions" style="text-align:center;">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @user.store_credits.order("remaining_amount desc").each do |store_credit|%>
+        <tr id="<%= dom_id store_credit %>" class="<%= cycle('even', 'odd') %>">
+          <td style="text-align:left; padding-left:10px;"><%= number_to_currency store_credit.amount %></td>        
+          <td style="width: 93px; text-align:left; padding-left:10px;"><%= store_credit.expires_at.strftime("%d %b %Y") if store_credit.expires_at.present?%></td>
+          <td class="actions <%= store_credit.remaining_amount == store_credit.amount ? 'partial' : ''%>" style="text-align:left; padding-left:10px;">
+            <%if store_credit.expires_at.present? && store_credit.expires_at < Time.now %>
+              <%= Spree.t(:Expired) %>
+            <%elsif store_credit.remaining_amount > 0 && store_credit.remaining_amount < store_credit.amount %>
+              <%= Spree.t(:was_partially_used) %>
+            <% elsif store_credit.remaining_amount == store_credit.amount %>
+              <%= Spree.t(:available) %>
+            <%else%>
+              <%= Spree.t(:redeemed) %>
+            <% end %>
+          </td>  
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <% if @orders_with_store_credit.present? %>
+    <h3><%= Spree.t('orders_with_store_credit') %></h3>
+    <table class="order-summary">
+      <thead>
+        <tr>
+          <th><%= Spree.t("order_number") %></th>
+          <th><%= Spree.t("order_date") %></th>
+          <th><%= Spree.t("status") %></th>
+          <th><%= Spree.t("customer") %></th>
+          <th><%= Spree.t("total") %></th>
+          <th><%= Spree.t("store_credit") %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @orders_with_store_credit.each do |order| %>
+          <tr class="<%= cycle('even', 'odd') %>">
+            <td><%= link_to order.number, order_url(order) %></td>
+            <td><%=order.created_at.to_date%></td>
+            <td><%= Spree.t(order.state).titleize %></td>
+            <td><%= order.user.email if order.user %></td>
+            <td><%= number_to_currency order.total %></td>
+            <td><%= number_to_currency order.store_credit_amount %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+<%else%>
+  <h3><%= Spree.t("store_credits") %></h3>
+  <p>
+    <%= Spree.t('current_store_credit') %>: <strong><%= number_to_currency 0 %></strong>
+  </p>
+<% end %>
+
+<style type="text/css">
+  .partial{
+    color: #008000 !important;
+  }
+</style>

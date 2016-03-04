@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title><%=@subject%></title>
+	<link rel="stylesheet" type="text/css" href="emailstyles.css" />
+	<link href="https://fonts.googleapis.com/css?family=Arvo:400,700" rel="stylesheet" type="text/css">
+
+	
+	<!-- Targeting Windows Mobile -->
+	<!--[if IEMobile 7]>
+	<style type="text/css">
+	
+	</style>
+	<![endif]-->   
+
+	<!-- ***********************************************
+	****************************************************
+	END MOBILE TARGETING
+	****************************************************
+	************************************************ -->
+
+	<!--[if gte mso 9]>
+		<style>
+		/* Target Outlook 2007 and 2010 */
+		</style>
+	<![endif]-->
+</head>
+<body>
+<div id="template-box">
+	<p><div class="columns four" data-hook=""><a title="Home" id="logo" href="http://www.ship.li">ship.li</a></div></p>
+	<p><div>Dear <%= @item.stock_location.name %></div></p>
+	<p><div>Here are the order details for pick up at store</div></p>
+	<div class="order-no">Order No. <b><%= @order.number%></b></div>
+	
+	
+	
+	
+	
+<!-- Wrapper/Container Table: Use a wrapper table to control the width and the background color consistently of your email. Use this approach instead of setting attributes on the body tag. -->
+<table cellpadding="0" cellspacing="0" border="0" id="backgroundTable">
+	<tr>
+		<td valign="top"> 
+		<!-- Tables are the most common way to format your email consistently. Set your table widths inside cells and in most cases reset cellpadding, cellspacing, and border to zero. Use nested tables as a way to space effectively in your message. -->
+		<table cellpadding="0" cellspacing="0" border="0" align="left">
+			<thead>
+				<tr><th colspan="2">Item</th><th>Qty</th><th align="right">Price</th><th align="right">Total</th><th>Date</th></tr>
+			</thead>
+			<% @items.each do | item |%>
+			<%next if item.variant.nil?%>
+			<tr>
+				<td width="" valign="top" class="product-image">
+					<% if item.variant.images.length == 0 %>
+            <%= (mini_image(item.variant.product, :alt =>" #{item.variant.product.name}", :height => "87px", :width => "130px") rescue "") %>
+          <% else %>
+            <%= image_tag(item.variant.images.first.attachment.url(:mini), :alt =>" #{item.variant.product.name}")%>
+          <% end %>
+				</td>
+				<td width="200" valign="middle"><%= raw item.variant.product.name %> <%= raw(item.variant.options_text)%></td>
+				<td width="50" valign="middle" align="center"><%= item.quantity%></td>
+				<td width="80" valign="middle" align="right"><%= number_to_currency item.price%></td>
+				<td width="100" valign="middle" align="right"><%= number_to_currency(item.price * item.quantity)%></td>
+				<td width="100" valign="middle" align="right"><%= item.item_pickup_at%></td>
+			</tr>
+			<%end%>
+		</table>
+		
+		
+		
+		<table cellpadding="0" cellspacing="0" border="0" align="left" width="100%" id="address-table">
+			<thead>
+				<tr><th align="left">Billing Address:</th></tr>
+			</thead>
+			<tr>
+				<td width="" valign="top">
+					<div><%= "#{@order.bill_address.try(:firstname)} #{@order.bill_address.try(:lastname)}" %></div>
+					<div><%= @order.bill_address.try(:address1)%> <%=", #{@order.bill_address.try(:address2)}" unless @order.bill_address.address2.nil? %></div>
+					<div><%= "#{@order.bill_address.try(:city)} #{@order.bill_address.try(:state_name)}"%></div>
+					<div><%= "#{@order.bill_address.try(:country).try(:name)} - #{@order.bill_address.try(:zipcode)}" %></div>
+				</td>
+			</tr>
+
+		</table>
+		<p><div>Paid though – Paypal</b></div></p>
+		</td>
+	</tr>
+</table>  
+<!-- End of wrapper table -->
+	<%= render :partial => 'spree/shared/email_footer'%>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+<div class="sorting"><a href="" onclick="return false;"><div id="sort-navigator">Sort <span>by</span></div></a>
+  <div id="sorting-box">
+    <%= form_tag do %>
+      <%= hidden_field_tag 'seq', params[:seq]%>
+      <%= hidden_field_tag 'sort', params[:sort]%>
+      <ul>
+          <li>
+            <a href="#"><span>Name</span> <div id="name" class="icon-arrow-up"></div></a>
+          </li>
+          <li><a href="#"><span>Price</span> <div id="price" class="icon-arrow-up"></div></a></li>
+          <li><a href="#"><span>Discount</span> <div id="discount" class="icon-arrow-down"></div></a></li>
+      </ul>
+    </div>
+  <%end%>
+</div>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    if($("#sort").val() != ''){
+      var id = $("#sort").val().trim().toLowerCase();
+      if($("#seq").val() == 'asc'){
+        $("#"+id).removeClass('icon-arrow-up');
+        $("#"+id).addClass('icon-arrow-down');
+      }else{
+        $("#"+id).removeClass('icon-arrow-down');
+        $("#"+id).addClass('icon-arrow-up');
+      }
+    }
+    $('li a').click(function(){
+      var div_id = $(this).text().trim().toLowerCase();
+      var flag = $("div#"+div_id).hasClass("icon-arrow-up");
+      if(flag){
+        $("#seq").val('asc');
+      }else{
+        $("#seq").val('desc');
+      }
+      $("#sort").val($(this).text());
+      $('div#sorting-box form').submit();
+    });
+  });
+</script>

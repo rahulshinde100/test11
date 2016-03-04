@@ -1,0 +1,67 @@
+<% content_for :page_title do %>
+  Holiday List
+<% end %>
+
+<% content_for :page_actions do %>
+  <li>
+    <%= button_link_to "Add new Holiday", new_admin_seller_holiday_list_path(@seller), :icon => 'icon-plus', :id => 'admin_new_order' %>
+  </li>
+<% end %>
+
+<h1>Listing Holiday List</h1> 
+<div id="holiday-csv-file">
+  <%= form_tag import_admin_seller_holiday_lists_path(@seller), multipart: true do %>
+    <%= label :file ,"Upload CSV file to import the Holiday List " %><a href="/holiday_list.csv"> (See Example) </a></br>
+      <%= file_field_tag :file, :accept => 'text/csv' %>
+      <%= submit_tag "Import" %>
+  <% end %>
+</div>
+
+<% if @holiday_lists.present? %>
+    <div style="padding-top: 50px;">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Stores</th>
+            <th>From-To</th>
+            <th>Active</th>
+            <th class="actions"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @holiday_lists.each_with_index do |holiday, index| %>
+            <tr>
+              <td><%= index + 1 %></td>
+              <td><%= link_to holiday.name, edit_admin_seller_holiday_list_path(@seller, holiday) %></td>
+              <td><%= raw holiday.stock_locations.map(&:name).join("<br/>")%></td>
+              <td><%= holiday.from.to_s + (holiday.to.nil? ? '' : ' to ' + holiday.to.to_s)  %></td>
+              <td><%= check(holiday.active, "Active") %></td>
+              <td class="actions">
+                <%= link_to '', edit_admin_seller_holiday_list_path(@seller, holiday),:no_text => true, :class => 'edit icon_link with-tip icon-edit no-text'%>
+                &nbsp;
+                <%= link_to '', admin_seller_holiday_list_path(@seller, holiday), :no_text => true, :method => :delete, :class => 'delete-resource icon_link with-tip icon-trash no-text', :confirm => 'Are you sure, you want to delete this entry?'%>
+              </td>
+            </tr>
+          <% end%>
+        </tbody>
+      </table>
+    </div>
+  <%else%>
+    <div class="error-message" style="text-align: center;">
+      <h2>No Result</h2>
+    </div>
+  <%end%>
+
+<%= paginate(@holiday_lists)%>
+
+
+<script>
+   $(document).ready(function() {
+      $('#csv-file').hide();
+      $('#csv-upload').click(function() {
+      $('#csv-file').show();
+   });
+ });
+</script>

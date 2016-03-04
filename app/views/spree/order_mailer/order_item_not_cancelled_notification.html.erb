@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+      Hello Team, <br/>
+
+      <p>Please take neccessary action for following order that are not cancelled on FBA: </p>
+
+      <table border="2">
+            <tr>
+              <th>Seller</th>
+              <th>Marketplace</th>
+              <th>FBA Order #</th>
+              <th>Order #</th>
+              <th>Reason</th>
+            </tr>
+            <tr>
+              <td><%= @order.seller.name.capitalize %></td>
+              <td><%= @order.marketplace.name.capitalize %></td>
+              <td><%= @order.cart_no %></td>
+              <td><%= @order.market_place_order_no %></td>
+              <td><%= @reason %></td>
+            </tr>
+      </table>
+
+      <br/>
+      Regards,<br/>
+      Team CM
+
+  </body>
+</html>

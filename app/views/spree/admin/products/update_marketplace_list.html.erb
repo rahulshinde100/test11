@@ -1,0 +1,237 @@
+<% content_for :page_actions do %>
+    <% if !params[:unapprove].present? %>
+
+        <li id="Fetch_fba_quantity" >
+          <button class="button icon-download" id="create_on_mp"> Update On MP</button>
+          <%#= button_link_to "Create On MP", '', {:icon => 'icon-download'} %>
+        </li>
+        <li id="search_product">
+          <span class="button icon-search">Search</span>
+        </li>
+    <% else %>
+        <%= button_link_to "Back to products list", admin_products_path, {:icon => 'icon-arrow-left'} %>
+    <% end %>
+<% end %>
+
+<%= render :partial => 'spree/admin/shared/product_sub_menu' %>
+
+<% content_for :table_filter_title do %>
+    Product :: Search
+<% end %>
+
+<% content_for :table_filter do %>
+    <div data-hook="admin_products_sidebar">
+      <%= search_form_for @search, url: spree.update_marketplace_list_admin_products_path do |f| %>
+          <%- locals = {:f => f} %>
+          <div data-hook="admin_products_index_search">
+
+            <% unless spree_current_user.has_spree_role?('seller')%>
+                <div class="alpha nine columns">
+                  <div class="field">
+                    <%= f.label :seller_id, "Seller" %><br />
+                    <%= f.collection_select(:seller_id_eq, Spree::Seller.is_active, :id, :name, include_blank: "All") %>
+                  </div>
+                </div>
+            <%end%>
+
+            <div class="alpha nine columns">
+              <div class="field">
+                <%= f.label :name_cont, Spree.t(:name) %>
+                <%= f.text_field :name_cont %>
+              </div>
+            </div>
+
+            <div class="four columns">
+              <div class="field">
+                <%= f.label :variants_including_master_sku_cont, Spree.t(:sku) %>
+                <%= f.text_field :variants_including_master_sku_cont %>
+              </div>
+            </div>
+
+            <div class="three columns omega">
+              <div class="field checkbox">
+                <label>
+                  <%= f.check_box :deleted_at_null, {:checked => (params[:q][:deleted_at_null].blank? rescue true) }, '', '1' %>
+                  <%= Spree.t(:show_deleted) %>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="clear"></div>
+          <input type="hidden" name="market_place_id" id="market_place_id" value="<%= @market_place_id %>">
+          <div class="form-buttons actions filter-actions" data-hook="admin_products_index_search_buttons">
+            <%= button Spree.t(:search), 'icon-search' %>
+          </div>
+      <% end %>
+    </div>
+<% end %>
+
+<div id="new_product_wrapper" data-hook></div>
+<div class="">
+  <%= form_for :pickup_orders, :url => spree.update_marketplace_list_admin_products_path, :html => { :class => 'form-inline' ,:id=>"pickuplist-filter-form", :method => 'get', novalidate: true} do |f| %>
+      <%#= f.field_container :market_place do %>
+      <%#= label :market_place, Spree.t(:market_place) %>
+      <span><b> Market Place :</b></span><%= select_tag  'market_place' , options_for_select(@market_places, @market_place_id) ,:class=> "col-sm-12 filter-selectbox" ,:onchange => "this.form.submit();"%>
+      <%#= collection_select :market_place_id, Spree::MarketPlace.all, :id, :name, {:class => 'select2 fullwidth'} %>
+      <%# end %>
+  <% end %>
+</div>
+<% if params[:unapprove].present? %>
+    <%= render :partial => "approval_request"%>
+<%else%>
+    <% if @collection.present? %>
+        <div class="custom_responsive CSSTableGenerator">
+          <table class="index" id="listing_products">
+            <thead>
+            <tr data-hook="admin_products_index_headers">
+              <th>#</th>
+              <th width="10">
+                <input type="checkbox" id="select_all" onclick="selectUnselectAllSkus(this);">
+              </th>
+              <%if spree_current_user.has_spree_role?("admin")%>
+                  <th><%= sort_link(@search, :seller_name, :Seller) %></th>
+              <%end%>
+              <th>Category</th>
+              <th><%= sort_link(@search, :name, "Product Short Name") %></th>
+              <th width="10"><%= sort_link(@search, :variants_including_master_sku , :SKU) %></th>
+              <th>No of Changes</th>
+              <th width="130"><%= sort_link(@search, :updated_at, "Last Update") %></th>
+              <th>Reject</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @collection.each_with_index do |product,index| %>
+                <tr <%= "style='color: red;'" if product.deleted? %> id="<%= spree_dom_id product %>" data-hook="admin_products_index_rows" class="<%= cycle('odd', 'even') %>">
+                  <% @is_valid_product =  check_validation_for_mp(product,@market_place_id, 'create') %>
+                  <td><%= index + 1 %></td>
+                  <td>
+                    <%# if @is_valid_product %>
+                        <input type="checkbox" id="variant_ids_<%= product.id %>" name="product_ids[<%= product.id %>]" value=<%= product.id %> onclick="checkAllSelected(this);" >
+                    <%# end %>
+                  </td>
+                  <%if spree_current_user.has_spree_role?("admin")%>
+                      <td><%= link_to product.try(:seller).try(:name), admin_seller_path(product.seller.id)%></td>
+                  <%end%>
+                  <td><%= product.taxons.map(&:name).join(',').html_safe rescue 'NA' %></td>
+                  <td><%= link_to product.try(:short_name) || product.try(:name), edit_admin_product_path(product) %></td>
+                  <td><%#= product.variants.present? ? product.variants.first.sku : product.sku rescue '' %>
+                    <%= product.sku rescue ''  %>
+                  </td>
+                  <td>
+                    <p id="showerror_<%= product.id %>" class="display_detail" style="width: 20px;" ><%= get_no_of_changes(product.id,@market_place_id) %></p>
+
+                    </td>
+                  <td><%= product.updated_at.strftime('%d %b %Y %H:%M') %></td>
+                  <td><button class="button reject_changes" id="reject_<%= product.id %>" >
+                    Reject</button></td>
+                </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+    <% else %>
+        <div class="no-objects-found">
+          <%= Spree.t(:no_results) %>
+        </div>
+    <% end %>
+<%end%>
+
+<%= paginate @collection %>
+<div id="seller_products"></div>
+<div class="black_overlay"></div>
+<script>
+    $('#create_on_mp').click(function(){
+
+        var selectedSKUList = "";
+        $('#listing_products input[type=checkbox]').each(function () {
+            if(this.checked)
+            {selectedSKUList += (selectedSKUList.length > 0 ? "," : "") + $(this).val();}
+        });
+        if(selectedSKUList.length > 0)
+        {
+            if (confirm('Are you sure you want to Update?')) {
+                $.ajax({
+                    type: 'post',
+                    url: '/admin/products/update_product_on_mp',
+                    data: {product_ids: selectedSKUList
+                        , market_place_id: $("#market_place").val()
+                    },
+                    success: function(data){
+                        console.log('success');
+                        alert(data);
+//                    alert("We are processing your request. We will let you know the status on you given emails.");
+                        location.reload();
+                    },
+                    error: function(data){
+                        console.log('error');
+                    }
+
+                });
+            }
+//            alert("We are processing your request. We will let you know the status on you given emails.");
+
+            console.log(selectedSKUList);
+        }
+        else
+        {
+            alert('Please select atleast one Product');
+            return false;
+        }
+
+    });
+    $("#market_place").change(function(){
+        $("#market_place_id").val($("#market_place").val());
+    });
+    $(".display_detail").click(function(){
+        mpId = $(this).attr('id').split("_");
+        console.log(mpId);
+        id = parseInt(mpId[1]);
+        console.log(id);
+        $.ajax({
+            type: 'get',
+            url: "/admin/products/get_updated_fields",
+            data: {market_place_id: $("#market_place_id").val(),
+                product_id: id },
+            success: function(data){
+                var a = data;
+                alert(a.join('\n'));
+//                    alert(data + "We are processing your request. We will let you know the status on you given emails.");
+            },
+            error: function(data){
+                console.log('error');
+            }
+
+        });
+    });
+    $(".reject_changes").click(function(){
+        if (confirm('Rejected changes can not be revert. Are you sure you want to reject changes?')) {
+            mpId = $(this).attr('id').split("_");
+            console.log(mpId);
+            id = parseInt(mpId[1]);
+            console.log(id);
+            $.ajax({
+                type: 'get',
+                url: "/admin/products/reject_marketplace_change",
+                data: {market_place_id: $("#market_place_id").val(),
+                    product_id: id },
+                success: function(data){
+                    var a = data;
+                    alert(a);
+                    location.reload();
+//                    alert(data + "We are processing your request. We will let you know the status on you given emails.");
+                },
+                error: function(data){
+                    console.log('error');
+                }
+
+            });
+        }
+    });
+
+</script>
+<style>
+    table th a:not(.button), table th a:visited:not(.button) {
+        color: #FFFFFF !important;
+    }
+</style>

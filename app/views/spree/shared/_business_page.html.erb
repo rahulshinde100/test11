@@ -1,0 +1,200 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+<script src="/js/jquery.bxslider.min.js"></script>
+
+<div id="business-page-content">
+    <div id="business-sign-in">
+        <div><%= render :partial => "spree/shared/seller_signin_form" %>	 </div>
+    </div>
+    <div id="business-sign-up">
+      <%= form_for Spree::Seller.new, :remote => true do |f| %>	
+      	<%= render :partial => "spree/shared/seller_form", :locals => {:f => f} %>	    	
+        <br/>             
+      <%end%>      
+    </div>
+</div>
+
+<div class="clearboth"></div>
+
+<div class="new-business-shipli">
+    <h1 id="sell-on-header">Sell on Ship.li</h1>
+    <div>
+    <p>
+        www.ship.li operates as an extension of your sales channel. Using our platform you can digitize your in-store inventory to push the products in a simple way on www.ship.li and start selling your products. Being on ship.li here is how you will get benefitted.
+        <div style="width: 100%; margin: 0 auto;"><%=image_tag("/assets/store/why_ship.png", :width => "100%")%></div>
+    </p>
+    
+  
+    </div>
+    
+    </div>
+
+
+<div class="clearboth"></div>
+
+<div class="new-business-shipli">
+    <h1 id="how-it-works-header">How it works</h1>
+    <div>
+    <p>Register on ship.li through our Business Central or give us a shout at marketing@anchanto.com. As soon we are through with the agreement, you can start uploading the products with the help of our in-store inventory digitizer application. The products will appear on www.ship.li as it is approved by ship.li admin to check the content is within bylaws.
+Anchanto will market the products on your behalf. End user will place orders that they can pick-up from your stores or we take care of the shipping. The benefit of pick-up at store is that through customer service representatives, you will be able to interact with customers when they pick up the order from your store. Alternatively, your loyal customers can purchase your products and get them delivered to their doorstep per their preferred time. Yes, we have a full-fledged, ready-to-go logistics and delivery set-up right here in Singapore.</p></div>
+    <div style="width: 80%; margin: 0 auto;"><%=image_tag("/assets/store/how_it_works.png", :width => "100%")%></div>
+</div>
+
+<div class="new-business-shipli">
+    <h1 id="order-fulfilment-header">Order Fulfilment</h1>
+    <div>
+    <p>We have built our platform in such a way that you, the retailer, have full control over pricing, inventory, order processing status, and promotions. Our platform is accessible to customers through our web front, as well using our very own interactive iPhone and iPad applications.</p></div>
+    
+        <h5>Order Fulfilment: Pickup at store</h5>
+        <%=image_tag("/assets/store/pickupatstore.png", :width => "100%" )%>
+        <h5>Order Fulfilment: Home delivery</h5>
+        <%=image_tag("/assets/store/deliverybyanchanto.png", :width => "100%")%>
+     
+</div>
+
+
+<div class="new-business-shipli">
+    <h1 id="faq-header" >FAQs</h1>
+    
+        <table class="faq-table" style="margin-top: 10px;">
+            <tr><td><div>1</div></td><td><div class="faq-question">What is Anchanto, and what is relation with www.ship.li?</div><div class="faq-answer">Anchanto Pte Ltd is Singapore based company focused on online commerce. www.ship.li is product created, operated and owned by Anchanto Pte Ltd.</div></td></tr>
+            <tr><td><div>2</div></td><td><div class="faq-question">Do I need to be a brick and mortar retail store to join www.ship.li?</div><div class="faq-answer">Yes, we prefer that you have a brick and mortar presence as our focus is on helping offline business grow via online channel.</div></td></tr>
+            <tr><td><div>3</div></td><td><div class="faq-question">How is the order fee calculated?</div><div class="faq-answer">The Order Fee is calculated as a % of the total amount paid by the customer after discount.  Order Fees vary for different categories. For detail fees structure please mail us on marketing@anchanto.com.</div></td></tr>
+            <tr><td><div>4</div></td><td><div class="faq-question">Are there any hidden fees for retailers other than Order Fees?</div><div class="faq-answer">Absolutely not. We simply charge Order Fees. However, the re-collection and refund fees are charged if we cannot collect products from your store at the agreed time or the product we receive from you is faulty, damaged or non-working in original condition.</div></td></tr>
+            <tr><td><div>5</div></td><td><div class="faq-question">Do I need to pay additional fees for my store banner or location information?</div><div class="faq-answer">No. You can upload all your brand, store and social media information on your ship.li retailer’s page available at www.ship.li/YourStoreName, we want you to share as much information as you can; it is fully free.</div></td></tr>
+            <tr><td><div>6</div></td><td><div class="faq-question">Does the retailer decide the selling price?</div><div class="faq-answer">Yes. We do not interfere in pricing. However, we would like the retailer to keep pricing competitive and it must be same or lower than in-store pricing.</div></td></tr>
+            <tr><td><div>7</div></td><td><div class="faq-question">Does consumer pay for delivery fees?</div><div class="faq-answer">Orders of S$88 and above qualify for free delivery, below that consumers pay an S$8 delivery fees. FYI – S$88 for the entire basket from multiple retailers.</div></td></tr>
+            <tr><td><div>8</div></td><td><div class="faq-question">Which products appear first in the category listing on www.ship.li?</div><div class="faq-answer"> Listing appears by default by the lowest price first, however customers have the option to sort it by Name or Date of Listing.</div></td></tr>
+            <tr><td><div>9</div></td><td><div class="faq-question">Is Anchanto planning to have Ads and Premium listings on site?</div><div class="faq-answer">No, we will not have ad banners and premium listings on site.</div></td></tr>
+            <tr><td><div>10</div></td><td><div class="faq-question">Which products get featured on the home page?</div><div class="faq-answer">Our marketing team works on identifying best contents on the home page and the platform. They are generally selected based on the marketing campaign we are running, customer response and season.</div></td></tr>
+            <tr><td><div>11</div></td><td><div class="faq-question">Do I need to give specific discounts for selling on www.ship.li?</div><div class="faq-answer"> We expect you to have competitive pricing not the deep discount except for warehouse sale.  We would like you to have a minimum of 4 promotions a year i.e. one per quarter but we let you decide on the discount/promotion.</div></td></tr>
+            <tr><td><div>12</div></td><td><div class="faq-question">Can overseas customers buy on www.ship.li and get products shipped?</div><div class="faq-answer">Overseas customers can browse products on ship.li but as of now we do not support international shipping. It’s in our roadmap; we will come back to you once we are ready on this.</div></td></tr>
+            <tr><td><div>13</div></td><td><div class="faq-question">When and how will I get paid for the products sold?</div><div class="faq-answer">Customer can raise dispute or return order within 14 days from the date of delivery. We pay you once the return period is over i.e. on the 15th day from delivery. We can directly transfer you the amount to your bank account or to your PayPal account.</div></td></tr>
+            <tr><td><div>14</div></td><td><div class="faq-question">Do I need to sign a contract to be on www.ship.li?</div><div class="faq-answer">Yes. We need your authorization to sell your products on our platform.  We have put together the standard terms and conditions in our seller’s contract which needs to be signed before we sell your products.</div></td></tr>
+            <tr><td><div>15</div></td><td><div class="faq-question">How will I upload/list the inventories?</div><div class="faq-answer">There are two ways to achieve this. We provide you with an iPad application to login and upload your products information. Alternatively you can login to www.ship.li and upload product information.</div></td></tr>
+            <tr><td><div>16</div></td><td><div class="faq-question">Does Anchanto review and approve my product listing before publishing it?</div><div class="faq-answer">Yes. We want to make sure www.ship.li remains clean and accurate.  Our retailer relationship management team will review and approve your product listing swiftly.</div></td></tr>
+            <tr><td><div>17</div></td><td><div class="faq-question">How would our store staff know about the orders being picked up by a customer?</div><div class="faq-answer">Your business and store staff will have separate access to our backend system. As soon as a customer orders your product, a notification email will be sent to your team regarding the order. Also, they will be able to see the order details on business.ship.li once logged in. Once your staff has picked and packed the customer’s order they will be able to print the invoices.</div></td></tr>
+            <tr><td><div>18</div></td><td><div class="faq-question">When will Anchanto pick-up the orders from our store/warehouse?</div><div class="faq-answer">Our collection fleet collects the order/products from your designated warehouse or store during the first half of the day. e.g. On Wednesday we will collect the products/orders received from 10 AM Tuesday till 9:50 AM Wednesday. Those orders are grouped and delivered on the same day or the next day by our delivery fleet. You will have to keep the orders/product ready for collection by our collection team.</div></td></tr>
+            <tr><td><div>19</div></td><td><div class="faq-question">What if the specific product I am selling is out-of-stock?</div><div class="faq-answer">We will provide you with a ‘User Interface’ (UI) to keep track of the listed products and quantity. You can update the product status on www.ship.li to “out of stock” and change it back to “in stock” once you have your product back at the store.</div></td></tr>
+            <tr><td><div>20</div></td><td><div class="faq-question">What if most of my products are out-of-stock?</div><div class="faq-answer">If most of your products are out-of-stock, we will contact you to understand situation and find the way forward.</div></td></tr>
+            <tr><td><div>21</div></td><td><div class="faq-question">What if a customer returns an order fully or partially?</div><div class="faq-answer">There are products that will be able to be returned. However, there are some products that will not be able to due to hygienic concerns. We accept the returns of products if unused and are in its original packing; however our customer support team will try to understand other reasons of return. If returned products are in acceptable condition, we will send back those products to you and give the refund.</div></td></tr>
+            <tr><td><div>22</div></td><td><div class="faq-question">Can a customer cancel order once it is placed?</div><div class="faq-answer">No, a customer cannot cancel the order once it is placed and when a confirmation email is sent.</div></td></tr>                       
+            <tr><td><div>23</div></td><td><div class="faq-question">Can I create new and sub category to list my products under it?</div><div class="faq-answer"> No. Each retailer has specific allocated categories to sell in. You can upload products only in the categories we have initially finalized. However please give us a call or email to our retailer relationship team in case you have new products in additional categories. They will work with you to allocate new categories to your account.</div></td></tr>            <tr><td><div>24</div></td><td><div class="faq-question">Are products/orders insured while in the logistics flow?</div><div class="faq-answer">Yes. All our logistics and warehouse operations are fully insured.</div></td></tr>            <tr><td><div>25</div></td><td><div class="faq-question">How can I signup on www.ship.li ?</div><div class="faq-answer"> We would love to you have you on board as one of our category partner. Please send us email at marketing@anchanto.com or give us a call at + 65 68229476 we will be happy to assist you in registration process.</div></td></tr>
+        </table>
+
+   
+    
+    <div class="register-shipli"><button >Register now</button></div>
+    
+    
+</div>
+
+
+
+<script type="text/javascript">
+  $('#business-button').click(function() {  
+    var valuesToSubmit = $('form').serialize();    
+    if(validate()){
+      $.ajax({
+        type: 'POST',
+        url: $('form').attr('action'), //sumbits it to the given url of the form
+        data: valuesToSubmit,
+        dataType: "JSON" // you want a difference between normal and ajax-calls, and json is standard
+      }).success(function(json){
+        if(json.register == true)
+          $(".success-message").html('<div style="font-size: 15px;"><div style="font-family: Pacifico;">Thank You for your interest in Ship.li.</div><div style="font-family: Pacifico;">Our business team will contact you shortly. <span style="color: red;">:)</span></div></div>');
+        $("form").each(function(){
+          this.reset(); });
+        });
+    }
+  });
+  function validate(){
+    $(".error").remove();
+    if($("#seller_business_name").val()==""){
+      $("#seller_business_name").after("&nbsp;<span class='error' style='color :red;'>Please Enter Name *</span>");
+      $("#seller_business_name").focus(); 
+      return false;
+    }else if($("#seller_contact_person_name").val()==""){
+      $("#seller_contact_person_name").after("&nbsp;<span class='error' style='color :red;'>Please Enter Name *</span>");
+      $("#seller_contact_person_name").focus(); 
+      return false;
+    }else if($("#seller_contact_person_email").val()==""){
+      $("#seller_contact_person_email").after("&nbsp;<span class='error' style='color :red;'>Please Enter Name *</span>");
+      $("#seller_contact_person_email").focus(); 
+      return false;
+    }else if($("#seller_phone").val()==""){
+      $("#seller_phone").after("&nbsp;<span class='error' style='color :red;'>Please Enter Name *</span>");
+      $("#seller_phone").focus(); 
+      return false;
+    }else
+    return true;
+  }
+
+
+
+$(document).ready(function(){
+
+slider = $('.bxslider-bussiness-home').bxSlider({
+      mode: 'fade',
+      captions: true,
+      auto: true,
+      controls: true,
+      pager: false,         
+      prevSelector: '#slider-prev',
+      nextSelector: '#slider-next',
+      prevText: '',
+      nextText: '',
+      pause: 9000,
+      responsive: false,
+      maxSlides: 4
+    }); 
+   
+    $('.register-shipli button, #sign-up-login').click(function(){
+        //$('#seller_business_name').focus().animate( 500);
+        var focusElement = $("#seller_business_name");
+        ScrollToTop(focusElement, function() { focusElement.focus(); }, 120); 
+    });
+
+    $('#sell-on').click(function(){       
+        var focusElement = $("#sell-on-header");
+        ScrollToTop(focusElement, function() { focusElement.focus(); } , 100); 
+    });
+
+     $('#how-it-works').click(function(){       
+        var focusElement = $("#how-it-works-header");
+        ScrollToTop(focusElement, function() { focusElement.focus(); } , 100); 
+    });
+    
+     $('#faq').click(function(){       
+        var focusElement = $("#faq-header");
+        ScrollToTop(focusElement, function() { focusElement.focus(); } , 100); 
+    });
+
+    $('#order-fulfil').click(function(){       
+        var focusElement = $("#order-fulfilment-header");
+        ScrollToTop(focusElement, function() { focusElement.focus(); } , 100); 
+    }); 
+    
+});
+
+
+  $(document).on('click','.bx-next, .bx-prev',function() {         
+    slider.stopAuto();
+    slider.startAuto();
+  }); 
+
+
+function ScrollToTop(el, callback , pos) { 
+    $('html, body').animate({ scrollTop: $(el).offset().top - pos }, 'slow', callback);
+} 
+</script>
+
+<style>
+  .sub-taxon-responsive  li{ font-size: 12px; list-style-type: none; }
+  .sub-taxon-responsive li:before{ content:"-"; position:relative; left: -5px;}  
+  .taxons-list-responsive .main-taxon-list{margin-left: 32px;}
+
+  #slider-next {
+    right: 30px;
+  }
+</style>

@@ -1,0 +1,67 @@
+<%if params[:beta_users].present?%>
+  <%= render :partial => 'beta_users', :locals => {:users => @beta_users}%>
+<%else%>
+  <% content_for :page_title do %>
+    <% if @users.present? %>
+        <%= Spree.t(:listing_users) %>
+    <% else %>
+      <p> No user found </p>
+    <% end %>
+  <% end %>
+  <% content_for :page_actions do %>
+<!--     <li>
+      <%#= button_link_to "#{Spree.t(:beta_users)}-(#{Spree::BetaUser.count})", admin_users_path(:beta_users => true), :id => 'admin_beta_users_link' %>
+    </li> -->
+    <li>
+      <%= button_link_to Spree.t(:new_user), new_object_url, :icon => 'icon-plus', :id => 'admin_new_user_link' %>
+    </li>
+<!--     <li>
+      <%#= button_link_to Spree.t(:revoke_delete_user), admin_users_path(:revoke_delete_user => true), :icon => 'icon-plus', :id => 'admin_new_user_link' %>
+    </li> -->
+  <% end %>
+  <div class="custom_responsive CSSTableGenerator">
+  <table class="" id="listing_users" data-hook>
+    <thead>
+      <% if @collection.present? %>
+        <tr data-hook="admin_users_index_headers">
+          <th>Name</th>
+          <th>User</th>
+          <th>Roles</th>
+          <th width="60">Action</th>
+        </tr>
+      <% end %>
+    </thead>
+    <tbody>
+      <% @collection.each do |user|%>
+        <tr id="<%= spree_dom_id user %>" data-hook="admin_users_index_rows" class="<%= cycle('odd', 'even')%>">
+          <td class='user_email'><%= user.name %></td>
+          <td class='user_email'><%= user.email %></td>
+	      <td class='user_email'><%= user.spree_roles.map(&:name).join(", ").capitalize %></td>
+          <td>
+            <%= link_to_edit user, :no_text => true %>
+            <%#= link_to_delete user, :no_text => true %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+  <%= paginate @users %>
+  <% content_for :sidebar_title do %>
+      <%= Spree.t(:search) %>
+  <% end %>
+
+  <% content_for :sidebar do %>
+    <div class="box align-center" data-hook="admin_users_index_search">
+      <%= search_form_for [:admin, @search] do |f| %>
+        <div class="field">
+          <%= f.label Spree.t(:email) %> <br>
+          <%= f.email_field :email_cont, :class => 'fullwidth' %>
+        </div>
+        <div data-hook="admin_users_index_search_buttons">
+          <%= button Spree.t(:search), 'icon-search' %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<%end%>

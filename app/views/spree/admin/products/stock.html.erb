@@ -1,0 +1,157 @@
+<% content_for :page_actions do %>
+  <li><%= button_link_to Spree.t(:back_to_products_list), session[:return_to] || admin_products_url, :icon => 'icon-arrow-left' %></li>
+<% end %>
+
+<%= render :partial => 'spree/admin/shared/product_sub_menu' %>
+
+<%= render :partial => 'spree/admin/shared/product_tabs', :locals => { :current => 'Stock Management' } %>
+
+<%= render :partial => 'spree/shared/error_messages', :locals => { :target => @product } %>
+
+<div id="add_stock_form">
+  <%#= render 'add_stock_form' %>
+</div>
+
+<div class="custom_responsive">
+  <table class="index" id="listing_product_stock">
+    <colgroup>
+      <col style="width: 15%" />
+      <col style="width: 85%" />      
+    </colgroup>
+    <thead>
+      <tr data-hook="admin_product_stock_management_index_headers">        
+      </tr>
+    </thead>
+    <tbody>
+      <% @variants.each_with_index do |variant, index| %>
+      <% if variant.stock_items.present? %>
+        <tr id="<%= spree_dom_id variant %>" data-hook="admin_product_stock_management_index_rows" class="<%= cycle('odd', 'even') %>">
+          <tr>
+            <td colspan=2 class="variant_heading">
+              <% if variant.options_text.present? %>
+                <b><%= variant.options_text %></b>
+              <% else %>
+                <b><%= @product.name %></b>
+              <% end %>  
+            </td>
+          </tr>         
+          <td align="center">            
+            <% if variant.images.present? %>
+              <%= image_tag variant.images.first.attachment.url(:mini) %>
+            <% end %>
+          </td>
+          <td>
+            <table class="custom_stock_table">
+              <colgroup>
+                <col />
+                <col />
+                <col style="width:32%"/>                
+                <col />
+                <col />
+              </colgroup>
+              <tbody>
+                <% variant.stock_items.each do |item| %>
+                  <% next unless @stock_locations.include?(item.stock_location) %>
+                    <tr id="stock-item-<%= item.id %>">
+                      <td><%= item.stock_location.name %></td>
+                      <td><b>Stock Count: </b><%= item.count_on_hand %></td>
+                      <td>      
+                        <%= form_for [:admin, Spree::StockMovement.new], url: admin_stock_items_path do |f| %>
+                          <div id="<%= spree_dom_id variant %>-stock-item-<%= item.id %>" onclick="change_sign_val(this.id)"  class='custom_label'>
+                            <div class="add-stock-qty plus">
+                              <i class="icon-plus"></i>
+                            </div>
+                            <div class="subtract-stock-qty minus" style="display:none;">
+                              <i class="icon-minus"></i>
+                            </div>
+                            <input id="input-<%= spree_dom_id variant %>-stock-item-<%= item.id %>" type="hidden" value="+"/>
+                          </div>  
+                          <div class="qty_div">
+                            <input type="number" id="quantity-<%= spree_dom_id variant %>-stock-item-<%= item.id %>" min="1" value="1" class="custom_width"   onchange="check_sign(this.id)" pattern="\d*"/>
+                            <%= f.hidden_field :quantity, class: ' fullwidth', value: 1, :class => "#{spree_dom_id variant}-stock-item-#{item.id}"%>                             
+                            <%= button Spree.t(:done), 'icon-plus' %>
+                            <input type="hidden" value="<%= item.stock_location.id%>" name="stock_location_id">
+                            <input type="hidden" value="<%= variant.id%>" name="variant_id">
+                          </div>                                         
+                        <% end %>                        
+                      </td>
+                      <td>
+                        <%#= link_to "", [:admin, item], method: :delete, remote: true, confirm: Spree.t(:are_you_sure), class: "icon_link with-tip icon-trash custom_title",  title: "Delete" %>
+                      </td>
+                      <td>
+                        <%= form_for :stock, :url => out_of_stock_admin_stock_item_path(item), :html => {:onsubmit => "return popUpAlert(#{item.virtual_out_of_stock?}, '#{item.variant.try(:sku)}', '#{item.stock_location.name}')"} do |f|%>
+                          <input type="hidden" value="<%=variant.id%>" name="variant_id" />
+                          <input type="hidden" value="<%= @product.id %>" name="product_id" />
+                          <%if item.virtual_out_of_stock?%>
+                            <%= button "Make it Available", 'icon-ok' %>
+                          <%else%>
+                            <%= button "Make it Out of Stock", 'icon-remove' %>
+                          <%end%>
+                        <% end %>
+                      </td>
+                    </tr>                                        
+                  <% end %>
+                </tbody>
+              </table>
+            </td>
+            <% reset_cycle("stock_locations") %>
+          <% end %>
+        </tr>
+
+<tr>
+  <td colspan=2 class="OOS_global" >
+
+  </td>
+</tr>
+
+        <%if index == @variants.size - 1 %>
+          <tr>
+            <td colspan=2 class="OOS_global">
+            <%= form_for :stock, :url => out_of_stock_globally_admin_stock_items_path, :html => {:id => "make_product_out_of_stock"} do |f|%>
+                  <input type="hidden" value="<%=variant.id%>" name="variant_id" />
+                  <input type="hidden" value="<%= @product.id %>" name="product_id" />
+                  <%if @product.out_of_stock_globally?%>
+                    <input type="hidden" value="false" name="status" />
+                    <%= button "Make it Available (Globally)", 'icon-ok' %>
+                  <%else%>
+                    <input type="hidden" value="true" name="status" />
+                    <%= button "Out of Stock (Globally)", 'icon-remove' %>
+                  <%end%>
+                <% end %>
+              <%end%>
+            </td>
+        </tr>      
+      <% end %>
+    </tbody>
+  </table>   
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#make_product_out_of_stock").submit(function(){
+      <%if @product.out_of_stock_globally?%>
+        var c = confirm('<%=@product.name%> will be Available Globally, Are you sure?')
+      <%else%>
+        var c = confirm('<%=@product.name%> will be Out of Stock Globally, Are you sure?')
+      <%end%>
+      if(c==true){
+        return true;
+      }else{
+        return false;
+      }
+    });
+  })
+
+  function popUpAlert(status, variant_name, store){
+    if(status == true){
+      var c = confirm('This Action will make '+variant_name+ ' product Available in ship.li for '+store+ ' store, Are you sure?');
+    }else{
+      var c = confirm('This Action will make '+variant_name+ ' Out of Stock from ship.li for  '+store+ ' store, Are you sure?');
+    }
+    if(c==true){
+      return true;
+    }else{
+      return false;
+    }
+  }
+</script>

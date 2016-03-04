@@ -1,0 +1,4 @@
+  <div class="alpha columns">
+  	<label for="seller">Market Places</label><span class="required">*</span><br />
+ <%= select_tag "market_place_id", options_for_select(@market_places.collect {|p| [ p['name'], p['id'] ] }), :name=>'market_place_id', :style => 'margin-top:4px;',class: 'select2 product_seller_list' %>
+</div>

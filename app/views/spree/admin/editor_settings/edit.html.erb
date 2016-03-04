@@ -1,0 +1,41 @@
+<script>
+  $(document).ready(function() {
+    $("#current_editor").select2();
+    $("#ids").css('resize','none');
+  });
+</script>
+
+<%= render :partial => 'spree/admin/shared/configuration_menu' %>
+
+<% content_for :page_title do %>
+  <%= Spree.t("rich_editor") %>
+<% end %>
+
+<%= form_for(@config, :as => "editor_configuration", :url => spree.admin_editor_settings_path, :method => :put) do |form| %>
+  <fieldset id="preferences" class="no-top-border">
+    <%= form.field_container :current_editor do %>
+    <div class="twelve columns" style="margin-left:0px;">
+      <div class="three columns" style="margin-left:0px; margin-bottom:15px;">
+      <%= form.label(:current_editor, Spree.t('rich_editor_engine')) %><br/>
+      <%#= select_tag :current_editor, options_for_select(SpreeEditor::EditorEngines, @config[:current_editor]), :class => 'fullwidth'  %>
+    </div>
+</div>
+    <% end %>
+
+    <%= form.field_container :enabled do %>
+      <%#= preference_field_tag(:enabled,   @config[:enabled], :type => :boolean) %>
+      <%= form.label(:enabled, Spree.t(:enable_rich_editor)) %>
+    <% end %>
+
+    <%= form.field_container :ids do %>
+      <%= form.label(:ids, Spree.t(:rich_editor_ids_description)+": ") + tag(:br) %>
+      <%#= preference_field_tag(:ids,  @config[:ids], :type => :text) %>
+    <% end %>
+
+    <p class="form-buttons filter-actions">
+      <%= button Spree.t('update') %>
+      <%= Spree.t("or") %>
+      <%= link_to Spree.t("cancel"), edit_admin_general_settings_url, :class => 'button icon-remove' %>
+    </p>
+  </fieldset>
+<% end %>

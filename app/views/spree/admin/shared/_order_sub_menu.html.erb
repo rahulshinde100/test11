@@ -1,0 +1,100 @@
+<% content_for :sub_menu do %>
+<ul id="sub_nav" class="inline-menu" data-hook="admin_order_sub_tabs">
+  <% if true %>
+  	 <% if can? :index, Spree::Order%>
+	  <li class="tab-with-icon">
+	    <a class="icon_link with-tip order-list" href="/admin/orders"><span class="text">Order Tracker</span></a>
+	  </li>
+	  <% end %>
+	  <% if can? :partial_orders, Spree::Order%>
+		  <li class="tab-with-icon">
+		  	<% partial_order_count = get_order_count('partial') %>
+		      <a class="icon_link with-tip partial_list" href="/admin/orders/partial_orders">
+		    	<span class="text">Disputed List</span><span class="partial-order-count ">(<%= partial_order_count %>)</span>
+		    </a>
+		  </li>
+	 <%end%>
+	  <% if can? :complete_orders, Spree::Order%>
+		  <li class="tab-with-icon">
+		    <a class="icon_link with-tip completed_list" href="/admin/orders/complete_orders"><span class="text">Completed List</span></a>
+		  </li>
+	  <%end%>
+	  <% if can? :cancel_orders, Spree::Order%>
+		  <li class="tab-with-icon">
+		    <a class="icon_link with-tip cancelled_list" href="/admin/orders/cancel_orders"><span class="text">Cancelled List</span></a>
+		  </li>
+		  <%end%>
+      <% if can? :cancel_orders, Spree::Order%>
+          <% partial_cancel_counts = get_order_count('partial_cancel') %>
+          <li class="tab-with-icon">
+            <a class="icon_link with-tip disputed_cancel_list" href="/admin/orders/disputed_cancel_orders"><span class="text">Disputed Cancel List</span>
+              <span class="partial-order-count ">(<%= partial_cancel_counts %>)</span>
+            </a>
+          </li>
+      <%end%>
+  <% else %>
+	  <li class="tab-with-icon">
+	    <% order_tracker_counts = get_order_count('tracker') %>
+	    <a class="icon_link with-tip order-list" href="/admin/orders">
+	       <span class="text">Order Tracker<span class="order-count">(<%= order_tracker_counts[0] %>)</span></span><br />
+	    <span class="order-count">[<%= order_tracker_counts[1] %> + <%= order_tracker_counts[2] %>]</span></a>
+	  </li>
+	  <li class="tab-with-icon">
+	    <a class="icon_link with-tip partial_list" href="/admin/orders/partial_orders"><span class="text">Partial List</span><span class="order-count">(<%= get_order_count('partial')%>)</span><br />
+	    <span class="order-count"></span></a>
+	  </li>
+	  <li class="tab-with-icon">
+	    <% complete_counts = get_order_count('complete') %>
+	    <a class="icon_link with-tip completed_list" href="/admin/orders/complete_orders"><span class="text">Completed List</span><span class="order-count">(<%= complete_counts[0] %>)</span><br />
+	    <span class="order-count">[<%= complete_counts[1] %> + <%= complete_counts[2] %>]</span>
+	    </a>
+	  </li>
+	  <li class="tab-with-icon">
+	    <% cancel_counts = get_order_count('cancel') %>
+	    <a class="icon_link with-tip cancelled_list" href="/admin/orders/cancel_orders"><span class="text">Cancelled List</span><span class="order-count">(<%= cancel_counts[0] %>)</span><br />
+	    <span class="order-count">[<%= cancel_counts[1] %> + <%= cancel_counts[2] %>]</span>
+	    </a>
+	  </li>
+      <li class="tab-with-icon">
+        <% partial_cancel_counts = get_order_count('partial_cancel') %>
+        <a class="icon_link with-tip cancelled_list" href="/admin/orders/disputed_cancel_orders"><span class="text">Disputed Cancel List</span><span class="order-count">(<%= get_order_count('partial')%>)</span><br />
+        </a>
+      </li>
+  <% end %>
+</ul>
+<% end %>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	if(/oms/i.test(location.pathname))
+      {
+		$("ul#sub_nav li").removeClass('selected');
+		$(".oms-status").parent().addClass("selected");
+	}
+	else if(window.location.pathname == '/admin/orders' || window.location.pathname == '/admin' || window.location.pathname == '/admin/')
+      {
+		$("ul#sub_nav li").removeClass('selected');
+		$(".order-list").parent().addClass("selected");
+	}
+      else if(window.location.pathname == '/admin/orders/partial_orders')
+      {
+            $("ul#sub_nav li").removeClass('selected');
+            $(".partial_list").parent().addClass("selected");
+      }
+      else if(window.location.pathname == '/admin/orders/complete_orders')
+      {
+            $("ul#sub_nav li").removeClass('selected');
+            $(".completed_list").parent().addClass("selected");
+      }
+      else if(window.location.pathname == '/admin/orders/cancel_orders')
+      {
+            $("ul#sub_nav li").removeClass('selected');
+            $(".cancelled_list").parent().addClass("selected");
+      }
+    else if(window.location.pathname == '/admin/orders/disputed_cancel_orders')
+    {
+        $("ul#sub_nav li").removeClass('selected');
+        $(".disputed_cancel_list").parent().addClass("selected");
+    }
+});
+</script>

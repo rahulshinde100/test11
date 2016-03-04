@@ -1,0 +1,31 @@
+
+#scrollbar1 .viewport, #scrollbar2 .viewport { width: 410px; height: 200px; overflow: hidden; position: relative; }
+#scrollbar1 .overview, #scrollbar2 .overview  { list-style: none; position: absolute; left: 0; top: 0; }
+#scrollbar1 .thumb .end,#scrollbar1 .thumb, #scrollbar2 .thumb .end,#scrollbar2 .thumb { background-color:  #FFD266; }
+#scrollbar1 .scrollbar, #scrollbar2 .scrollbar { position: relative; float: right; width: 4px; }
+#scrollbar1 .track, #scrollbar2 .track  { background-color: #FFEEC4; height: 100%; width:6px; position: relative; padding: 0 1px; }
+#scrollbar1 .thumb, #scrollbar2 .thumb { height: 20px; width: 6px; cursor: pointer; overflow: hidden; position: absolute; top: 0; }
+#scrollbar1 .thumb .end, #scrollbar2 .thumb .end  { overflow: hidden; height: 5px; width: 13px; }
+#scrollbar1 .disable, #scrollbar2 .disable{ display: none; }
+.noSelect { user-select: none; -o-user-select: none; -moz-user-select: none; -khtml-user-select: none; -webkit-user-select: none; }
+
+
+scrollbar-locator{float: left;}
+#scrollbar-locator .viewport{ width: 200px; height: 120px; overflow: hidden; position: relative;  float: left;}
+#scrollbar-locator .overview { list-style: none; position: absolute; left: 0; top: 0; }
+#scrollbar-locator .scrollbar{ position: relative; float: right; width: 4px; }
+#scrollbar-locator .thumb { background-color:  #FFD266; }
+#scrollbar-locator .track{ background-color: #FFEEC4; height: 100%; width:6px; position: relative; padding: 0 1px; }
+#scrollbar-locator .thumb { height: 20px; width: 6px; cursor: pointer; overflow: hidden; position: absolute; top: 0; }
+#scrollbar-locator .thumb .end{ overflow: hidden; height: 5px; width: 13px; }
+#scrollbar-locator .disable { display: none; }
+
+
+/*.review-box .viewport{ width: 600px; height: 300px; overflow: hidden; position: relative;  float: left;}
+.review-box .overview { list-style: none; position: absolute; left: 0; top: 0; }
+.review-box .scrollbar{ position: relative; float: right; width: 4px; }
+.review-box .thumb { background-color:  #FFD266; }
+.review-box .track{ background-color: #FFEEC4; height: 100%; width:6px; position: relative; padding: 0 1px; }
+.review-box .thumb { height: 20px; width: 6px; cursor: pointer; overflow: hidden; position: absolute; top: 0; }
+.review-box .thumb .end{ overflow: hidden; height: 5px; width: 13px; }
+.review-box .disable { display: none; }*/

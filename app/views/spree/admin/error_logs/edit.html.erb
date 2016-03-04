@@ -1,0 +1,41 @@
+<script>
+  $(document).ready(function() { 
+    $("#error_log_status").select2(); 
+  });  
+</script>
+
+<%= render :partial => "spree/admin/reports/sub_menu_report"%>
+
+<% content_for :page_actions do %>
+  <li>
+    <%= button_link_to Spree.t(:back_to_logs_list), admin_error_logs_path, :icon => 'icon-arrow-left' %>
+  </li>  
+<% end %>
+
+<%= form_for [:admin, @spree_error_log], :method => :put do |f| %>
+  <fieldset class="no-border-top">
+    <div data-hook="admin_product_form_fields">
+      <div class="left three columns alpha" >    
+        <%= f.field_container :status do %>
+          <%= f.label :status, raw(Spree.t(:status) + content_tag(:span, ' *', :class => 'required')) %>
+          <%= f.select :status, [ 'New', 'Raised on GitHub', 'Resolved', 'Ignore', 'Other' ],{:selected => f.object.status}%>
+          <%= f.error_message_on :status %>
+        <% end %>
+      </div>
+    
+      <div class="left two columns alpha" >    
+        <%= f.field_container :git_reference do %>
+          <%= f.label :git_reference, raw(Spree.t(:git_reference) + content_tag(:span, ' *', :class => 'required')) %>
+          <%= f.text_field :git_reference, :class => 'fullwidth title', :require => true, :style => "width: 400px;" %>
+          <%= f.error_message_on :git_reference %>
+        <% end %>
+      </div>
+      <div style="clear:both"></div>    
+      <div class="form-buttons filter-actions actions" data-hook="buttons">
+        <%= button "Update Status", 'icon-ok' %>
+        <span class="or"><%= Spree.t(:or) %></span>
+        <%= link_to_with_icon 'icon-remove', Spree.t('actions.cancel'), admin_error_logs_path, :class => 'button' %>
+      </div>  
+    </div>    
+  </fieldset>
+<% end %>

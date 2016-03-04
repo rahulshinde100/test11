@@ -1,0 +1,17 @@
+<% @taxons.each do |taxon| %>
+  <% next if taxon.nil?  %>
+  <% products = @products.in_taxon(taxon) %> 
+  <%count = products.count%>
+   <% if count > 0 %>
+      <div class="prod-cat-box"> 
+          <hr class="legend-effect" />
+          <div class="cat-name-home"><span><%= taxon.name %></span></div>
+          <%= render :partial => 'spree/shared/product_new',:locals => {:products => products.limit(5), :taxon => taxon}%>
+          <div class="more-products">
+            <% if count > 5%>
+              <a href="<%=seo_url(taxon)%>">view more in <%= taxon.name %></a>  
+            <% end%>
+          </div>  
+      </div>
+   <%end%>
+<%end%>

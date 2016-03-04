@@ -1,0 +1,93 @@
+
+<%= render :partial => 'spree/shared/error_messages', :locals => { :target => @order } %>
+<table id="cart-detail" data-hook>
+  <thead>
+    <tr class="cart-table-header"><th colspan="7">Shipping Bag</th></tr>
+    <% if @order.line_items.count - @order.pickup_items.count==0%>
+    <tr class="empty-box"><td colspan="7">Your Shipping bag is empty. <%= link_to Spree.t(:continue_shopping), products_path %></td></tr>
+    </thead>
+    <%else%>
+        <tr data-hook="cart_items_headers">
+          <th class="cart-item-description-header-ok" colspan="2"><%= Spree.t(:item) %></th>
+          <th class="cart-item-price-header"><%= Spree.t(:price) %></th>
+          <th class="cart-item-quantity-header"><%= Spree.t(:qty) %></th>
+          <th class="cart-item-total-header" colspan="2" align="right"><%= Spree.t(:total) %></th>
+          <th class="cart-item-delete-header"></th>
+        </tr>
+      </thead>
+      <tbody id="line_items" data-hook class="cart-detail">
+        <%= order_form.fields_for :line_items do |item_form| %>
+          <%next if item_form.object.variant.nil?%>
+          <%= render :partial => 'line_item', :locals => { :variant => item_form.object.variant, :line_item => item_form.object, :item_form => item_form } unless item_form.object.is_pick_at_store %>
+        <% end %>
+      </tbody>
+      <%= render "spree/orders/adjustments" unless @order.adjustments.eligible.blank? unless @order.pickup_items.present?%>
+      <%end%>
+</table>
+
+<div class="clearboth" style="margin-top: 50px;"></div>
+<%if @order.pickup_items.present?%>
+<table id="cart-detail" data-hook class="cart-detail">
+  <thead>   
+    <tr class="cart-table-header"><th colspan="7">Picking Bag</th></tr>
+    <% if @order.pickup_items.blank?%>
+        <tr class="empty-box"><td colspan="7">Your Picking bag is empty. <%= link_to Spree.t(:continue_shopping), products_path %></td></tr>
+    </thead>
+    <%else%>
+        <tr data-hook="cart_items_headers">
+          <th class="cart-item-description-header-ok" colspan="2"><%= Spree.t(:item) %></th>
+          <th class="cart-item-price-header"><%= Spree.t(:price) %></th>
+          <th class="cart-item-quantity-header"><%= Spree.t(:qty) %></th>
+          <th class="cart-item-total-header" colspan="2" align="right" ><%= Spree.t(:total) %></th>  
+          <th class="cart-item-delete-header"></th>
+        </tr>
+      </thead>
+      <tbody id="line_items" data-hook class="cart_detail_pickup">
+        <%= order_form.fields_for :line_items do |item_form| %>
+          <%next if item_form.object.variant.nil?%>
+          <%= render :partial => 'line_item_pickup', :locals => { :variant => item_form.object.variant, :line_item => item_form.object, :item_form => item_form } if item_form.object.is_pick_at_store %>
+        <% end %>
+      </tbody>
+     <%end%>
+  <%= render "spree/orders/adjustments" unless @order.adjustments.eligible.blank? %>
+</table>
+<%end%>
+
+
+<script type="text/javascript">
+$(function(){
+    $(".cart-item-quantity .subtract").click(function(){ 
+        var this_input_val = parseFloat($(this).parent().find('.line_item_quantity').val());
+        if(this_input_val > 1)
+        $(this).parent().find('.line_item_quantity').val(this_input_val - 1);        
+    });
+
+     $(".cart-item-quantity .add").click(function(){ 
+        var this_input_val = parseFloat($(this).parent().find('.line_item_quantity').val());
+        var limit = parseFloat($(this).parent().find("#variant_quantity").val());
+        console.log(limit);
+        console.log(this_input_val);
+        if(this_input_val <= limit){
+            $(this).parent().find('.line_item_quantity').val(this_input_val + 1);        
+        }
+    });
+
+     $(".product-actions .delete-item").click(function(){
+        var id = $(this).attr('id');
+        $("input."+id).val(0);
+        $("input."+id).closest('form').submit();
+
+     });
+
+     $(".move-to-shipping-bag").click(function(){
+        var id = $(this).attr('id');
+        console.log(id)
+        $("#is_pick_at_store_"+id+"_pack").val(false);
+        $("#stock_location_"+id+"_pack").val('');
+        $("#stock_location_"+id+"_pack").closest('form').submit();
+     });
+})
+</script>
+
+
+<%= render :partial => 'change_store_map' if @order.pickup_items.present?%>

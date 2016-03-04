@@ -1,0 +1,45 @@
+<a href="javascript:void(0);" onclick="closePopup('seller_products');" class="close-link red">x</a>
+<br />
+<fieldset id = "select_products">
+  <legend align='center'>Listing :: Select Products</legend>
+  <% if @products.present? %>
+<div class="custom_responsive CSSTableGenerator">  
+  <table class="index sortable">
+    <thead>
+      <tr data-hook="products_header">
+        <th width="3%">
+          <input type="checkbox" id="select_all" onclick="selectUnselectAllSkus(this);">
+        </th>
+        <th>SKU</th>
+        <th>Name</th>
+      </tr>
+    </thead>
+    <tbody id='listing_products'>
+      <% @products.each_with_index do |product, index| %>
+        <tr id="<%= spree_dom_id product %>" data-hook="products_row" class="<%= cycle('odd', 'even')%>" height="18">
+          <td>
+             <input type="checkbox" id="product_ids_<%= product.id %>" name="product_ids[<%= product.id %>]" value=<%= product.sku %> onclick="checkAllSelected(this);" >
+          </td>
+          <td>
+             <%= product.sku %>
+          </td>
+          <td>
+             <%= product.name %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>  
+<% else %>
+  <div class="no-objects-found field" style="text-align: center;">
+    <h2>No products found for this seller</h2>
+  </div>
+<% end %>
+<%= paginate @products, :remote => true %>
+</fieldset>
+<div class="btn" style="text-align: center;">
+    <%= button_tag "Confirm" , :onclick=>"selectSKUs();" %>
+</div>
+<br />
+<br />

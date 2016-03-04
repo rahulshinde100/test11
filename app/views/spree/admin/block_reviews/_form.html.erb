@@ -1,0 +1,24 @@
+
+  <p class="review_review_field">
+    <%= f.label :block_comment %><br />
+    <%= f.text_area :block_comment, :wrap => "virtual", :rows => "10", :cols => "50" %>
+  </p>
+
+  <p>&nbsp;</p>
+    
+  <p class="review_submit">
+    <%= f.submit "Submit Blocked Comment", :class => "button bg_darkfirst" %>
+  </p>
+
+<script>
+    $(document).ready(function(){
+        $('.bg_darkfirst').click(function(){
+            if($('#block_reviews_block_comment').val() == "")
+            {
+                alert("Please fill blocked comment")
+                return false;
+            }
+            
+        });
+    });
+</script>

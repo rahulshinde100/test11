@@ -1,0 +1,67 @@
+<div id="reviews">
+  <% if Spree::Reviews::Config[:include_unapproved_reviews] == false%>
+    <p class="reviews-none"><%= Spree.t('no_reviews_available')%></p>
+  <% else %>
+    <% if spree_current_user.present? %>
+        <%= render :partial => 'spree/shared/rating', :locals => {:product => @product, :review => 0} %>
+        <div class="clearboth" style="height: 30px;"></div>
+         <div class="review-box">
+            <div class="scrollbar">
+                <div class="track" id="scroll">
+                  <div class="thumb">
+                    <div class="end">
+                    </div>
+                  </div>
+                </div>
+              </div>
+                <div class="viewport">
+                    <div class="overview">
+                        <% for review in (Spree::Reviews::Config[:track_locale] ? @product.reviews.localized(I18n.locale) : @product.reviews).self_unapproved(spree_current_user,@product) %>
+                          <%= render :partial => 'spree/shared/review', :locals => {:review => review} %>
+                        <% end %>
+                     </div>
+                 </div>    
+        </div>
+    <% else %>
+        <%= render :partial => 'spree/shared/rating', :locals => {:product => @product, :review => 0} %>
+        <div class="clearboth" style="height: 30px;"></div>
+        <div class="review-box">
+            <div class="scrollbar">
+                <div class="track" id="scroll">
+                  <div class="thumb">
+                    <div class="end">
+                    </div>
+                  </div>
+                </div>
+              </div>
+                <div class="viewport">
+                    <div class="overview">
+                        <% for review in (Spree::Reviews::Config[:track_locale] ? @product.reviews.localized(I18n.locale) : @product.reviews).approval_filter %>
+                          <%= render :partial => 'spree/shared/review', :locals => {:review => review} %>
+                        <% end %>
+                     </div>
+                </div>     
+        </div>
+   <% end%>
+  <% end %>
+   <div class="clearboth"></div>  
+  <% if !Spree::Reviews::Config[:require_login] || spree_current_user %>
+    <%= link_to Spree.t('write_your_own_review'), new_product_review_path(@product), :class => "button",
+                :rel => "nofollow,noindex" , :id => 'write-review' , :onclick => "return false" %>
+  <% end %>
+ 
+</div>
+<% if !Spree::Reviews::Config[:require_login] || spree_current_user %>
+ <div id="post-review"><%= render :partial => "spree/reviews/form" , :locals => {:review => Spree::Review.new,:product => @product} %></div>  
+<% end %>
+
+
+
+<script>
+$('#write-review').click(function(){
+    $('#post-review').show();
+    $(this).hide();
+});  
+
+  
+</script>

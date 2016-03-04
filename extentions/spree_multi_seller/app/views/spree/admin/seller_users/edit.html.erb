@@ -1,0 +1,27 @@
+<%= render :partial => 'spree/admin/shared/seller_sub_menu', :locals => { :seller => @seller, :title => "Users" } %>
+<%= render :partial => 'spree/shared/error_messages', :locals => { :target => @seller_user } %>
+<%= form_for [:admin, @seller, @seller_user] do |f| %>
+  <fieldset data-hook="new_seller">
+    <legend align="center">Edit Seller User</legend>
+
+    <div data-hook="admin_user_form_roles" class="field">
+      <%= label_tag nil, Spree.t(:roles) %><span class="required">*</span>
+      <ul>
+        <% @roles.each do |role| %>
+        <% next unless ["seller_store", "seller"].include?(role.name) %>
+          <li>
+            <%= radio_button_tag 'user[spree_role_ids][]', role.id, @seller_user.user.spree_roles.include?(role), :id => "user_spree_role_#{role.name}", :required => true %>
+            <%= label_tag role.name == "seller" ? "Seller Admin" : "Store User" %>
+          </li>
+        <% end %>
+      </ul>
+      <%= hidden_field_tag 'user[spree_role_ids][]', '' %>
+    </div>
+
+    <div class="form-buttons filter-actions actions" data-hook="buttons">
+      <%= button "Update User", 'icon-ok' %>
+      <span class="or"><%= Spree.t(:or) %></span>
+      <%= link_to_with_icon 'icon-remove', Spree.t('actions.cancel'), admin_seller_seller_users_path(@seller), :class => 'button' %>
+    </div>
+  </fieldset>
+<%end%>

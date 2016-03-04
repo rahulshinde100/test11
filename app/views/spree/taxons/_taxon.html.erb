@@ -1,0 +1,38 @@
+<div class="taxon" data-hook="taxon">
+
+  <%if @seller.present?%>
+    <% count = @seller_products.in_taxon(taxon).uniq.count%>
+  <%else%>
+    <% count = taxon_product_count(taxon, @load_products.uniq)%>
+  <%end%>
+  
+  <% if count > 0 %>
+    <hr class="legend-effect-subtaxon"/>
+    <h5 class="subtaxon-title">
+      <%= link_to "#{taxon.name} (#{count})", seo_url(taxon), :class => 'breadcrumbs' %>
+    </h5>
+    <div id="product_by_cate_<%=taxon.id%>"></div>
+    <% if count > @limit%>
+      <div class="more-products">
+        <a href="<%=seo_url(taxon)%>">view more in <%= taxon.name %></a>
+      </div>
+    <% end %>
+  <%end%>
+</div>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+  $.ajax({
+    type: 'GET',
+    url: "/taxon/taxon_products?taxon_id=<%=taxon.id%>",
+    success: function(resp){
+      if(resp == ""){
+        $("#product_by_cate_<%=taxon.id%>").hide();
+      }else{
+        $("#product_by_cate_<%=taxon.id%>").html(resp);
+      }
+    }
+  });
+  });
+</script>

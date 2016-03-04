@@ -1,0 +1,118 @@
+<% @body_id = 'cart' %>
+
+<% if @order.line_items.empty? %>
+  <div data-hook="empty_cart">
+    <p><%= Spree.t(:your_cart_is_empty) %></p>
+    <p><%= link_to Spree.t(:continue_shopping), root_path, :class => 'button continue' %></p>
+  </div>
+<% else %>
+  <div data-hook="outside_cart_form" style="margin-top:28px;">
+    <%= form_for @order, :url => update_cart_path, :html => {:id => 'update-cart'} do |order_form| %>
+      <div data-hook="inside_cart_form">
+        <div data-hook="cart_items">
+          <%= render :partial => 'form', :locals => { :order_form => order_form } %>
+        </div>        
+        <div id="order-gift-block" class="links columns sixteen alpha omega">
+          <label for="order_send_as_gift">Send as GIFT</label>
+          <%= order_form.check_box :send_as_gift %>
+          <!-- <input type="checkbox" checked="false"> -->
+          <div class="clear-both" style="margin-top: 5px;"></div>
+          <%= order_form.text_area :greating_message, :rows => 4%>
+        </div>        
+        <div id="subtotal" data-hook class="columns sixteen alpha omega">
+          <h5><%= Spree.t(:subtotal) %>: <span class="order-total"><%= @order.display_total.to_html %></span></h5>
+        </div>                
+        <div class="links columns sixteen alpha omega" data-hook="cart_buttons">
+          <%= button_tag :class => 'primary', :id => 'update-button' do %>
+            <%= Spree.t(:update) %>
+          <% end %>
+          <%= button_tag :class => 'button checkout primary', :id => 'checkout-link', :name => 'checkout' do %>
+            <%= Spree.t(:checkout) %>
+          <% end %>
+        </div>      
+      </div>
+    <% end %>
+  </div>
+  <div id="empty-cart" data-hook>
+    <%= form_tag empty_cart_path, :method => :put do %>
+      <p id="clear_cart_link" data-hook>
+        <%= submit_tag Spree.t(:empty_cart), :class => 'button gray' %>
+        <%= Spree.t(:or) %>
+        <%= link_to Spree.t(:continue_shopping), root_path, :class => 'continue button gray' %>
+      </p>
+    <% end %>
+  </div>
+  <div class="ssl-paypal cart-page">
+    <%= image_tag "/assets/store/rapidssl_seal.gif", :id => "rapid-ssl" %>
+    <%= image_tag "/assets/store/paypal__secure.png", :id => "paypal-secure" %>
+  </div>
+<% end %>
+
+<script src="/js/css_browser_selector.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+  $(function(){
+    <% if @order.line_items.empty?%>
+      $("#link-to-cart").html("<a class='cart-info full' href='/cart'>Cart: (0)</a>");
+    <%else%>
+      $("#link-to-cart").html('<a class="cart-info full" href="/cart">Cart: (<%=@order.line_items.sum(&:quantity)%>)  <span class="amount"><%= @order.display_total.to_html%></span></a>');
+    <%end%>
+    if ($('#order-gift-block input[type="checkbox"]').is(':checked'))
+      $('#order-gift-block textarea').show();
+    $('#order-gift-block input[type="checkbox"]').change(function(){
+      if ($(this).is(':checked')) {
+        $('#order-gift-block textarea').show();
+        $('#order-gift-block textarea').focus();
+        $('#order-gift-block textarea').attr("required", "true");
+      } else {
+        $('#order-gift-block textarea').hide();
+        $('#order-gift-block textarea').val("");
+        $('#order-gift-block textarea').removeAttr("required");
+      }
+    });
+  });
+</script>
+
+<style>
+  #footer{display:none;}  
+
+  .win.webkit #empty-cart {
+    bottom: 301.3px;
+  }
+
+  .win.webkit #clear_cart_link button {
+    margin-top: -5.2px;    
+    padding-top: 8px;
+    font-size: 12px;
+    padding-bottom: 8px;
+  }
+
+  .win.webkit #clear_cart_link a {
+    margin-top: -14.2px;
+    height:14px;
+    padding-top: 9px;
+    padding-bottom: 10px;
+  }
+ 
+  .win.webkit #update-button, .win.webkit #checkout-link{
+    padding-top: 5px;
+    height: 33px;
+   } 
+
+  .mac.gecko #clear_cart_link button {
+    padding-bottom: 7px;
+  }
+
+  .mac.webkit #empty-cart {
+    bottom: 304px;
+  }
+
+  .mac.webkit #clear_cart_link button, .mac.safari #clear_cart_link button {
+    margin-top: -1px;
+  }
+
+  .mac.safari #clear_cart_link a {
+    padding-bottom: 6px;
+    padding-top: 9px;
+  }
+</style>

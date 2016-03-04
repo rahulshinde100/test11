@@ -1,0 +1,8 @@
+<div class="field alpha omega eight columns">
+  <label>Choose Sellers<%#= Spree.t('seller_rule.choose_sellers') %></label><br>
+  <input type='hidden' name='<%= param_prefix %>[seller_ids_string]' class='rule_attr seller_picker fullwidth ' required='true'  value='<%= promotion_rule.seller_ids.join(",") %>'>
+</div>
+
+<%= javascript_tag do %>
+    $('.seller_picker').sellerAutocomplete();
+<% end %>

@@ -1,0 +1,54 @@
+<% content_for :page_actions do %>
+  <li><%= button_link_to Spree.t(:back_to_products_list), session[:return_to] || admin_products_url, :icon => 'icon-arrow-left' %></li>
+<% end %>
+
+<%= render :partial => 'spree/admin/shared/product_sub_menu' %>
+
+<%= render :partial => 'spree/admin/shared/product_tabs', :locals => { :current => 'Title Management' } %>
+
+<%= render :partial => 'spree/shared/error_messages', :locals => { :target => @product } %>
+
+<div class="fullwidth">
+<% if @market_places.present? %>
+    <%@market_places.each_with_index do |mp, index|%>
+       <%
+          market_place = Spree::MarketPlace.find_by_id(mp)
+          @title_management = Spree::TitleManagement.where("product_id=? AND market_place_id=?", @product.id, market_place.id).first rescue nil
+       %>
+       <fieldset>
+       <legend class="fieldset-button columns twelve align-left"><a href="#" onclick="toggleDescriptionForm('mp_<%= index %>');" title="Click me..."><span class="columns one-third toggle-plus" id="toggle_<%= index %>">+</span> &nbsp; <span>Title :- <%= market_place.name %></span></a></legend>
+       <div class="description-body" id="mp_<%= index %>">
+       <% if @title_management.present? %>
+       <%= form_for [:admin, @title_management] do |f| %>
+         <div data-hook="admin_product_description" class="alpha omega twelve columns">
+            <%= f.field_container "title_"+"#{market_place.id.to_s}" do %>
+               <%= f.label :title, raw(Spree.t(:title) + content_tag(:span, '*', :class => 'required')) %><br />
+               <%= text_field "title", "#{market_place.id.to_s}", :value => @title_management.name %>
+               <%= f.error_message_on "title_"+"#{market_place.id.to_s}" %>
+            <% end %>
+            <div class="form-buttons filter-actions actions" data-hook="buttons">
+              <%= button Spree.t(:submit) %>
+            </div>
+            <br />
+         </div>
+       <%end%>
+       <% else %>
+           <div class="fullwidth no-objects-found">Product title is not available</div>
+       <% end %>
+       </div>
+       </fieldset>
+    <% end %>
+<% else %>
+   <div class="fullwidth no-objects-found">Please list product on Market Place</div>
+<% end %>
+</div>
+<script type="text/javascript">
+  $(document).ready(function(){
+	toggleDescriptionForm("mp_0");
+  });
+</script>
+<style type="text/css">
+  fieldset{
+    padding-bottom: 0px;
+  }
+</style>

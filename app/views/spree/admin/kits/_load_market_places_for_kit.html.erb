@@ -1,0 +1,2 @@
+<label for="market_place">Market Places</label><br />
+<%= select_tag "market_place_id", options_for_select(@market_places.collect {|p| [ p['name'], p['id'] ] }, @selected_mp_ids), :multiple=>"multiple", :name=>'market[place_id][]' %>

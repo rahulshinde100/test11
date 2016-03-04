@@ -1,0 +1,211 @@
+<% content_for :page_actions do %>
+  <% if !params[:unapprove].present? %>
+  <li id="new_product_link">
+    <%= button_link_to Spree.t(:new_product), new_object_url, { :remote => true, :icon => 'icon-plus', :id => 'admin_new_product' } %>
+  </li>
+  <li id="import-data" >
+    <span class="button icon-upload">Import Data</span>
+  </li>
+  <!--<li id="list-product">-->
+    <!--<span class="button icon-upload">Listing Product</span>-->
+  <!--</li>-->
+  <li id="export-file" >
+    <span class="button icon-download">Export Product List</span>
+  </li>
+  <li id="Fetch_fba_quantity" >
+    <%= button_link_to "S F Q", fetch_fba_quantity_products_path, {:icon => 'icon-download'} %>
+  </li>
+  <li id="search_product">
+    <span class="button icon-search">Search</span>
+  </li>
+  <% else %>
+    <%= button_link_to "Back to products list", admin_products_path, {:icon => 'icon-arrow-left'} %>
+  <% end %>
+<% end %>
+
+<!--------- Form for data import -->
+<div class="import-data" >
+  <fieldset style="max-height:180px;"><legend align="center">Product :: Import Data</legend>
+  <%= form_tag import_data_admin_products_path, :multipart => true, :method => :post do %>
+  <fieldset data-hook="upload_product" style="max-height:135px;">
+    <div class="alpha four columns set_margin">
+      <label for="action_name">Select Action</label><span class="required">*</span><br />
+      <%= select_tag "action_name", options_for_select([ "Import Products","Import Variants","Update Marketplace Details","Import Images", "Quantity Inflation" ], "Import Products"), class: 'select2 product_seller_list', :style => 'margin-top:2px;', :include_blank => false,:required => true %>
+    </div>
+    <div class="alpha four columns set_margin">
+      <%if spree_current_user.has_spree_role?("admin")%>
+          <label for="seller">Seller</label><span class="required">*</span><br />
+          <%= select_tag :seller_id, options_from_collection_for_select(Spree::Seller.is_active, "id", "name"), class: 'select2 fullwidth product_seller_list', :style => 'margin-top:2px;',:required => true %>
+      <%elsif spree_current_user.has_spree_role?("seller")%>
+          <%= hidden_field_tag :seller_id, spree_current_user.seller.id %>
+      <%end%>
+    </div>
+    <div id ="product_bulk_import" class="alpha two columns"></div>
+    <div class="omega six columns">
+      <label for="file">File</label><span class="required">*</span><br />
+      <%= file_field_tag :attachment, :style => 'float:left;margin-top:3px;', :required => true %>
+    </div>
+    <div class="alpha sixteen columns" style="margin-top:25px;">
+    <input type="submit" id="sub" value="Upload Products" class="button icon-upload"/>
+    <a id="sample_download" href="/sample-files/sample_products_import.xls" download="Sample Product Import.xls">&nbsp;
+      <i class="icon-cloud-download">Download Import Products sample .xls file</i>
+    </a>
+    </div>
+  </fieldset>
+  </fieldset>
+  <%end%>
+</div>
+
+<div class="export-file" >
+  <%= form_tag spree_current_user.has_spree_role?('seller') ? upload_product_admin_seller_path(spree_current_user.seller.id) : upload_product_admin_sellers_path, :multipart => true, :method => :post do %>
+  <fieldset data-hook="export_product" style="max-height:180px;">
+    <legend align="center">Product :: Export Product List</legend>
+    <%if spree_current_user.has_spree_role?("admin")%>
+      <div class="seller_selector alpha four columns">
+        <label for="seller">Seller</label><span class="required">*</span><br />
+        <%= select_tag :seller_id_export, options_from_collection_for_select(Spree::Seller.is_active, "id", "name"), class: 'select2 fullwidth product_seller_list', :style => 'margin-top:2px;' %>
+      </div>
+    <%elsif spree_current_user.has_spree_role?("seller")%>
+        <%= hidden_field_tag :seller_id_export, spree_current_user.seller.id %>
+    <%end%>
+    <div id ="product_bulk_export" class="alpha four columns"></div>
+    <br />
+    <div class="alpha sixteen columns" style="margin-top:25px;">
+     <input type="hidden" value='xls' name="xls" id="xls" />
+     <%= button Spree.t(:export_to_excel), 'icon-excel' %>
+    </div>
+  </fieldset>
+  <%end%>
+</div>
+
+<%= render :partial => 'spree/admin/shared/product_sub_menu' %>
+
+<% content_for :table_filter_title do %>
+      Product :: Search
+<% end %>
+
+<% content_for :table_filter do %>
+  <div data-hook="admin_products_sidebar">
+    <%= search_form_for [:admin, @search] do |f| %>
+        <%- locals = {:f => f} %>
+        <div data-hook="admin_products_index_search">
+          <% if params[:in_active].present? %>
+              <input type="hidden" name="in_active" id="in_active" value="true">
+          <% end %>
+           <% unless spree_current_user.has_spree_role?('seller')%>
+             <div class="alpha nine columns">
+              <div class="field">
+                <%= f.label :seller_id, "Seller" %><br />
+                <%= f.collection_select(:seller_id_eq, Spree::Seller.is_active, :id, :name, include_blank: "All") %>
+              </div>
+            </div>
+            <%end%>
+
+          <div class="alpha nine columns">
+            <div class="field">
+              <%= f.label :name_cont, Spree.t(:name) %>
+              <%= f.text_field :name_cont %>
+            </div>
+          </div>
+
+          <div class="four columns">
+            <div class="field">
+              <%= f.label :variants_including_master_sku_cont, Spree.t(:sku) %>
+              <%= f.text_field :variants_including_master_sku_cont %>
+            </div>
+          </div>
+
+          <div class="three columns omega">
+            <div class="field checkbox">
+              <label>
+                <%= f.check_box :deleted_at_null, {:checked => params[:q][:deleted_at_null].blank?}, '', '1' %>
+                <%= Spree.t(:show_deleted) %>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="clear"></div>
+
+
+        <div class="form-buttons actions filter-actions" data-hook="admin_products_index_search_buttons">
+          <%= button Spree.t(:search), 'icon-search' %>
+        </div>
+    <% end %>
+  </div>
+<% end %>
+
+<div id="new_product_wrapper" data-hook></div>
+
+<% if params[:unapprove].present? %>
+  <%= render :partial => "approval_request"%>
+<%else%>
+  <% if @collection.present? %>
+    <div class="custom_responsive CSSTableGenerator">
+      <table class="index" id="listing_products">
+        <thead>
+          <tr data-hook="admin_products_index_headers">
+            <th width="10"><%= Spree.t(:sku) %></th>
+            <th width="15"><%= Spree.t(:image)%></th>
+            <th>Product</th>
+            <%if spree_current_user.has_spree_role?("admin")%>
+              <th>Seller</th>
+            <%end%>
+            <th width="15">Stock</th>
+            <th width="20">Allocated Stock</th>
+            <th width="15">Price</th>
+            <th width="5">Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @collection.each do |product| %>
+            <tr <%= "style='color: red;'" if product.deleted? %> id="<%= spree_dom_id product %>" data-hook="admin_products_index_rows" class="<%= cycle('odd', 'even') %>">
+              <td><%= product.variants.present? ? product.variants.first.sku : product.sku rescue '' %></td>
+              <td><%= (mini_image(product) rescue "") %></td>
+              <td><%= link_to product.try(:name), edit_admin_product_path(product) %></td>
+              <%if spree_current_user.has_spree_role?("admin")%>
+                <td><%= link_to product.try(:seller).try(:name), admin_seller_path(product.seller.id)%></td>
+              <%end%>
+              <% fba_stock = fba_stock_calculate(product) %>
+              <td><%= raw fba_stock < 10 ? "<label style='color:red;font-weidth:bold;'>#{fba_stock}</label>" : fba_stock %></td>
+              <td>
+              	<% mp_stock=product_market_place_stock(product) %>
+              	<b>
+              	  <div class="one columns">Total-&nbsp;</div>
+              	  <div class="one columns"><%= raw (mp_stock.values.sum < 10 ? "<label style='color:red;font-weidth:bold;'>#{mp_stock.values.sum.to_s}</label>" : mp_stock.values.sum.to_s) %></div>
+              	</b>
+              	<% type = STOCKCONFIG[product.stock_config_type] == "default" ? STOCKCONFIG[product.seller.stock_config_type] : STOCKCONFIG[product.stock_config_type] %>
+              	<% if type == "flat_quantity" %>
+                  <% product.market_places.each do |mp| %>
+                    <% sp_count = product.stock_products.includes(:sellers_market_places_product).where("spree_sellers_market_places_products.market_place_id=? AND spree_sellers_market_places_products.product_id=?",mp.id, product.id).sum(&:count_on_hand) %>
+	                  <div class="break-line two columns"></div>
+	                  <div class="one columns"><%= mp.name + "- " %></div>
+	                  <div class="one columns"><%= raw (sp_count < 10 ? "<label style='color:red;font-weidth:bold;'>#{sp_count.to_s}</label>" : sp_count.to_s) %></div>
+                  <% end %>
+              	<% else %>
+	              <% mp_stock.keys.each do |key| %>
+	                <div class="break-line two columns"></div>
+	                <div class="one columns"><%= key + "- " %></div>
+	                <div class="one columns"><%= raw (mp_stock[key].to_i < 10 ? "<label style='color:red;font-weidth:bold;'>#{mp_stock[key].to_s}</label>" : mp_stock[key].to_s) %></div>
+	              <% end %>
+              	<% end %>
+              </td>
+              <td><%= product.display_price.to_html rescue '' %></td>
+              <td align="center" data-hook="admin_products_index_row_actions">
+                <%= link_to_edit product, :no_text => true, :class => 'edit' unless product.deleted? %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+    </table>
+ </div>
+  <% else %>
+    <div class="no-objects-found">
+      <%= Spree.t(:no_results) %>
+    </div>
+  <% end %>
+<%end%>
+
+<%= paginate @collection %>
+<div id="seller_products"></div>
+<div class="black_overlay"></div>

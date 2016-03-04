@@ -1,0 +1,103 @@
+<% content_for :page_title do %>
+   <%= Spree.t(:order_tracker) %>
+<% end %>
+
+<div id="order_list">
+   <%= render :partial=>"order_list" %>
+</div>
+
+<% content_for :page_actions do %>
+    <li id="search_orders">
+        <span class="button icon-search">Search</span>
+    </li>
+<br />
+<% end %>
+
+<% content_for :table_filter_title do %>
+      Order Tracker :: Search
+<% end %>
+
+<% content_for :table_filter do %>
+  <div data-hook="admin_orders_sidebar">
+        <%= form_for :order, :url => admin_orders_path, :method => :get do |f| %>
+            <% unless spree_current_user.has_spree_role?('seller')%>
+              <div class="field-block alpha five columns">
+                  <%= f.field_container :seller_id do %>
+                         <%= f.label :seller_id, "Seller:" %><br />
+                         <%= f.collection_select(:seller_id, @sellers, :id, :name, {:class=>'select2', :prompt=>"All", :selected=>@seller_id}) %>
+                         <%= f.error_message_on :seller_id %>
+                  <% end %>
+              </div>
+            <%end%>
+            <div class="field-block alpha five columns">
+                <%= f.field_container :market_place_id do %>
+                       <%= f.label :market_place_id, "Market Place:" %><br />
+                       <%= f.collection_select(:market_place_id, @market_places, :id, :name, {:class=>'select2', :prompt=>"All", :selected=>@market_place_id}) %>
+                       <%= f.error_message_on :market_place_id %>
+                <% end %>
+            </div>
+            <div class="field-block alpha five columns">
+                <%= f.field_container :fba_state do %>
+                       <%= f.label :fba_state, "FBA State:" %><br />
+                       <%= f.select :fba_state, options_for_select(@fba_states, @fba_state) %>
+                       <%= f.error_message_on :fba_state %>
+                <% end %>
+            </div>
+            <div class="field-block alpha five columns">
+                <%= f.field_container :search_text do %>
+                     <%= f.label :search_text, "Search Text" %>&nbsp;
+                     <%= f.text_field :search_text, :value => @search_text, :class => 'fullwidth', :size => 80 %>
+                <% end %>
+            </div>
+             <div class="field-block alpha five columns">
+               <%= f.field_container :order_date do %>
+                  <label>Start Date</label>
+                  <%= text_field_tag("created_at_gt")%>
+               <% end %>
+             </div>
+             <div class="field-block alpha five columns">
+               <%= f.field_container :order_date do %>
+                  <label>End Date</label>
+                  <%= text_field_tag("created_at_lt")%>
+               <% end %>
+             </div>
+             <div class="five columns omega">
+                <label>
+                  <%= "Customer Pickup" %>
+                  <%= f.check_box :is_pick_at_store, {:checked => @customer_pickup}, true, false %>
+                  
+                </label>
+             </div>
+
+            <div class="clear"></div>
+            <div class="form-buttons actions filter-actions" data-hook="admin_orders_index_search_buttons">
+                   <%= button Spree.t(:search), 'icon-search' %>
+            </div>
+        <% end %>
+  </div>
+<% end %>
+
+<%= render :partial => 'spree/admin/shared/order_sub_menu' %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#format').val('');
+    $("#created_at_gt").val('<%= params[:created_at_gt].to_date.strftime("%Y-%m-%d") rescue Time.zone.now.beginning_of_month.to_date%>');
+    $("#created_at_lt").val('<%= params[:created_at_lt].to_date.strftime("%Y-%m-%d") rescue Time.zone.now.beginning_of_day.to_date %>');
+
+    $('#created_at_gt').datepicker({
+      dateFormat: 'yy-m-dd',
+      maxDate:$("#created_at_lt").val(),
+      onSelect: function(dateText, inst){
+        $('#created_at_lt').datepicker('option', 'minDate', $(this).datepicker('getDate'));
+      }
+    });
+    $('#created_at_lt').datepicker({
+      dateFormat: 'yy-m-dd',
+      maxDate:0,
+      onSelect: function(dateText, inst){
+        $('#created_at_gt').datepicker('option', 'maxDate', $(this).datepicker('getDate'));
+      }
+    });
+  });
+</script>

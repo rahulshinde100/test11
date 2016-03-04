@@ -1,0 +1,83 @@
+<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script src="/js/handlebars-1.0.0.min.js"></script>
+<script src="/js/jquery.storelocator.js"></script>
+
+
+<div id="wrapper" data-hook class="container">
+  <div id="brand-first-row">
+    <div id="brand-logo">
+        <%= image_tag @seller.logo.nil? ? "logo/addidas-logo.jpg" : @seller.logo.url%>
+    </div>     
+    <div id="brand-slider">
+      <ul class="bxslider-my ">
+        <li><%= image_tag @seller.banner.nil? ? "slider/brand-banner1.jpg" : @seller.banner.url%></li>
+        <!-- <li><img src="/assets/slider/brand-banner2.jpg" /></li> -->
+      </ul>
+    </div>
+  </div>
+  <div class="clearboth brand-gap"></div>                
+  <div class="brand-left-part columns four" >
+    <h1 class="brand-title" itemprop="name"><%= @seller.name%></h1>
+    <div class="brand-store-address-block">
+      <div id="map-container">
+        <div id="loc-list">
+          <ul id="list"></ul>
+        </div>
+        <div id="map-box"> 
+          <div id="map"></div>
+          <div id="close-icon-div"><i class="icon-close"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="content" class="columns twelve brand-right-part" data-hook="" >
+    <div id="brand-desccription">
+      <div style ="max-height: 530px; overflow-x: hidden; overflow-y: auto;">
+        <%= raw @seller.description%>
+      </div>
+      <div data-hook="seller_products" class="seller-products">
+        <div data-hook="homepage_products">
+          <%= render :partial => 'spree/shared/seller_products', :locals => { :products => @products} %>
+        </div>
+      </div>  
+      <div id="store-locator-container"></div>
+    </div>
+  </div> 
+</div>       
+            
+<script type="text/javascript">
+  $(document).ready(function(){
+      $('.bxslider-my').bxSlider({
+          mode: 'fade',
+          captions: true,
+          auto: true,
+          controls: false
+      });
+
+      $('.carousel-244').bxSlider({
+          mode: 'fade',
+          captions: true,
+          auto: true,
+          controls: false
+      });
+
+
+      $('.carousel-products').bxSlider({
+        minSlides: 1,
+        maxSlides: 4,
+        useCSS: true,
+        slideWidth: 200,
+        slideMargin: 10,
+        auto: true,
+        autoHover: true,
+        controls: false,
+        /*touchEnabled: false*/
+    });
+    $('#map-container').storeLocator({'dataType': 'json', 'dataLocation': '<%=locations_seller_path(@seller)%>', 'slideMap': false, 'defaultLoc': true, 'defaultLat': 44.945863, 'defaultLng': -93.09538 , 'autoGeocode': true });
+  
+    $('#close-icon-div').click(function (){
+     $('#map-box').css('visibility', 'hidden'); 
+    });
+  });
+</script>   
+

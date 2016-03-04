@@ -1,0 +1,54 @@
+<%#= select_tag 'category[code]', options_for_select(@categories.collect {|p| [ p[:name], p[:category_code] ] }), :multiple=>"multiple" if @categories %>
+<div id="the-basics">
+  <input class="typeahead" type="text" id='category_name'>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	var substringMatcher = function(strs) {
+  return function findMatches(q, cb) {
+    var matches, substringRegex;
+
+    // an array that will be populated with substring matches
+    matches = [];
+
+    // regex used to determine if a string contains the substring `q`
+    substrRegex = new RegExp(q, 'i');
+
+    // iterate through the pool of strings and for any string that
+    // contains the substring `q`, add it to the `matches` array
+    $.each(strs, function(i, str) {
+      if (substrRegex.test(str)) {
+        matches.push(str);
+      }
+    });
+
+    cb(matches);
+  };
+};
+
+var states = function () {
+                            var tmp = null;
+                            $.ajax({
+                                'async': false,
+                                'type': "GET",
+                                'global': false,
+                                'url': "<%=get_categories_admin_taxons_market_places_url(:market_place => (@market_place.present? ? @market_place.id : nil) ) %>" ,
+                                'success': function (data) {
+                                    tmp = data;
+                                }
+                            });
+                              return tmp;
+                          }();
+
+$('#the-basics .typeahead').typeahead({
+  hint: false,
+  highlight: false,
+  minLength: 1
+},
+{
+  name: 'states',
+  source: substringMatcher(states)
+});
+});
+</script>

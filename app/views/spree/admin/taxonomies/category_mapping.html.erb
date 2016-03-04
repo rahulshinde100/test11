@@ -1,0 +1,53 @@
+<%#= render 'spree/admin/shared/configuration_menu' %>
+
+<% content_for :page_title do %>
+  <%= Spree.t(:taxons) %>
+<% end %>
+
+<% content_for :page_actions do %>
+ <li>
+    <%= button_link_to Spree.t(:back_to_taxonomies_list), spree.admin_taxonomies_path, :icon => 'icon-arrow-left' %>
+  </li>
+  <li id='category_serach'>
+    <span class="button icon-upload">Search</span>  
+  </li>
+<% end %>
+<%= render :partial => 'category_mapping_search' %>
+<% if @taxons.present? %>
+<div class="custom_responsive CSSTableGenerator">
+  <table class="index sortable" id='listing_taxons'>
+    <thead>
+      <tr data-hook="taxons_header">
+        <th><%= Spree.t(:category_name) %></th>
+        <th><%= "Action" %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @taxons.each_with_index do |taxon, index| %>
+        <tr id="<%= spree_dom_id taxon %>" data-hook="taxons_row" class="<%= cycle('odd', 'even')%>" height="45">
+          <td align="left">
+             <%#= taxon.try(:parent).name.capitalize == "categories".capitalize ? "-" : taxon.try(:parent).try(:parent).name.capitalize == "categories".capitalize ? "-" : taxon.try(:parent).try(:parent).name %>
+             <%= taxon.parent.parent.name + " -> " + taxon.parent.name + " -> " + taxon.name %>
+          </td>
+          <td class="actions" align="center">
+             <%= button_link_to Spree.t(:category_mapping), "javascript:void(0)", :icon => 'icon-plus', :id =>'taxon_id', :onclick=>"showMappedCategories('#{taxon.id}');" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>  
+<% else %>
+  <div class="no-objects-found field" style="text-align: center;">
+    <h2>No taxons are added, You can add new taxon</h2>
+  </div>
+<% end %>
+<%= paginate @taxons %>
+<div id="mapping_categories"></div>
+<div class="black_overlay"></div>
+
+<style type="text/css">
+#category_search_wrapper{
+  display: none;
+}
+</style>

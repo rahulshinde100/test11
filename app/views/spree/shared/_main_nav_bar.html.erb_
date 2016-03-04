@@ -1,0 +1,66 @@
+<% cache("taxonomies") do %>
+
+<a href="#mobile-navigation" class="open-menu">
+  <i class="icon-menu"></i>
+</a>
+
+<a href="#" class="close-menu">
+  <i class="icon-menu"></i>
+</a>
+<% taxon_index = 1 %>
+<nav class="columns sixteen">
+  <ul id="main-nav-bar" class="inline">
+    <li class= "sale-tab-warehouse">
+         <%= link_to("Warehouse Sale", warehouse_sale_path, :id => "main-cat-1" , :class=> "main-cat-class")%>
+    </li>
+    <li class= "sale-tab">
+         <%= link_to("Brands", brands_path, :id => "main-cat-2" , :class=> "main-cat-class")%>
+    </li>
+    <%@group_taxons = get_header_taxons %>
+    <% @group_taxons.each do |taxon| %>
+      <% if taxon.parent.try(:name).try(:downcase) == "categories" %>
+        <li>         
+          <%= link_to(taxon.name, seo_url(taxon), :id => "main-cat-#{taxon.id}" , :class=> "main-cat-class")%>
+          <div class="horizontal-line-bar" id="main-cat-bar-<%=taxon.id%>"></div>
+        </li>
+        <% taxon_index +=1 %>
+      <%end%>       
+    <%end%>
+    
+  </ul>
+</nav>
+
+<% @group_taxons.each do |taxon| %>
+  <% if taxon.parent.try(:name).try(:downcase) == "categories" %>
+    <div class="sub-category-block open" id="sub-cat-<%=taxon.id%>" >     
+      <div class="clearboth" style="height: 10px;"></div>
+      <ul class = "taxons">
+        <%taxon.children.each do |ch_taxon|%>
+          <li>
+            <% count = get_taxon_product_count(ch_taxon) %>
+            <%cnt = count > 0 ? " (#{count})" : ''%>
+            <%= link_to("#{ch_taxon.name}#{cnt}", seo_url(ch_taxon))%>
+          </li>
+        <%end%>
+      </ul>
+    </div>
+  <%end%>
+<%end%>
+
+   <div class="sub-category-block open" id="sub-cat-seller" >      
+      <div class="clearboth"></div>
+      <ul class = "taxons">        
+            <%= render :partial => "spree/shared/seller_list" %>
+      </ul>
+    </div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    if("<%=params[:action]%>" == "sale"){
+      $(".sale-tab").addClass("main-mainu-select");
+    }else{
+      $(".sale-tab").removeClass("main-mainu-select");
+    }
+  });
+</script>
+<%end%>

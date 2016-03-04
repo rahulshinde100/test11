@@ -1,0 +1,32 @@
+<%= form_tag "reports/generate_report", :html => { :multipart => true } do |f| %>
+    <div class="field-block alpha twelve columns">
+      <%= field_container :report, :type do %>
+        <%= hidden_field_tag :report_type, nil, :value=>1 %>
+      <% end %>
+    </div>	
+    <div class="field-block alpha five columns">
+      <%= field_container :seller, :id do %>
+        <%= label :seller, :id, "Seller:" %><br />
+        <%= collection_select(:seller, :id, @sellers, :id, :name, {:class=>'select2'}) %>
+        <%= error_message_on :seller, :id %>
+      <% end %>
+    </div>  
+    <div class="field-block alpha five columns">
+      <%= field_container :date, :start do %>
+        <%= label :date, :start, "Start Date:" %><br />
+        <%= text_field :date, :start, :required => true, :value=>Time.now.strftime("%Y/%m/%d"), :readonly=>true, :class => 'datepicker' %>
+        <%= error_message_on :date, :start %>
+      <% end %>
+    </div>
+    <div class="field-block alpha five columns">  
+      <%= field_container :date, :end do %>
+        <%= label :date, :end, "End Date:" %><br />
+        <%= text_field :date, :end, :required => true, :value=>Time.now.to_date.strftime("%Y/%m/%d"), :readonly=>true, :class => 'datepicker' %>
+        <%= error_message_on :date, :end %>
+      <% end %>
+    </div>
+    <div class="clear"></div>
+    <div class="form-buttons filter-actions actions" data-hook="buttons">
+      <%= button "Generate", 'icon-ok' %>
+    </div>
+<%end%>

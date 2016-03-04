@@ -1,0 +1,68 @@
+<% content_for :page_title do %>
+        <%= Spree.t(:listing_labels) %>
+<% end %>
+
+<%= render :partial => 'spree/admin/shared/product_sub_menu' %>
+
+<% content_for :page_actions do %>
+  <div id="new_label_link">
+     <%= button_link_to t(:new_label), new_admin_label_url, {:icon => 'add icon-plus', 'data-update' => 'new_label', :id => 'new_label_link'} %>
+  </div>
+<% end %>
+
+<div id="new_label"></div>
+
+<%= image_tag 'spinner.gif', :plugin => 'spree', :style => 'display:none;', :id => 'busy_indicator' %>
+
+
+<% if @labels.present? %>
+  <table class="index">
+    <colgroup>
+      <col style="width: 35%">
+      <col style="width: 10%">
+      <col style="width: 20%">
+      <col style="width: 10%">
+      <col style="width:25%">
+    </colgroup>
+    <thead>
+      <tr data-hook="reports_header">
+        <th><%= t(:title) %></th>
+        <th><%= t(:shape) %></th>
+        <th>Seller</th>
+        <th>Is Approved</th>
+        <th data-hook="admin_labels_index_header_actions"> Edit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @labels.each do |label| %>
+        <tr data-hook="reports_row">
+          <td><%= label.title %></td>
+          <td><span class="<%= label.shape %>" style="background-color:<%=label.color%>"></span></td>
+          <td><%= label.try(:seller).try(:name) %></td>
+          <td><%= label.is_approved ? "Approved" : "Pending" %></td>
+          <td data-hook="admin_users_index_row_actions" class="actions">
+          <%= link_to_edit label, :no_text => true, :class => 'edit' %> &nbsp;
+           
+          <%#= link_to_delete label, :no_text => true %>
+          <%= link_to "", admin_label_path(label), :confirm => "Are you sure", :method => :delete, :class => "icon_link with-tip icon-trash no-text", :style => 'float:left; margin-right:7px;', :title => 'delete'%>
+          
+          <%=form_for label, :url => admin_label_path(label), :method => :put do |f|%>
+            <input type="hidden" value="<%=label.is_approved ? 0 : 1%>" name="label[is_approved]"/>
+            <%= submit_tag label.is_approved ? "Reject" : "Approved" %>
+          <%end%>
+        </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<%else%>
+  <div class="no-objects-found field" style="text-align: center;">
+    <h2>No Labels Added Yet</h2>
+  </div>
+<%end%>  
+
+<script type="text/javascript">
+  $(document).ready(function(){   
+    $('#powerTip').addClass('remove');
+  });
+</script>

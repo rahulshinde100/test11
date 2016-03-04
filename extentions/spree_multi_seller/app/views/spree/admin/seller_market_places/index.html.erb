@@ -1,0 +1,52 @@
+<% content_for :page_actions do %>
+  <% if @seller.seller_market_places.present? && @seller.seller_market_places.where(:is_active=>true).count > 0 %>
+    <li><%= button_link_to "Stock Settings", "/admin/sellers/"+@seller.id.to_s+"/stock_setting", {:icon => 'icon-cog', :id => 'stock_setting' } %></li>
+  <% end %>  
+  <li><%= button_link_to "Add Market Place", new_admin_seller_seller_market_place_path(@seller.id), { :remote => true, :icon => 'icon-plus', :id => 'admin_add_seller_market_place' } %></li>
+  <li><%= button_link_to 'back to sellers list', admin_sellers_path, :class => "button", :icon => 'icon-arrow-left' if spree_current_user.has_spree_role?('admin')%></li>
+<% end %>
+
+<h5 class="align-center blue"><%= @seller.name %> | <%= "Market Places" %></h5>
+<br />
+<%if @seller_market_places.present? %>
+<div class="custom_responsive CSSTableGenerator">
+  <table>
+      <thead>
+        <tr>
+          <th>Market Place</th>
+          <th>Country</th>
+          <th width="60">Active</th>
+          <th width="180">API Secret Key</th>
+          <th width="60">Edit</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @seller_market_places.each_with_index do |smp, index| %>
+        <tr height="40">
+          <td><%= smp.market_place.try(:name) %></td>
+          <td><%= smp.country %></td>
+          <td><%= smp.is_active ? "Yes" : "No" %></td>
+          <td>
+          	<% if !smp.api_secret_key.present? %>
+          	  <%= button_link_to 'Generate Key', 'javascript:void(0)', :class => "button", :icon => 'icon-plus', :onclick=>"generateApiSecretKey('#{smp.id}');" %>
+          	<% else %>
+          	  <%= button_link_to 'Re-Generate Key', 'javascript:void(0)', :class => "button", :icon => 'icon-plus', :title=>smp.api_secret_key, :onclick=>"generateApiSecretKey('#{smp.id}');" %>
+          	<% end %>
+          </td>
+          <td>
+            <%= link_to '', edit_admin_seller_seller_market_place_path(@seller.id, smp.id), { :remote => true, :id => 'admin_edit_product', :no_text => true, :class => 'edit icon_link with-tip icon-edit no-text' } %>
+          </td>
+        </tr>
+      <%end%>
+    </tbody>
+  </table>
+ </div> 
+<%else%>
+  <div class="error-message" style="text-align: center;">
+    <h5>No seller market places are added, You can add new seller market place</h5>
+  </div>
+<%end%>
+<%= paginate @seller_market_places %>
+<div id="admin_new_seller_market_place" data-hook></div>
+<div id="generate_api_key_popup"></div>
+<div class="black_overlay"></div>

@@ -1,0 +1,94 @@
+<style type="text/css">#subheader{display:none;}</style>
+<script src="https://maps.google.com/maps/api/js?sensor=false"></script>
+<script src="/js/handlebars-1.0.0.min.js"></script>
+<script src="/js/jquery.storelocator_seller.js"></script>
+<div id="wrapper-seller" data-hook >
+  <div id="brand-second-row">
+    
+      <div class="seller-info-text">
+         <div id="brand-store-informations" class="">
+              <%= raw @seller.description%>
+          </div>
+
+         <div id="brand-store-locations" class="">
+            <div id="map-container">
+              <div id="loc-list">
+                <ul id="list"></ul>
+              </div>
+            </div>  
+          </div>
+       
+         <div class="clearboth"></div>
+          <div id="map-box"> 
+            <div id="map"></div>        
+          </div>
+        </div>
+          <div  id="seller_products" data-hook="seller_products" class="seller-products">
+            <%# if @products.count > 0%>
+              <div data-hook="taxon_children">
+                <%unless @categories.nil?%>
+                  <%#@categories.each do |category|%>
+                    <%= render :partial => 'taxon', :collection => @categories%>
+                  <%#end%>
+                <%end%>
+              </div>
+            <%#end%>
+        </div>  
+   
+  </div>
+  <div id="brand-second-row-gap" class="clearboth"></div>
+  
+  <div id="brand-desccription">          
+     
+    
+    <div id="store-locator-container"></div>
+  </div>
+</div> 
+     
+            
+<script type="text/javascript">  
+  $(document).ready(function(){    
+    $('#map-container').storeLocator({'dataType': 'json',  'dataLocation': '<%=locations_seller_path(@seller)%>', 'slideMap': false, 'defaultLoc': true, 'defaultLat': 1.320302, 'defaultLng': 103.840599 , 'autoGeocode': false, distanceAlert: 40000  , 'listColor1' : 'F8F8F9', 'callbackComplete': function(){   } });
+  
+    $('#close-icon-div').click(function (){
+     $('#map-box').css('visibility', 'hidden'); 
+     $('ul#list li').each(function(){
+        if($(this).hasClass('list-focus'));
+            $(this).removeClass('list-focus');
+      });
+    });
+  });
+  function move_to_packing_bag(id){  
+    if($('#list-label-'+id).hasClass('store-pin')){ 
+      $(".list-label").removeClass('store-pin');
+    }
+    else{
+       $('.list-label').each(function(){
+          if($(this).hasClass('store-pin'))
+            $(this).removeClass("store-pin");
+      });
+      $("#list-label-"+id).addClass('store-pin');
+    }
+  }  
+</script>   
+<style type="text/css">
+    .seller-products{float: left;      width: 778px; }
+    .btn-gmap-choose-store{display: none;}
+    #map-container{height: auto; margin-bottom: 20px; margin-left: -27px; margin-top: 20px;  width: 840px;}
+    #loc-list{width: 100%;}
+    #loc-list ul{width: 100%;}
+    #loc-list li{width: 222px; margin: 0px; clear: none; margin-right: 20px;}
+    #map-box{ visibility: hidden ; position: absolute; width: 97.8%; margin-bottom: 40px;}
+    #map{float: none;width: 100%; border: none; z-index: 400; height: 300px;}
+    #loc-list{height: auto; border: none;}
+    #loc-list .list-details{ margin-left: 0px;}
+    #slider-back{background-color: #2C3E50 !important;}
+    #category-main-menu{display: none;}
+    #header-container{display:none;}
+    #search-bar-new{display: block;}
+    #wrapper{padding-left: 0px;}
+    #scrollbar1 .viewport{margin-left: -30px;}
+    #scrollbar2 .viewport{width: 478px !important;}
+    .all-div{left: 135px !important;}
+</style>
+

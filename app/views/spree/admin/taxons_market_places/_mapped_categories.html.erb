@@ -1,0 +1,47 @@
+<a href="javascript:void(0);" onclick="closePopup('mapping_categories');" class="close-link red">x</a>
+
+<div data-hook="admin_inside_taxonomy_form" class="field align-center">
+    <label for="market_place"><h6>Market Place Category Mapping</h6></label>
+</div>
+
+<div data-hook="admin_inside_taxonomy_form" class="field align-center">
+	<label for="market_place">Sub Sub Category: </label><%= @taxon.name %>&nbsp;&nbsp;&nbsp;
+	<% if @taxon.parent.name != "Categories" %>
+	  <label for="market_place">Sub Category: </label><%= @taxon.parent.name %>&nbsp;&nbsp;&nbsp;
+	  <% if @taxon.try(:parent).try(:parent).name != "Categories" %>
+	  <label for="market_place">Category: </label><%= @taxon.try(:parent).try(:parent).name %>
+	  <% end %>
+	<% end %>
+	<br /><br />
+	<label for="market_place">Select Market Place: </label>
+	<%= collection_select(:category, :market_place_id, @market_places, :id, :name, {:class=>'select2'}, {:onChange=>"preMappedCategories('#{@taxon.id}');"}) %>
+	<br />
+	<div id = "pre_mapped_categories" align="center"></div>
+      <br />
+	<%= button_link_to Spree.t(:map_new_categories), "javascript:void(0)", :id=>"map_new", :icon => 'icon-plus', :onClick=>"openCloseMapCategoryForm('open', 'mapped_new_category');" %>
+  <fieldset id = "mapped_new_category">
+	  <legend align="center">New Category Mapping</legend>
+	  <%= hidden_field :market_place, :api_keys, :value=>@api_key_hash.length > 0 ? (@api_key_hash.values.join(',')) : "" %>
+	  <%= hidden_field :market_place, :name, :value=>@api_key_hash.keys.length > 0 ? (@api_key_hash.keys.join(',')) : "" %>
+	  <label for="market_place">Select Market Place Categories: </label><br /><br />
+	  <span id="mp_categories"><%= render :partial => "load_market_place_categories" %></span>
+	  <br /><br />
+	  <%= button_link_to Spree.t(:Add), "javascript:void(0)", :icon => 'icon-plus', :onClick=>"mappedNewCategories('#{@taxon.id}');" %>
+	  <span class="or"><%= Spree.t(:or) %></span>
+	  <%= button_link_to Spree.t(:cancel), "javascript:void(0)", :icon => 'icon-remove', :onClick=>"openCloseMapCategoryForm('close', 'mapped_new_category');" %>
+	  <br /><br />
+  </fieldset>
+</div>
+
+<style type="text/css">
+  fieldset {
+    padding: 5px !important;
+    margin: 10px !important;
+    border: 1px solid #1bc0d8;
+  }
+
+  #mapped_new_category{
+    display: none;
+    border: 1px solid #1bc0d8 !important;
+  }
+</style>

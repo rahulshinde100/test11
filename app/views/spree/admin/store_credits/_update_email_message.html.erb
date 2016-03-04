@@ -1,0 +1,5 @@
+<%= form_tag update_email_message_admin_store_credits_path, :method => :post, :remote => true do%>
+	<%= label_tag :store_credit_email_text, Spree.t(:store_credit_email_text)%>
+	<%= text_area_tag 'store_credit_email_text', Spree::Config[:store_credit_email_text], rows: 5, cols: 10%>
+    <%=button_tag "Update", :class => "button"%>
+  <%end%>

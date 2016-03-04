@@ -1,0 +1,47 @@
+<%= form_for [:admin, @seller, @seller_user], :url => admin_seller_seller_users_path(@seller) do |f| %>
+<fieldset>
+ <legend align="center">Add Existing User</legend>
+  <div data-hook="admin_user_form_fields" class="row">
+	  <div data-hook="admin_user_form_roles" class="field">
+      <div class="alpha sixteen columns">
+        <%= label_tag nil, t(:select_existing_user) %><span class="required">*</span>
+        <input type="text" id="searchtext" class="fullwidth" name="email" required = 'true'>
+      </div>
+      </br>
+      <div class="alpha sixteen columns">
+        <%= label_tag nil, Spree.t(:roles), :class => 'fullwidth' %><span class="required">*</span>
+        <ul>
+          <% @roles.each do |role| %>
+            <% next unless ["seller_store", "seller"].include?(role.name) %>
+            <li>
+              <%= radio_button_tag 'user[spree_role_ids][]', role.id, @seller_user.spree_roles.include?(role), :id => "user_spree_role_#{role.name}", :required => true %>
+              <label for='<%="user_spree_role_#{role.name}"%>'> <%= role.name == "seller" ? "Seller Admin" : "Store User"%></label>
+            </li>
+          <% end %>
+        </ul>
+        <%= hidden_field_tag 'user[spree_role_ids][]', '' %>
+      </div>
+    </div>
+  </div>
+	<input type="hidden" name="exists" id="exists" value="true" />
+	<div class="form-buttons filter-actions actions custom-top" data-hook="buttons">
+    <%= button "Add User", 'icon-ok' %>
+    <span class="or"><%= Spree.t(:or) %></span>
+    <%= link_to_with_icon 'icon-remove', Spree.t('actions.cancel'), admin_seller_seller_users_path(@seller), :class => 'button' %>
+	</div>
+</fieldset>
+<%end%>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+  $("#searchtext").val("");
+  $( "#searchtext" ).autocomplete({
+    source: "/admin/sellers/<%=@seller.permalink%>/seller_users/select",
+		select: function(event, ui) {
+			console.log(event);
+			console.log(ui.item);
+    	$("#searchtext").val(ui.item.value);
+    }
+  });
+});
+</script>

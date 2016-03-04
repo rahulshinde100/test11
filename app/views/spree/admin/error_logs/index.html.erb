@@ -1,0 +1,45 @@
+<%= render :partial => "spree/admin/reports/sub_menu_report"%>
+
+<% content_for :page_title do %>
+  <%= Spree.t(:listing_spree_error_logs)%>
+<% end %>
+
+<% if @spree_error_logs.any? %>
+  <table>
+    <colgroup>
+      <col>
+      <col>
+      <col>
+      <col>
+      <col style="width:12%">      
+    </colgroup>
+    <thead>
+      <tr>
+        <th><%= Spree.t(:title)%></th>    
+        <th><%= Spree.t(:status)%></th>
+        <th><%= Spree.t(:git_reference)%></th>
+        <th><%= Spree.t(:date_time)%></th>
+        <th data-hook="admin_orders_index_row_actions">
+        <%= Spree.t(:edit)%></th>
+      </tr>
+    </thead>    
+    <% @spree_error_logs.each do |spree_error_log| %>
+      <tr class="<%= cycle('odd', 'even') %>">
+        <td><%= spree_error_log.title %></td>    
+        <td><%= spree_error_log.status %></td>
+        <td><%= spree_error_log.git_reference %></td>
+        <td><%= spree_error_log.created_at.strftime("%d %b %Y,  %I:%M %p") %></td>
+        <td class='actions' data-hook="admin_orders_index_row_actions">
+          <%= link_to '', admin_error_log_path(spree_error_log), :no_text => true, :class => 'icon-eye-open no-text' %>         
+          <%= link_to '', edit_admin_error_log_path(spree_error_log),:no_text => true, :class => 'edit icon_link with-tip icon-edit no-text'%>
+          <%= link_to '', admin_error_log_path(spree_error_log), :no_text => true, :method => :delete, :class => 'delete-resource icon_link with-tip icon-trash no-text', :confirm => "Are you sure, you want to delete log?"%>      
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+  <div class="no-objects-found">
+    <%= Spree.t(:no_error_occurs_yet) %>
+  </div>
+<% end %>  
+<%= paginate @spree_error_logs %>

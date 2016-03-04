@@ -1,0 +1,15 @@
+<%if params[:retailer].present? %>
+	$("[data-hook='taxon_sidebar_navigation']").html("<%= escape_javascript(render :partial => 'spree/sellers/seller_taxon_menu', :locals => {:categories => @categories, :products => @seller_products})%>")
+	$("#seller_products").html("<%= escape_javascript render :partial => 'retailer_search'%>");
+<%else%>
+	$("#home-products").html("<%= escape_javascript render :partial => 'search_result'%>");
+	if ( $('#home-products').hasClass("seller-home-products"))
+	{
+	   $('#header-container').hide();
+	   $('#category-main-menu').hide();
+	   $('#search-bar-new').show();
+	   $('#slider-back').css( "background-color" , "#2C3E50");
+	   $('#home-products').css("margin-top", "20px");
+	}
+	$('#breadcrumbs').hide();
+<%end%>

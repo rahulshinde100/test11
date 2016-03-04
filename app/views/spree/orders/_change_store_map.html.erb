@@ -1,0 +1,105 @@
+<script src="js/handlebars-1.0.0.min.js"></script>
+<script src="https://maps.google.com/maps/api/js?sensor=false"></script>
+<script src="/js/jquery.storelocator.cart.js"></script>
+
+
+     <div id="store-locator-container">
+            <div id="map-container">
+                <div id="loc-list">
+                    <ul id="list"></ul>
+                </div>
+                 <div id="map-box"> 
+                    <div id="map"></div>                    
+                    <div id="close-icon-div"><i class="icon-close"></i></div>
+                 </div>
+              </div>
+    </div>
+
+
+
+<script type="text/javascript">
+  var var_id
+  var line_item
+  $(function() {
+    $('.change_store').click(function(){
+        line_item = $(this).parent('td').hasClass('move-action')
+        var_id = $(this).attr('id'); 
+        var pr_id = $("#product_"+var_id).val();
+        var url = "/products/"+pr_id+"/stores?variant_id="+var_id
+        $.getJSON(url, function(data) {
+        }).done(function(data){ 
+            if (data.length === 0){
+              alert("No Stores Available for pickup");
+              // $('#map-container').html('');
+              // // $('#map-container').hide();
+              return;
+            }else{
+              $('#map-container').storeLocator({'dataType': 'json', 'dataLocation': url, 'slideMap': false, 'defaultLoc': true, 'defaultLat': 1.291578, 'defaultLng': 103.814381 , 'autoGeocode': true, modalWindow:true, modalCloseIconDiv:"close-icon", distanceAlert: 40000 });
+              $('#map-container').show();
+            }
+          });
+        });
+    $('#close-icon-div').click(function(){
+        $('#close-icon').trigger('click');
+        $('ul#list li').each(function(){
+            if($(this).hasClass('list-focus'));
+                $(this).removeClass('list-focus');
+        });
+    });
+  });
+
+  function move_to_packing_bag(id){ 
+    // if(line_item){
+    //   $("#is_pick_at_store_"+var_id+"_pack").val(true);
+    //   $("#stock_location_"+var_id+"_pack").val(id);
+    //   $("input."+var_id).closest('form').submit();
+    // }else{
+      $("#is_pick_at_store_"+var_id).val(true);
+      $("#stock_location_"+var_id).val(id);
+      $("input."+var_id).closest('form').submit();
+    // }
+  }
+</script>
+
+<style>
+    #map-box{visibility: visible;}
+    #map{width: 67.2%;}
+    #map-container{display: none;}
+    #close-icon-div{right: 100px;}
+    @media only screen and (max-width: 997px){
+        #map-box{width: 102% !important;}
+    }
+    @media only screen and (max-width: 997px) and (min-width: 960px){
+        #modal-window{
+            left: 60%;
+        }
+    }
+    @media only screen and (max-width: 959px) and (min-width: 860px){
+        #modal-window{
+            left: 64%;
+        }
+    }
+    @media only screen and (max-width: 859px) and (min-width: 760px){
+        #modal-window{
+            left: 69%;
+        }
+    }
+     @media only screen and (max-width: 759px) and (min-width: 660px){
+        #modal-window{
+            left: 77%;
+        }
+    }
+    @media only screen and (max-width: 659px) and (min-width: 560px){
+        #modal-window{
+            left: 88%;
+        }
+    }
+    @media only screen and (max-width: 559px) {
+        #modal-window{
+            left: 14%;
+            margin-left: 0px;
+            width: 71.5%;
+        }
+    }
+    
+</style>

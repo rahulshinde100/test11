@@ -1,0 +1,65 @@
+<% content_for :page_actions do %>
+  <li><%= button_link_to Spree.t(:back_to_products_list), session[:return_to] || admin_products_url, :icon => 'icon-arrow-left' %></li>
+<% end %>
+
+<%= render :partial => 'spree/admin/shared/product_sub_menu' %>
+
+<%= render :partial => 'spree/admin/shared/product_tabs', :locals => { :current => 'Description Management' } %>
+
+<%= render :partial => 'spree/shared/error_messages', :locals => { :target => @product } %>
+
+<div class"fullwidth">
+<% if @market_places.present? %>
+    <%@market_places.each_with_index do |mp, index|%>
+       <%
+          market_place = Spree::MarketPlace.find_by_id(mp)
+          @description_management = Spree::DescriptionManagement.where("product_id=? AND market_place_id=?", @product.id, market_place.id).first rescue nil
+       %>
+       <fieldset>
+       <legend class="fieldset-button columns twelve align-left"><a href="#" onclick="toggleDescriptionForm('mp_<%= index %>');" title="Click me..."><span class="columns one-third toggle-plus" id="toggle_<%= index %>">+</span> &nbsp; <span>Description :- <%= market_place.name %></span></a></legend>
+       <div class="description-body" id="mp_<%= index %>">
+       <% if @description_management.present? %>
+       <%= form_for [:admin, @description_management] do |f| %>
+         <div data-hook="admin_product_description" class="alpha omega twelve columns">
+            <%= f.field_container "description_"+"#{market_place.id.to_s}" do %>
+               <%= f.label :description, raw(Spree.t(:description) + content_tag(:span, '*', :class => 'required')) %><br />
+               <%= text_area "description", "#{market_place.id.to_s}", :class => "tinymce", :rows=>5, :value => @description_management.description %>
+               <%= f.error_message_on "description_"+"#{market_place.id.to_s}" %>
+            <% end %>
+         </div>
+         <div data-hook="admin_product_form_meta" class="alpha omega twelve columns">
+            <%= f.field_container "meta_description_"+"#{market_place.id.to_s}" do %>
+                <%= f.label :meta_description, raw(Spree.t(:highlights) + content_tag(:span, '*', :class => 'required')) %><br />
+                <%= text_area "meta_description", "#{market_place.id.to_s}", :class => "tinymce", :rows=>5, :value => @description_management.meta_description %>
+            <% end %>
+            <%= f.field_container "package_content_"+"#{market_place.id.to_s}" do %>
+              <%= f.label :package_content, raw(Spree.t(:whats_in_box) + content_tag(:span, '*', :class => 'required')) %>
+              <%= text_area "package_content", "#{market_place.id.to_s}", :class => 'fullwidth', :rows=>5, :value => @description_management.package_content %>
+            <% end %>
+            <div class="form-buttons filter-actions actions" data-hook="buttons">
+              <%= button Spree.t(:submit) %>
+            </div>
+            <br />
+            <br />
+         </div>
+       <%end%>
+       <% else %>
+           <div class="fullwidth no-objects-found">Description is not available</div>
+       <% end %>
+       </div>
+       </fieldset>
+    <% end %>
+<% else %>
+   <div class="fullwidth no-objects-found">Please list product on Market Place</div>
+<% end %>
+</div>
+<script type="text/javascript">
+  $(document).ready(function(){
+	toggleDescriptionForm("mp_0");
+  });
+</script>
+<style type="text/css">
+  fieldset{
+    padding-bottom: 0px;
+  }
+</style>

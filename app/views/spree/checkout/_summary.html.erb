@@ -1,0 +1,58 @@
+<h3><%= Spree.t(:order_summary) %></h3>
+
+<table data-hook="order_summary">
+  <tbody>
+    <tr data-hook="item_total">
+      <td><strong><%= Spree.t(:item_total) %></strong></td>
+      <td><strong><%= order.display_item_total.to_html %></strong></td>
+    </tr>
+    <tbody id="summary-order-charges" data-hook>
+      <% order.adjustments.eligible.each do |adjustment| %>
+        <% next if (adjustment.originator_type == 'Spree::TaxRate') and (adjustment.amount == 0) %>
+        <% next if order.is_free_shipping? && adjustment.source_type == 'Spree::Shipment' %>
+        <%if adjustment.is_free_shipping? order %>
+          <tr>
+            <td>
+              <%if adjustment.originator.try(:promotion).try(:code).try(:present?) %>
+                Coupon (<%= adjustment.originator.try(:promotion).try(:code)%>)
+              <%else%>
+                <%= Spree.t(:shipping)%>:
+              <%end%>          
+            </td>
+            <td><%= Spree.t(:free) %></td>
+          </tr>
+        <%else%>
+          <tr>
+              <td>
+                <%if adjustment.source_type == 'Spree::Shipment'%>
+                  <%= adjustment.label %>
+                <%elsif adjustment.source_type == "Spree::StoreCredit" %>
+                  Store Credit
+                <%elsif adjustment.originator.promotion.code.present? %>
+                  Coupon (<%= adjustment.originator.try(:promotion).try(:code)%>)
+                <%else%>
+                  <%= adjustment.label[11..adjustment.label.length-2] %>                  
+                <%end%>
+              </td>
+              <td><%= number_to_currency adjustment.amount %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+    <tr data-hook="order_total">
+      <td><strong><%= Spree.t(:order_total) %></strong></td>
+      <td><strong><span id='summary-order-total'><%= @order.display_total.to_html %></span></strong></td>
+    </tr>
+</table>
+<%if @order.state != 'payment'%>
+  <div class="ssl-paypal cart-page checkout-page">
+    <%= image_tag "/assets/store/rapidssl_seal.gif", :id => "rapid-ssl", :style => "margin-left:35px;" %>
+    <%= image_tag "/assets/store/paypal__secure.png", :id => "paypal-secure" %>
+  </div>
+<%end%>
+
+<style type="text/css">
+#summary-order-charges td:last-child:before, #order-charges td:last-child:before{
+  content: "" !important;
+}
+</style>

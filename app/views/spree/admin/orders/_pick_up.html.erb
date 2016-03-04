@@ -1,0 +1,13 @@
+<%if line_item.is_pick_at_store %>
+	<%if line_item.picked_up %>
+		Picked
+	<%else%>
+		<%= check_box_tag :picked_up %>
+	<%end%>
+<%else%>
+	<%if line_item.ready_for_pickup %>
+		Ready For Pickup
+	<%else%>
+		<%= check_box_tag :ready_for_pickup %>
+	<%end%>
+<%end%>

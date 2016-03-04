@@ -1,0 +1,10 @@
+<% if spree_current_user %>
+	<% if spree_current_user.user_authentications.present? && Spree::AuthenticationMethod.active_authentication_methods? %>
+  	<li><%#= link_to "#{Spree.t(:my_account)}".html_safe, spree.account_path, :class => "profile_pic" %></li>
+  <%else%>
+  	<li><%#= link_to "#{Spree.t(:my_account)}".html_safe, spree.account_path, :class => "profile_pic" %></li>
+  <%end%>
+  <li><%= link_to Spree.t(:logout), spree.destroy_spree_user_session_path %></li>
+<% else %>
+<!--   <li id="link-to-login"><%#= link_to Spree.t(:login), spree.login_path %></li> -->
+<% end %>

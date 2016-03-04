@@ -1,0 +1,129 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  hello: "Hello world"
+  dateofbirth: "Date of Birth"
+  firstname: "First Name"
+  lastname: "Last Name"
+  country: "Country"
+  email: "Email Id"
+  password: "Password"
+  confirm_password: "Confirm Password"
+  create_new_account: "Create New Account"
+  photo: "Profile Pic"
+  contact: "Phone Number"
+  you_have_signed_in_with_these_services: "You have sign in with these service"
+  add_another_service_to_sign_in_with: "Add another service to sign in with"
+  edit_social_method: "Editing Social Authentication Method"
+  new_social_method: "New Authentication Method"
+  one_more_step: 'One more step to complete your registration from %{kind}'
+  remove_authentication_option_confirmation: "Are you sure you would like to remove this authentication method?"
+  sign_into_account: "You can sign into this account using"
+  sign_in_through_one_of_these_services: "Sign in through one of these services"
+  social_api_key: "API Key"
+  social_api_secret: "API Secret"
+  social_authentication_methods: "Social Authentication Methods"
+  social_authentication_methods_description: "Setup OAuth Authentication Methods"
+  social_provider: "Social Provider"
+  please_confirm_your_email: "Please confirm your email address to continue"
+  sign_in_with: "Login with %{provider}"
+  order_processed_successfully: "Order Processed successfully"
+  back_to_brands: "Back To Brands"
+  brands: BRANDS
+  new_brand: "New Brand"
+
+  notice_messages: 
+      page_published: Page Unpublished
+      page_unpublished: Page Published
+  time:
+    am: am
+    formats:
+      default: ! '%a %d %b %Y %H:%M:%S %z'
+      long: ! '%B %d %Y %H:%M'
+      short: ! '%d %b %H:%M'
+    pm: pm
+  cms: "cms"
+  published: "Public"
+  unpublished: "Not public"
+  activerecord:
+    models:
+      static_page:
+        one: Page
+        other: Page
+      post:
+        one: News
+        other: News
+    attributes:
+      static_page:
+        title: Title
+        body: Content
+        active: Enable?
+        published_at: Published at
+        updated_at: Updated at
+      post:
+        title: Title
+        body: Content
+        active: Enable?
+        published_at: Published at
+        updated_at: Updated at
+      spree/page:
+          title: Title
+          published_at: Published At
+  search: Search
+  title: Title
+  body: Body
+  new_page: New Page
+  new_post: New Post
+  listing_pages: Pages
+  date_range: Date Ranges
+  start: Start
+  stop: End
+
+  pick_your_choice: Pick your choice
+  delivery_slots: Delivery Slots
+  dob: Date of Birth
+  firstname: First Name
+  lastname: Last Name
+  honorific: Honorific
+  contact: Contact
+  search: Search Ship.li
+  login_as_existing: Login as User
+  login_as_user: Login as User
+  spree:
+    events:
+      spree:
+        order:
+          contents_changed: Give Free Item
+    change_special_price_on_mp: Set special price
+    coupon_code_better_exists: The applied coupon code is not valid or you are not aligible.
+    promotion_action_types:
+      discount:
+        description: Creates a discount on the product
+        name: Give Discount
+        percentage: Precentage (%)
+        fixed: Give fixed discount in $
+    promotion_rule_types:
+      seller:
+        description: Order includes Product(s) of seller
+        name: Seller
+      market_place:
+        description: on Store
+        name: Market Place
+      taxon:
+        description: on Taxon
+        name: Category
+      item_count:
+        description: on Item count
+        name: Item Count
+      variant:
+        description: Order includes specified product(s)
+        name: Product
+    variant_rule:
+      choose_variants: Choose products
+      label: Order must contain %{select} of these products
+      match_all: all
+      match_any: at least one
+      variant_source:
+        group: From product group
+        manual: Manually choose

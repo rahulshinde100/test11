@@ -1,0 +1,53 @@
+<% if @collection.present? %>
+  <table class="index" data-hook="adjustments">
+    <colgroup>
+      <col>
+      <col>
+      <col>
+      <col>
+      <col style="width:16%;">
+    </colgroup>
+    <thead data-hook="adjustmment_head">
+      <tr>
+        <th><%= "#{Spree.t('date')}/#{Spree.t('time')}" %></th>
+        <th><%= Spree.t(:description) %></th>
+        <th><%= Spree.t(:amount) %></th>
+        <th><%= Spree.t(:state) %></th>
+        <th><%= Spree.t(:edit) %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @collection.each do |adjustment|
+           @edit_url = edit_admin_order_adjustment_path(@order, adjustment)
+           @delete_url = admin_order_adjustment_path(@order, adjustment)
+      %>
+        <tr id="<%= spree_dom_id(adjustment) %>" data-hook="adjustment_row" class="<%= cycle('odd', 'even')%>">
+          <td><%= pretty_time(adjustment.created_at) %></td>
+          <td><%= adjustment.label %></td>
+          <td><%= adjustment.display_amount.to_html %></td>
+          <td class="align-center"><%= adjustment_state(adjustment) %></td>
+          <td class='actions'>
+            <%= link_to_edit adjustment, :no_text => true %>
+            <%#= link_to_delete adjustment, :no_text => true %>
+
+            <%= link_to "", admin_order_adjustment_path(@order, adjustment), :confirm => "Are you sure", :method => :delete, :class => "icon_link with-tip icon-trash no-text"%>
+
+            <%= link_to_toggle_adjustment_state @order, adjustment, :no_text => true %>
+          </td>
+        </tr>
+      <% end %>      
+    </tbody>
+  </table>
+  <div class="alpha ten columns" style="margin-bottom:5%;">
+    <div style = "float:left; margin-right:5%;">
+      <%= button_to Spree.t(:open_all_adjustments), open_adjustments_admin_order_path(@order), :method => :get %>
+    </div>
+    <div class = "alpha" style = "float:left;">
+      <%= button_to Spree.t(:close_all_adjustments), close_adjustments_admin_order_path(@order), :method => :get, :class => 'icon-remove' %>    
+    </div>  
+  </div>
+<% else %>
+  <div class="no-objects-found field" style="text-align: center;">
+    <h2><%= Spree.t(:no_adjustment_added_yet)%></h2>
+  </div>
+<% end %>   

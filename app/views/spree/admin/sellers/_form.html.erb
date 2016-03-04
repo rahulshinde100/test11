@@ -1,0 +1,110 @@
+    <div class="left eight columns alpha" data-hook="admin_product_form_left">
+        <%= f.field_container :name do %>
+            <%= f.label :name, "Display Name" %><span class="required">*</span><br />
+            <%= f.text_field :name, :class => 'fullwidth', :required => true %>
+            <%= f.error_message_on :name %>
+        <% end %>
+        <%= f.field_container :name do %>
+            <%= f.label :business_name, Spree.t(:business_name) %><span class="required">*</span><br />
+            <%= f.text_field :business_name, :class => 'fullwidth', :required => true %>
+            <%= f.error_message_on :business_name %>
+        <% end %>
+        <%= f.field_container :description do %>
+            <%= f.label :description, Spree.t(:description) %>
+            <%= f.text_area :description, {:rows => "8", :class => 'fullwidth custom_text_area'} %>
+            <%= f.error_message_on :description %>
+        <% end %>
+        <%= f.field_container :logo do %>
+            <%= f.label :logo, "Logo" %><span class="required"> (Size should be 400x400)</span><br/>
+            <%= f.file_field :logo, :class => 'fullwidth'%>
+            <%= f.error_message_on :logo %>
+        <% end %>
+        <% if f.object.logo.present? & f.object.logo.url.present? %>
+            <%= image_tag f.object.logo.url(:small) %>
+        <% end %>
+        <%= f.field_container :banner do %>
+            <%= f.label :banner, "Banner" %><span class="required"> (Size should be 960x300)</span><br />
+            <%= f.file_field :banner, :class => 'fullwidth'%>
+            <%= f.error_message_on :banner %>
+        <% end %>
+        <% if f.object.banner.present? & f.object.banner.url.present? %>
+           <%= image_tag f.object.banner.url(:small)%>
+        <% end %>
+    </div>
+    <div class="right eight columns omega" data-hook="admin_product_form_right">
+        <%= f.field_container :address_1 do %>
+            <%= f.label :address, "Address 1" %><span class="required">*</span><br />
+            <%= f.text_field :address_1, :class => 'fullwidth', :required => true %>
+            <%= f.error_message_on :address_1 %>
+        <% end %>
+        <%= f.field_container :address_2 do %>
+            <%= f.label :address_2, "Address 2" %><br />
+            <%= f.text_field :address_2, :class => 'fullwidth' %>
+        <% end %>
+        <%= f.field_container :city do %>
+            <%= f.label :city, "City" %><span class="required">*</span><br />
+            <%= f.text_field :city, :class => 'fullwidth', :value => "Singapore", :readonly => true%>
+            <%= f.error_message_on :city %>
+        <% end %>
+        <%= f.field_container :state do %>
+            <%= f.label :state, "State"%>
+            <%= f.error_message_on :state %>
+            <%= f.text_field :state, :class => 'fullwidth', :value => "Singapore",:readonly => true%>
+        <% end %>
+         <%= f.field_container :country_id do %>
+            <%= f.label :country_id, Spree.t(:country) %><span class="required">*</span></br>
+            <input type="text" value="Singapore" class='fullwidth' readonly = true/>
+            <%= f.hidden_field :country_id, :value => Spree::Country.find_by_name("Singapore").id, :readonly => true %>
+         <% end %>
+        <%= f.field_container :zip do %>
+            <%= f.label :zip, "Zip Code"%><span class="required">*</span>
+            <%= f.error_message_on :zip %>
+            <%= f.text_field :zip, :class => 'fullwidth', :required => true %>
+        <% end %>
+		<%= f.field_container :is_cm_user do %>
+			<%= f.check_box :is_cm_user %>
+            <%= f.label :is_cm_user, "Channel Manager User"%>
+            <%= f.error_message_on :is_cm_user %>
+        <% end %>        
+    </div>
+    <div class="sixteen columns alpha omega">
+        <div class="five columns alpha">
+            <%= f.field_container :contact_person_name do %>
+                <%= f.label :contact_person_name, "Contact Person Name" %><span class="required">*</span><br />
+                <%= f.text_field :contact_person_name, :class => 'fullwidth', :required => true %>
+                <%= f.error_message_on :contact_person_name %>
+            <% end %>
+        </div>
+        <div class="five columns">
+            <%= f.field_container :contact_person_email do %>
+                <%= f.label :contact_person_email, "Contact Person Email" %><span class="required">*</span><br />
+                <%= f.email_field :contact_person_email, :class => 'fullwidth email', :required => true %>
+                <%= f.error_message_on :contact_person_email %>
+            <% end %>
+        </div>
+        <div class="omega five columns">
+            <%= f.field_container :phone do %>
+                <%= f.label :phone, "Contact Number" %><span class="required">*</span><br />
+                <%= f.text_field :phone, :class => 'fullwidth phone', :required => true %>
+                <%= f.hidden_field :roc_number, :value => "111111", :readonly => true %>
+                <%= f.error_message_on :phone %>
+            <% end %>
+        </div>
+    </div>
+    <div data-hook="admin_product_form_meta" class="sixteen columns alpha omega">
+        <div class="alpha five columns">
+            <%= f.field_container :establishment_date do %>
+                <%= f.label :establishment_date, t(:channel_manager_joining_date) %><span class="required">*</span><br />
+                <%#= f.text_field :establishment_date, :required => true, :class => 'datepicker fullwidth' %>
+                <%= f.text_field :establishment_date, :value => f.object.establishment_date.to_date.strftime("%Y/%m/%d"), :required => true, :class => 'datepicker fullwidth' unless f.object.establishment_date.nil?%>
+                <%= f.text_field :establishment_date, :required => true, :class => 'datepicker fullwidth' if f.object.establishment_date.nil?%>
+                <%= f.error_message_on :establishment_date %>
+            <% end %>
+        </div>
+    </div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#seller_establishment_date").datepicker({dateFormat: 'yy/m/dd'});
+    });
+</script>

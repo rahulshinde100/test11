@@ -1,0 +1,7 @@
+$(".fancybox-close").click();
+$(".flash").addClass("notice").html("Logged in successfully");
+	
+$("#nav-bar").html("<%= escape_javascript(render :partial => 'spree/shared/nav_bar') %>");
+<% if session[:login_type] == 'notify_me' %> product_notify('<%= session[:var_id]%>');<%end%>
+<% if session[:login_type] == 'wished_product' %> add_to_wishlist('<%= session[:var_id]%>');<%end%>
+<% session[:login_type] = ''%>

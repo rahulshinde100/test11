@@ -1,0 +1,3 @@
+Spree::UserPasswordsController.class_eval do
+	skip_before_filter :ensure_authorization
+end

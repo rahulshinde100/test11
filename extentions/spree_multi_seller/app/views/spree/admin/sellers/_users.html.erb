@@ -1,0 +1,35 @@
+<%if seller.users.present? %>
+<div class="custom_responsive CSSTableGenerator">
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Contact</th>
+        <th>Email</th>
+        <th>Roles</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% seller.seller_users.each_with_index do |seller_user, index| %>
+      <%user = seller_user.user%>
+        <tr>
+          <td><%= user.name %></td>
+          <td><%= user.try(:contact) %></td>
+          <td><%= mail_to user.email %></td>
+          <td><%= user.spree_roles.map(&:name).join(", ") unless user.spree_roles.blank?%></td>
+          <td>
+            <%= link_to '', edit_admin_seller_seller_user_path(seller, seller_user), :no_text => true, :class => 'edit icon_link with-tip icon-edit no-text'%>
+            &nbsp;
+            <%= link_to '', admin_seller_seller_user_path(seller, seller_user), :no_text => true, :method => :delete, :class => 'delete-resource icon_link with-tip icon-trash no-text', :confirm => "Are you sure, you want to remove this user from '#{seller.name}'?", :remote => true%>
+          </td>
+        </tr>
+      <%end%>
+    </tbody>
+  </table>
+</div>  
+<%else%>
+  <div class="error-message" style="text-align: center;">
+    <h2>No Seller Users are added, You can add new seller user</h2>
+  </div>
+<%end%>

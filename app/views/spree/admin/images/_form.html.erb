@@ -1,0 +1,39 @@
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#image_viewable_id").select2();
+  });
+</script>
+
+<div data-hook="admin_image_form_fields" >
+  <% @market_places = @product.market_places %>
+  <div class="four columns alpha ">
+    <div data-hook="file" class="field ">
+      <%= f.label Spree.t(:filename) %><br>
+      <% if params[:action] == 'new' %>
+        <%= f.file_field :attachment, {:class => 'custom_text', :required=>"required"} %>
+      <% else %>
+        <%= f.file_field :attachment, {:class => 'custom_text'} %>
+      <% end %>
+    </div>
+    <div data-hook="variant" class="field" style="position:relative;">
+      <%= f.label Spree::Variant.model_name.human %><br>
+      <%= f.select :viewable_id, @variants, {}, {:class => 'select2 fullwidth', :required=>"required"} %>
+    </div>
+  </div>
+  <div data-hook="alt_text" class="field alpha five columns">
+    <%= f.label Spree.t(:alt_text) %><br>
+    <%= f.text_area :alt, :rows => 4, :class => 'fullwidth' %>
+  </div>
+  <div data-hook="update_marketplace" class="field alpha four columns">
+    <% if @market_places.present? %>
+  	<%#= collection_select(:product_image, :market_place_id, @market_places, :id, :name, {:class=>'select'}, :multiple=>true) %>
+    <% end %>
+  </div>
+  <div data-hook="update_marketplace" class="field alpha four columns">
+    <% if @market_places.present? %>
+       <%#= check_box :product_image, :market_place, :onclick=>"checkMarketPlace(this);" %><!--&nbsp;Upload on Market Places-->
+    <% end %>
+  </div>
+</div>
+
+<div class="clear"></div>

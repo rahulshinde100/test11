@@ -1,0 +1,20 @@
+<% content_for :page_title do %>
+  <%= "Editing Kit ''#{@kit.name}'' " %>
+<% end %>
+<% content_for :page_actions do %>
+  <%= button_link_to Spree.t(:back), admin_kits_url, :icon => 'icon-arrow-left' %>
+  <%= button_link_to "Edit Product", edit_admin_product_path(@kit.product), :icon => 'icon-edit' %>
+<% end %>
+<%= render :partial => 'spree/shared/error_messages', :locals => { :target => @kit } %>
+<%= form_for [:admin, @kit], :html => { :multipart => true } do |f| %>
+  <fieldset data-hook="edit_kit">
+    <legend align="left"><%= @kit.name %></legend>
+    <%= render :partial => "form", :locals => {:f => f} %>
+    <div class="clear"></div></br>
+    <div class="form-buttons filter-actions actions" data-hook="buttons">
+      <%= button Spree.t('actions.update'), 'icon-ok' %>
+      <span class="or"><%= Spree.t(:or) %></span>
+      <%= link_to_with_icon 'icon-remove', Spree.t('actions.cancel'), admin_kits_path, :class => 'button' %>
+    </div>
+  </fieldset>
+<% end %>

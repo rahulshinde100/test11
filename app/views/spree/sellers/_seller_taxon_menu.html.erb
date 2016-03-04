@@ -1,0 +1,31 @@
+<aside id="sidebar" class="columns three custom_sidebar" align="left" data-hook="">
+    <nav id="taxonomies" class="sidebar-item" data-hook="">
+      <% if controller.controller_name == "sellers"%>
+        <h6 class='taxonomy-root'>
+          <a href="" onclick="return false" id="about-us-seller">About Us</a>
+        </h6>
+      <%end%>
+      <%unless controller.controller_name == "brands" && params[:action] == "index"%>
+      	<%= lhs_menu(@taxons, nil, @brands, products.uniq, @sorted_taxons, nil, @sorted_brands)%>
+        <%if @taxons.blank? && @brands.blank?%>
+          <h6 class='taxonomy-root'>
+            <%= link_to "All Products", seller_path(@seller.permalink) %>
+          </h6>
+        <%end%>
+      <%else%>
+      	<%= lhs_menu(@taxons, nil, nil, products.uniq, @sorted_taxons, nil, nil)%>
+      <%end%>
+
+    </nav>
+</aside>
+
+<script type="text/javascript">
+
+$(document).ready(function(){ 
+  <% if controller.controller_name == "sellers"%>    
+    $("#sidebar").css( { marginLeft : "10px" } );   
+  <% else %>      
+    $("#sidebar").css( { marginLeft : "-10px" } );   
+  <% end %>  
+});
+</script>

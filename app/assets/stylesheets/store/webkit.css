@@ -1,0 +1,20 @@
+@media screen and (-webkit-min-device-pixel-ratio:0) {  
+
+    
+    
+    #main_nav_bar_container nav #main-nav-bar .gap-horizontal-bar{margin-top: -21px;}
+    #main_nav_bar_container nav #main-nav-bar{margin-left: 4.4px !important;}
+    
+    #main_nav_bar_container nav #main-nav-bar li a{padding-right: 13.6px;}
+    
+    
+    .qty #qty-box #quantity{
+        padding-bottom: 9px;
+        padding-top: 8px;
+    
+        font-size: 50px;
+        height: 53px;
+    }
+    
+    
+}

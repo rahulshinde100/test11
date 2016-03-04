@@ -1,0 +1,10 @@
+<div id = "loadMarketPlaces">
+	<% unless spree_current_user.has_spree_role?('seller')%>
+		 <label for="seller">Seller</label><br />
+		<input type="text" value='<%= @product.seller.name %>' class='fullwidth' readonly = true >
+		<%end%>
+<br />
+<br />
+  <!--<label for="market_place">Market Places</label><br />-->
+  <%#= select_tag "market_place_id", options_for_select(@market_places.collect {|p| [ p['name'], p['id'] ] }, @selected_mp_ids), :multiple=>"multiple", :name=>'market[place_id][]' %>
+</div>

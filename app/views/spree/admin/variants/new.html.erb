@@ -1,0 +1,47 @@
+<%= render :partial => 'spree/shared/error_messages', :locals => { :target => @variant } %>
+<div>
+
+ <!--<label><input type="radio" name="new" value="new_variant" checked = "checked"> Create New Variant </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+  <!--<label><input type="radio" name="new" value="map_variant"> Add Existing Variant </label>-->
+</div>
+<!--<br><br>-->
+<div id="new_variant_div" >
+<%#= render :partial => 'spree/admin/variants/_map_variant',:locals => {:product => @product, :variant => @variant}, :formats => [:html], :handlers => [:erb] %>
+</div>
+<div id="map_variant_div">
+
+</div>
+<script>
+  $(document).ready(function(){
+      $.ajax({
+          type: 'GET',
+          url: "/admin/variants/get_skus?product_id=" + <%= @product.id %>,
+          success: function(r){
+              $('#new_variant_div').html('');
+              $("#map_variant_div").html(r);
+//                  $('#new_variant_div').css('display','none');
+//                  $('#map_variant_div').css('display','block');
+          }
+      });
+  });
+    $("input[type = 'radio']").change(function(e){
+      if($(this).val() == 'new_variant'){
+          $("#new_variant_div").html('<%= escape_javascript(render :partial => 'spree/admin/variants/add_new', :formats => [:html], :handlers => [:erb]) %>');
+          $("#map_variant_div").html('');
+//          $('#new_variant_div').css('display','block');
+//          $('#map_variant_div').css('display','none');
+      }else{
+          $.ajax({
+              type: 'GET',
+              url: "/admin/variants/get_skus?product_id=" + <%= @product.id %>,
+              success: function(r){
+                  $('#new_variant_div').html('');
+                  $("#map_variant_div").html(r);
+//                  $('#new_variant_div').css('display','none');
+//                  $('#map_variant_div').css('display','block');
+              }
+          });
+
+      }
+    });
+</script>

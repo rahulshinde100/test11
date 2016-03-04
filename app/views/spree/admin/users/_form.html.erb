@@ -1,0 +1,77 @@
+<div data-hook="admin_user_form_fields" class="row">
+  <div class="alpha eight columns">
+    <%= f.field_container :firstname do %>
+      <%= f.label :firstname, Spree.t(:first_name) %><span class="required">*</span><br />
+      <%= f.text_field :firstname, :class => 'fullwidth', :tabindex => 1, :required => true %>
+      <%= f.error_message_on :firstname %>
+    <% end %>
+
+    <%= f.field_container :email do %>
+      <%= f.label :email, Spree.t(:email) %><span class="required">*</span><br />
+      <%= f.email_field :email, :class => 'fullwidth', :tabindex => 3, :required => true %>
+      <%= error_message_on :user, :email %>
+    <% end %>
+
+    <%= f.field_container :password do %>
+      <%= f.label :password, Spree.t(:password) %><span class="required">*</span><br />
+      <%= f.password_field :password, :class => 'fullwidth', :tabindex => 5, :required => true %>
+      <%= f.error_message_on :password %>
+    <% end %>
+
+    <%= f.field_container :contact do %>
+      <%= f.label :contact, Spree.t(:contact) %><span class="required">*</span><br />
+      <%= f.text_field :contact, :class => 'fullwidth', :tabindex => 7, :required => true %>
+      <%= f.error_message_on :contact %>
+    <% end %>
+
+   <%= f.field_container :gender_id do %>
+      <%= f.label :gender_id, Spree.t(:gender) %><br/>
+      <%= f.collection_select(:gender_id, Spree::Gender.all, :id, :name, { :include_blank => Spree.t('match_choices.select') }, { :class => 'select2 fullwidth' }) %>
+      <%= error_message_on :user, :gender_id %>
+    <% end %>
+
+  </div>
+
+  <div class="alpha eight columns">
+    <%= f.field_container :lastname do %>
+      <%= f.label :lastname, Spree.t(:last_name) %>
+      <%= f.text_field :lastname, :class => 'fullwidth', :tabindex => 2 %>
+      <%= f.error_message_on :lastname %>
+    <% end %>
+
+    <%= f.field_container :dateofbirth do %>
+      <%= f.label :dateofbirth, "Date of Birth" %>
+      <%= f.text_field :dateofbirth, :class => 'fullwidth datepicker', :tabindex => 4 %>
+      <%= f.error_message_on :dateofbirth %>
+    <% end %>
+
+    <%= f.field_container :password do %>
+      <%= f.label :password_confirmation, Spree.t(:confirm_password) %><span class="required">*</span><br />
+      <%= f.password_field :password_confirmation, :class => 'fullwidth', :tabindex => 6, :required => true %>
+      <%= f.error_message_on :password_confirmation %>
+    <% end %>
+
+      <div data-hook="admin_user_form_roles" class="field">
+      <%= label_tag nil, Spree.t(:roles) %><span class="required">*</span><br />
+      <ul>
+        <% @roles.each do |role| %>
+        <% next if spree_current_user.has_spree_role?('seller') && role.try(:name) != 'seller'%>
+          <li>
+            <%= radio_button_tag 'user[spree_role_ids][]', role.id, @user.spree_roles.include?(role), :id => "user_spree_role_#{role.name}", :tabindex => 8, :required => true %>
+            <%= label_tag role.name == "seller" ? "Seller Admin" : role.name %>
+          </li>
+        <% end %>
+      </ul>
+      <%= hidden_field_tag 'user[spree_role_ids][]', '' %>
+    </div>
+
+  <div data-hook="admin_user_country_field" class="country-show">
+     <%= f.field_container :country_id do %>
+      <%= f.label :country_id, Spree.t(:country_id) %><br/>
+      <%= f.collection_select(:country_id, Spree::Country.all, :id, :name, { :include_blank => Spree.t('match_choices.select') }, { :class => 'select2 fullwidth' }) %>
+      <%= error_message_on :user, :country_id %>
+    <% end %>
+  </div>
+
+  </div>
+</div>

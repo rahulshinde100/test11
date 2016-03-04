@@ -1,0 +1,253 @@
+<div data-hook="admin_product_form_fields">
+	<% tinymce %>
+    <div class="left eight columns alpha" data-hook="admin_product_form_left">
+        <%= f.field_container :name do %>
+            <%= f.label :name, raw(Spree.t(:name) + content_tag(:span, '*', :class => 'required')) %>
+            <%= f.text_field :name, :class => 'fullwidth', :require => true %>
+            <%= f.error_message_on :name %>
+        <% end %>
+
+        <%= f.field_container :short_name do %>
+            <%= f.label :short_name, raw(Spree.t(:short_name) + content_tag(:span, '*', :class => 'required')) %>
+            <%= f.text_field :short_name, :class => 'fullwidth', :required => true %>
+            <%= f.error_message_on :short_name %>
+        <% end %>
+
+        <div class="eight columns alpha omega">
+            <input type="hidden" name="validate_on_taxons" value="1"/>
+            <%= f.field_container :taxons do %>
+                <%= f.label :taxon_ids, raw(Spree.t(:taxons) + content_tag(:span, '*', :class => 'required')) %><br />
+                <%= f.hidden_field :taxon_ids, :value => @product.taxon_ids.join(',') %>
+            <%end %>
+            <% if @product.present? && !@product.kit_id.present? %>
+              <%= f.field_container :option_types do %>
+                <%= f.label :option_type_ids, Spree.t(:option_types) %>
+                <%= f.hidden_field :option_type_ids, :value => @product.option_type_ids.join(',') %>
+              <% end %>
+            <% end %>  
+            <span style="display: none;">
+              <%= f.field_container :labels do %>
+                <%= f.label :label_ids, Spree.t(:labels) %>
+                <%= f.hidden_field :label_ids, :value => @product.label_ids.join(',') %>
+              <% end %>
+            </span>
+        </div>
+        <div data-hook="admin_product_description" class="alpha omega eight columns">
+            <%= f.field_container :description do %>
+	          <%= f.label :description, raw(Spree.t(:description) + content_tag(:span, '*', :class => 'required')) %>
+	          <%= f.text_area :description, :class => "tinymce", :require => true %>
+	          <%= f.error_message_on :description %>
+	        <% end %>
+        </div>
+        <div data-hook="admin_product_form_meta" class="alpha omega eight columns">
+        	<span style="display: none;">
+            <%= f.field_container :meta_keywords do %>
+                <%= f.label :meta_keywords, Spree.t(:meta_keywords) %>
+                <%= f.text_field :meta_keywords, :class => 'fullwidth' %>
+            <% end %>
+           </span>
+            <%= f.field_container :meta_description do %>
+                <%= f.label :meta_description, raw(Spree.t(:highlights) + content_tag(:span, '*', :class => 'required')) %>
+                <%= f.text_area :meta_description, :class => "tinymce" %>
+            <% end %>
+            <%= f.field_container :package_content do %>
+              <%= f.label :package_content, raw(Spree.t(:whats_in_box) + content_tag(:span, '*', :class => 'required')) %>
+              <%= f.text_area :package_content, :class => 'fullwidth', :rows=>10 %>
+            <% end %>
+        </div>
+  </div>
+
+  <div class="right four columns omega" data-hook="admin_product_form_right">
+    <div class="alpha four columns">
+        <%= f.field_container :cost_price do %>
+            <%= f.label :cost_price, Spree.t(:cost_price) %>
+            <%= f.text_field :cost_price, :value => number_with_precision(@product.cost_price, :precision => 2).to_f %>
+            <%= f.error_message_on :cost_price %>
+        <% end %>
+    </div>
+    <div class="alpha four columns">
+      <%= f.field_container :price do %>
+        <%= f.label :price, raw(Spree.t(:retail_price) + content_tag(:span, '*', :class => "required")) %>
+        <%= f.text_field :price, :value => number_with_precision(@product.price, :precision => 2).to_f, :required => true %>
+        <%= f.error_message_on :price %>
+      <% end %>
+    </div>
+    <div class="alpha four columns">
+      <%= f.field_container :selling_price do %>
+        <%= f.label :selling_price, raw(Spree.t(:selling_price) + content_tag(:span, '*', :class => "required")) %>
+        <%= f.text_field :selling_price, :value => number_with_precision(@product.selling_price, :precision => 2).to_f, :required => true %>
+        <%= f.error_message_on :selling_price %>
+      <% end %>
+    </div>
+    <div class="alpha four columns">
+      <%= f.field_container :special_price do %>
+        <%= f.label :special_price, raw(Spree.t(:special_price)) %>
+        <%= f.text_field :special_price, :value => number_with_precision(@product.special_price, :precision => 2).to_f  %>
+        <%= f.error_message_on :special_price %>
+      <% end %>
+    </div>
+    <div class="alpha four columns">
+        <%= f.field_container :cost_currency do %>
+            <%= f.label :cost_currency, Spree.t(:cost_currency) %>
+            <%= f.text_field :cost_currency %>
+            <%= f.error_message_on :cost_currency %>
+        <% end %>
+    </div>
+
+     <div class="alpha four columns">
+        <%= f.field_container :is_adult do %>
+        <%= f.label :is_adult_product, Spree.t(:is_adult_product) %>
+        <%= f.check_box :is_adult, :class => 'custom_checkbox' %>
+        <% end %>
+    </div>
+
+    <div class="clear"></div>
+
+    <%= f.field_container :available_on do %>
+      <%= f.label :available_on, Spree.t(:available_on) %>
+      <%= f.error_message_on :available_on %>
+      <%= f.text_field :available_on, :value => datepicker_field_value(@product.available_on), :class => 'datepicker', :readonly => 'true' %>
+    <% end %>
+
+    <% unless @product.has_variants? %>
+      <%= f.field_container :sku do %>
+        <%= f.label :sku, raw(Spree.t(:sku) + content_tag(:span, '*', :class => 'required')) %>
+        <%= f.text_field :sku, :readOnly => true %>
+      <% end %>
+
+       <%= f.field_container :upc do %>
+        <%= f.label :upc, "UPC" %>
+        <%= f.text_field :upc %>
+       <% end %>
+
+      <ul id="shipping_specs">
+        <li id="shipping_specs_weight_field" class="field alpha four columns">
+          <%= f.label :weight, Spree.t(:weight) %>
+          <%= f.text_field :weight %>
+        </li>
+        <li id="shipping_specs_height_field" class="field alpha four columns">
+          <%= f.label :height, Spree.t(:height) %>
+          <%= f.text_field :height %>
+        </li>
+        <li id="shipping_specs_width_field" class="field alpha four columns">
+          <%= f.label :width, Spree.t(:width) %>
+          <%= f.text_field :width %>
+        </li>
+        <li id="shipping_specs_depth_field" class="field alpha four columns">
+          <%= f.label :depth, Spree.t(:depth) %>
+          <%= f.text_field :depth %>
+        </li>
+      </ul>
+    <% end %>
+
+    <div class="clear"></div>
+    <div style="display: none;">
+	  <%= f.field_container :shipping_categories do %>
+	    <%= f.label :shipping_category_id, Spree.t(:shipping_categories) %>
+        <%= f.collection_select(:shipping_category_id, @shipping_categories, :id, :name, {:prompt => f.object.shipping_category_id}, { :class => 'select2' }) %>
+        <%= f.error_message_on :shipping_category %>
+	  <% end %>
+	  <%= f.field_container :tax_category do %>
+	    <%= f.label :tax_category_id, Spree.t(:tax_category) %>
+	    <%= f.collection_select(:tax_category_id, @tax_categories, :id, :name, { :class => 'select2' }) %>
+	    <%= f.error_message_on :tax_category %>
+	  <% end %>
+    </div>
+
+    <%= f.field_container :gender do %>
+        <% p f.object.gender %>
+        <% p @product.gender %>
+        <%= f.label :gender, Spree.t(:gender) %>
+        <%= select_tag(:gender, options_for_select(@gender,f.object.gender),  :name=>'product[gender]', :label => false, :class => 'col-sm-8') %>
+    <% end %>
+    <%= f.field_container :brand do %>
+      <%= f.label :brand_id, Spree.t(:brand) %>
+      <%= f.collection_select(:brand_id, @brands, :id, :name, { :class => 'select2' }) %>
+      <%= f.error_message_on :brand %>
+    <% end %>
+
+  <%= f.hidden_field :seller_id, :value => @product.seller.id %>
+  <div id = "loadMarketPlaces" class="field"></div>
+
+  </div>
+
+  <div class="clear"></div>
+
+  <div data-hook="admin_product_form_additional_fields"></div>
+
+  <div class="clear"></div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#s2id_product_seller_id").remove();
+    $("#product_seller_id_field").remove();
+    $("#product_tax_category_id").select2();
+    loadMarketPlaces('<%= @product.id %>');
+    preMappedMarketPlaces('<%= @product.id %>');
+    $("#product_seller_id").change(function() {
+      loadMarketPlaces('<%= @product.id %>');
+      preMappedMarketPlaces('<%= @product.id %>');
+    });
+
+    var avail_date = $("#product_available_on").val();
+    if(avail_date){
+      $("#product_available_on").datepicker(
+        "option", "minDate", avail_date
+      );
+    }
+    else{
+      $("#product_available_on").datepicker(
+        "option", "minDate", 0
+      );
+    }
+
+  if ($('#product_taxon_ids').length > 0) {
+    $('#product_taxon_ids').select2({
+      placeholder: Spree.translations.taxon_placeholder,
+      multiple: true,
+      maximumSelectionSize: 1,
+      initSelection: function (element, callback) {
+        var url = Spree.url(Spree.routes.taxons_search, {
+          ids: element.val()
+        });
+        return $.getJSON(url, null, function (data) {
+          return callback(data['taxons']);
+        });
+      },
+      ajax: {
+        url: Spree.routes.taxons_search,
+        datatype: 'json',
+        data: function (term, page) {
+          return {
+            per_page: 50,
+            page: page,
+            q: {
+              name_cont: term
+            }
+          };
+        },
+        results: function (data, page) {
+          var more = page < data.pages;
+          console.log(more)
+          return {
+            results: data['taxons'],
+            more: more
+          };
+        }
+      },
+      formatResult: function (taxon) {
+        return taxon.pretty_name;
+      },
+      formatSelection: function (taxon) {
+        return taxon.pretty_name;
+      }
+    });
+   }
+  });
+
+<% unless Rails.env.test? %>
+  $('.select2-container').css({width: '20em'})
+<% end %>
+
+</script>

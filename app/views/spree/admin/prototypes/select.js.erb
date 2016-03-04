@@ -1,0 +1,5 @@
+<% @prototype_properties.sort_by{ |prop| -prop[:id] }.each_with_index do |prop, index| %>
+  $(".product_property.fields:first input[type=text]:first").val("<%= prop.name %>");  
+  add_row();
+<% end %>
+$(".product_property.fields:first").remove();

@@ -1,0 +1,62 @@
+<%= render :partial => 'spree/admin/shared/configuration_menu' %>
+
+<% content_for :page_title do %>
+  <%= Spree.t(:sync_categories) %>
+<% end %>
+
+<% content_for :page_actions do %>
+  <li>
+    <%= button_link_to Spree.t(:back_to_taxonomies_list), spree.admin_taxonomies_path, :icon => 'icon-arrow-left' %>
+  </li>
+<% end %>
+
+<%= form_tag import_categories_admin_taxonomies_path, multipart: true do %>
+  <fieldset class="no-border-top">
+    <legend align="center">Sync Category list</legend>
+    <br>
+    <div>
+      <p>Select Market Place</p>
+      <%= select_tag "market_place", options_from_collection_for_select(@market_places, "id", "name") %>
+    </div>
+    <br>
+    <div id='category_file' style="display:none;">
+      <p>Select File</p>
+       <%= file_field_tag :file %>
+    </div>
+    <br>
+    <div class="filter-actions actions" data-hook="buttons">
+      <%= submit_tag "sync", :onclick=>"return validateForm();" %>
+    </div>
+  </fieldset>
+<% end %>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+	  if (($("#market_place option:selected").text() == 'lazada') || ($("#market_place option:selected").text() == 'Lazada' ) || ($("#market_place option:selected").text() == 'zalora') || ($("#market_place option:selected").text() == 'Zalora' )) {
+	        $('#category_file').show();
+	    }
+	  $('#market_place').change(function(){
+	        if(($('#market_place option:selected').text() == 'lazada') || ($('#market_place option:selected').text() == 'Lazada') || ($('#market_place option:selected').text() == 'zalora') || ($('#market_place option:selected').text() == 'Zalora') ) {
+	            $('#category_file').show();
+	        } else {
+	            $('#category_file').hide();
+	        }
+	    });
+	});
+
+	function validateForm()
+	{
+	  var flag = true;
+	  var file = $("#file").val();
+	  var market_place = $("#market_place option:selected").text();
+	  if(market_place == 'Lazada' || market_place == 'lazada' || market_place == 'Zalora' || market_place == 'zalora')
+	  {
+	    if(file.length == 0)
+	    {
+		  flag = false;
+		  alert("Please select file");
+		}
+	  }
+	  return flag;
+	}
+</script>

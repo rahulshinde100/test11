@@ -1,0 +1,33 @@
+<%= render :partial => 'spree/admin/shared/seller_sub_menu', :locals => { :seller => @seller, :title => "Product Categories" } %>
+
+<% if @seller_categories.present? %>
+<div class="custom_responsive CSSTableGenerator">
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @seller_categories.each_with_index do |seller_category, index| %>
+        <tr>
+          <td align="left"><%= seller_category.category.name %></td>
+          <td align="left"><%= link_to '', admin_seller_seller_category_path(@seller,seller_category), :no_text => true, :method => :delete, :class => 'icon-trash', :confirm => 'Are you sure, you want to delete this Category?'%></td>
+        </tr>
+      <%end%>
+    </tbody>
+  </table>
+</div>  
+<%else%>
+  <div class="no-objects-found" style="text-align: center;">
+    <h2>No Categories found</h2>
+  </div>
+<%end%>
+</br>
+<% if Spree::Taxonomy.categories && Spree::Taxonomy.categories.taxons %>
+  <% if @seller_categories.count != Spree::Taxonomy.categories.taxons.collect{|taxon| taxon if(taxon.parent.present? && !taxon.parent.parent.present?)}.compact.count %>
+    <%= button_link_to Spree.t(:new_category), new_admin_seller_seller_category_path(@seller) if current_spree_user.has_spree_role?("admin")%>
+  <% end %>
+<% end %>
+

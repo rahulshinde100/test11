@@ -1,0 +1,159 @@
+<% content_for :page_actions do %>
+    <% if !params[:unapprove].present? %>
+        <li id="new_product_link">
+          <%#= button_link_to Spree.t(:new_product), new_object_url, { :remote => true, :icon => 'icon-plus', :id => 'admin_new_product' } %>
+        </li>
+        <li id="create_on_fba">
+          <button class="button icon-download" id="create_fba"> Create On FBA</button>
+        </li>
+        <li id="search_product">
+          <span class="button icon-search">Search</span>
+        </li>
+    <% else %>
+        <%= button_link_to "Back to products list", admin_products_path, {:icon => 'icon-arrow-left'} %>
+    <% end %>
+<% end %>
+
+<%= render :partial => 'spree/admin/shared/product_sub_menu' %>
+<% content_for :table_filter_title do %>
+    Product :: Search
+<% end %>
+
+<% content_for :table_filter do %>
+    <div data-hook="admin_products_sidebar">
+      <%= search_form_for @search,url: spree.admin_get_new_variants_path do |f| %>
+          <%- locals = {:f => f} %>
+          <div data-hook="admin_products_index_search">
+
+            <% unless spree_current_user.has_spree_role?('seller')%>
+                <div class="alpha nine columns">
+                  <div class="field">
+                    <%= f.label :seller_id, "Seller" %><br />
+                    <%= f.collection_select(:product_seller_id_eq, Spree::Seller.is_active, :id, :name, include_blank: "All") %>
+                  </div>
+                </div>
+            <%end%>
+
+            <div class="alpha nine columns">
+              <div class="field">
+                <%= f.label :product_name_cont, Spree.t(:name) %>
+                <%= f.text_field :product_name_cont %>
+              </div>
+            </div>
+
+            <div class="four columns">
+              <div class="field">
+                <%= f.label :sku_cont, Spree.t(:sku) %>
+                <%= f.text_field :sku_cont %>
+              </div>
+            </div>
+
+            <div class="three columns omega">
+              <div class="field checkbox">
+                <label>
+                  <%= f.check_box :product_deleted_at_null, {:checked => (params[:q][:product_deleted_at_null].blank? rescue false)}, '', '1' %>
+                  <%= Spree.t(:show_deleted) %>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="clear"></div>
+
+          <div class="form-buttons actions filter-actions" data-hook="admin_products_index_search_buttons">
+            <%= button Spree.t(:search), 'icon-search' %>
+          </div>
+      <% end %>
+    </div>
+<% end %>
+
+<% if params[:unapprove].present? %>
+    <%= render :partial => "approval_request"%>
+<%else%>
+    <% if @varianrts.present? %>
+        <div class="custom_responsive CSSTableGenerator">
+          <table class="index" id="listing_products">
+            <thead>
+            <tr data-hook="admin_products_index_headers">
+              <th width="10">
+                <input type="checkbox" id="select_all" onclick="selectUnselectAllSkus(this);">
+              </th>
+              <th width="10"><%= Spree.t(:sku) %></th>
+              <th width="15"><%= Spree.t(:image)%></th>
+              <th>Product</th>
+              <%if spree_current_user.has_spree_role?("admin")%>
+                  <th>Seller</th>
+              <%end%>
+               <th>Message</th>
+
+            </tr>
+            </thead>
+            <tbody id="listing_products">
+            <% @varianrts.each do |variant| %>
+                <tr <%= "style='color: red;'" if variant.product.deleted? %> id="<%= spree_dom_id variant.product %>" data-hook="admin_products_index_rows" class="<%= cycle('odd', 'even') %>">
+                  <td>
+                    <% if !variant.validation_message.present? %>
+                    <input type="checkbox" id="variant_ids_<%= variant.id %>" name="product_ids[<%= variant.id %>]" value=<%= variant.id %> onclick="checkAllSelected(this);" >
+                        <% end %>
+                    <!--<input type="checkbox" class="chkb" name="chkb" id="chk_<%#= variant.id%>'"/>-->
+                  </td>
+                  <td><%= variant.sku rescue '' %></td>
+                  <td><%= (mini_image(variant.product) rescue "") %></td>
+                  <td><%= link_to variant.product.try(:name), edit_admin_product_path(variant.product) %></td>
+                  <%if spree_current_user.has_spree_role?("admin")%>
+                      <td><%= link_to variant.product.try(:seller).try(:name), admin_seller_path(variant.product.seller.id)%></td>
+                  <%end%>
+                  <td><%= variant.validation_message rescue 'NA' %></td>
+                </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+    <% else %>
+        <div class="no-objects-found">
+          <%= Spree.t(:no_results) %>
+        </div>
+    <% end %>
+<%end%>
+
+<%= paginate @variants %>
+<div id="seller_products"></div>
+<div class="black_overlay"></div>
+
+<script>
+    $(document).ready(function() {
+//        $("#selectall").attr('checked',false);
+    });
+$('#create_fba').click(function(){
+
+        var selectedSKUList = "";
+        $('#listing_products input[type=checkbox]').each(function () {
+            if(this.checked)
+            {selectedSKUList += (selectedSKUList.length > 0 ? "," : "") + $(this).val();}
+        });
+        if(selectedSKUList.length > 0)
+        {
+            $.ajax({
+                type: 'post',
+                url: '/admin/variants/create_on_fba',
+                data: {skus: selectedSKUList},
+                success: function(data){
+                    console.log('success');
+                    alert("We are processing your request. We will let you know the status on you given emails.");
+                    location.reload();
+                },
+                error: function(data){
+                    console.log('error');
+                }
+
+            });
+//           console.log(selectedSKUList);
+        }
+        else
+        {
+            alert('Please select atleast one Product');
+            return false;
+        }
+
+});
+</script>

@@ -1,0 +1,187 @@
+<% content_for :page_title do %>
+    <%= Spree.t(:listing_kits) %>
+<% end %>
+<% content_for :page_actions do %>
+  <li id="new_kit_link">
+    <%= button_link_to Spree.t(:new_kit), new_admin_kit_path, { :remote => true, :icon => 'icon-plus' } %>
+  </li>
+  <!--li id="upload-file" >
+    <span class="button icon-upload">Upload Kit List</span>
+  </li>
+  <li id="export-file" >
+    <span class="button icon-download">Export Kit List</span>
+  </li-->
+  <li id="search_kit">
+    <span class="button icon-search">Search</span>
+  </li>
+<% end %>
+
+<div class="upload-file" >
+  <%= form_tag spree_current_user.has_spree_role?('seller') ? upload_kit_admin_kit_path(spree_current_user.seller.id) : upload_kit_admin_kits_path, :multipart => true, :method => :post do %>
+   <fieldset data-hook="upload_product">
+    <legend align="center">Kit :: Upload Kit List</legend>
+    <%= file_field_tag :attachment, :style => 'float:left;margin-top:18px;margin-right:10px;', :required => true %>
+    <%if spree_current_user.has_spree_role?("admin")%>
+      <div class="seller_selector">
+        <label for="seller">Seller</label><span class="required">*</span><br />
+        <%= select_tag :seller_id_kit_import, options_from_collection_for_select(Spree::Seller.is_active, "id", "name"), class: 'select2 fullwidth', :style => 'margin-top:2px;' %>
+      </div>
+    <%elsif spree_current_user.has_spree_role?("seller")%>
+        <%= hidden_field_tag :seller_id_kit_import, spree_current_user.seller.id %>
+    <%end%>
+    <div id ="product_bulk_import"></div>
+    <br />
+    <center><input type="submit" id="sub" value="Upload Kit List" class="button icon-upload"/>
+    <a href="/sample-files/Sample Bulk Kit Upload.zip" download="Sample Bulk Kit Upload.zip">
+      <i class="icon-cloud-download">Download Kit Upload Sample File</i>
+    </a>
+    </center>
+  </fieldset>
+  <%end%>
+</div>
+
+<div class="export-file" >
+  <%= form_tag spree_current_user.has_spree_role?('seller') ? upload_kit_admin_kit_path(spree_current_user.seller.id) : upload_kit_admin_kits_path, :multipart => true, :method => :post do %>
+  <fieldset data-hook="upload_product">
+    <legend align="center">Kit :: Export Kit List</legend>
+    <%if spree_current_user.has_spree_role?("admin")%>
+      <div class="seller_selector">
+        <label for="seller">Seller</label><span class="required">*</span><br />
+        <%= select_tag :seller_id_export, options_from_collection_for_select(Spree::Seller.is_active, "id", "name"), class: 'select2 fullwidth product_seller_list', :style => 'margin-top:2px;' %>
+      </div>
+    <%elsif spree_current_user.has_spree_role?("seller")%>
+        <%= hidden_field_tag :seller_id_export, spree_current_user.seller.id %>
+    <%end%>
+    <div id ="product_bulk_export"></div>
+    <br />
+    <input type="hidden" value='xlsx' name="xlsx" id="xlsx" />
+    <%= button Spree.t(:export_to_excel), 'icon-download'%>
+  </fieldset>
+  <%end%>
+</div>
+
+<% content_for :table_filter_title do %>
+      Kit :: Search
+<% end %>
+
+<% content_for :table_filter do %>
+  <div data-hook="admin_kits_sidebar">
+        <%= form_tag admin_kits_path, :method => 'get' do %>
+        <div data-hook="admin_kits_index_search">
+           <% unless spree_current_user.has_spree_role?('seller')%>
+             <div class="alpha nine columns">
+              <div class="field">
+                <%= label :seller_id, "Seller:" %>&nbsp;
+                <%= collection_select :seller, :id, Spree::Seller.is_active, :id, :name, include_blank: "All", :selected=> @selected_seller %>
+              </div>
+            </div>
+            <%end%>
+          <div class="alpha nine columns">
+            <div class="field">
+              <%= label :name, Spree.t(:name) %>
+              <%= text_field_tag :name, @selected_name %>
+            </div>
+          </div>
+          <div class="four columns">
+            <div class="field">
+              <%= label :sku, Spree.t(:sku) %>
+              <%= text_field_tag :sku, @selected_sku %>
+            </div>
+          </div>
+        </div>
+        <div class="clear"></div>
+        <div class="form-buttons actions filter-actions" data-hook="admin_kits_index_search_buttons">
+          <%= button Spree.t(:search), 'icon-search' %>
+        </div>
+    <% end %>
+  </div>
+<% end %>
+
+<div id="new_kit_wrapper" data-hook></div>
+
+<% if @kits.present? %>
+    <div class="custom_responsive CSSTableGenerator">
+    <table class="index" id="listing_kits">
+      <thead>
+        <tr data-hook="admin_products_index_headers">
+          <th><%= Spree.t(:name) %></th>
+          <th><%= Spree.t(:sku) %></th>
+          <%if spree_current_user.has_spree_role?("admin")%>
+            <th><%= Spree.t(:seller) %></th>
+          <%end%>
+          <th><%= Spree.t(:market_places) %></th>
+          <th><%= Spree.t(:total_products)%></th>
+          <th><%= Spree.t(:active) %></th>
+          <th>Edit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @kits.each do |kit| %>
+        <tr height="40">
+              <td align="center"><%= link_to kit.try(:name), admin_kit_path(kit) %></td>
+              <td align="center"><%= kit.sku rescue '' %></td>
+              <%if spree_current_user.has_spree_role?("admin")%>
+                <td align="center"><%= kit.seller.try(:name) %></td>
+              <%end%>
+              <td align="center"><%= kit.product.try(:market_places).present? ? kit.product.try(:market_places).pluck(:name).join(', ') : "-" %></td>
+              <td align="center"><%= kit.try(:products).present? ? kit.try(:products).count : "-"  %></td>
+              <td align="center"><%= kit.is_active ? "Yes" : "No" %></td>
+              <td align="center">
+                <%= link_to '', edit_admin_kit_path(kit), :no_text => true, :class => 'icon-edit'%>
+              </td>
+            </tr>
+        <% end %>
+      </tbody>
+    </table>
+ </div>
+  <% else %>
+    <div class="no-objects-found field" style="text-align: center;">
+      No kits are added yet, You can add new kit
+    </div>
+  <% end %>
+
+<%= paginate @kits %>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+
+    $("#new_kit_link").click(function(){
+      $('.upload-file').css('display','none');
+      $('.export-file').css('display','none');
+      $('#table-filter').css('display','none');
+      $('#new_kit_wrapper').toggle("slow");
+    });
+
+    $('#upload-file').click(function(){
+      $('#table-filter').css('display','none');
+      $('.export-file').css('display','none');
+      $('.upload-file').toggle("slow");
+      $("#seller_id_kit_import").change(function() {
+             loadMarketPlacesOnKitImport();
+      });
+       loadMarketPlacesOnKitImport();
+    });
+
+    $('#export-file').click(function(){
+      $('#table-filter').css('display','none');
+      $('.upload-file').css('display','none');
+      $('.export-file').toggle("slow");
+      $("#seller_id_export").change(function() {
+            loadMarketPlacesOnProductExport();
+      });
+      loadMarketPlacesOnProductExport();
+    });
+
+    $('#xls').val('');
+
+    $(".icon-excel").click(function(){
+        $('#xls').val('xls');
+    });
+
+    $("#file").change(function(){
+      filename = $(this).val();
+      $("#file_path").attr("value", filename);
+    });
+
+  });
+</script>

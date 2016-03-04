@@ -1,0 +1,10 @@
+<% content_for :sub_menu do %>
+  <ul id="sub_nav" data-hook="admin_product_sub_tabs" class="inline-menu">  	
+  	<li<%== ' class="selected"' if params[:action] == 'abandoned_carts' %>>
+    	<%= link_to Spree.t(:abandoned_carts), abandoned_carts_admin_analytics_raw_data_path %>
+	</li>
+	<li<%== ' class="selected"' if params[:action] == 'searched_terms' %>>
+    	<%= link_to Spree.t(:search_terms), searched_terms_admin_analytics_raw_data_path %>
+    </li>
+  </ul>
+<% end %>

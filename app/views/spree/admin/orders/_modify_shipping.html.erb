@@ -1,0 +1,40 @@
+<% if line_items.present? %>
+  <fieldset id='admin_customer_detail_form_fields' data-hook>
+    <legend align="center"><%= Spree.t(:order_details) %></legend>
+    <div class="inner" data-hook="shipping_method_inner">
+      <div id="methods">
+        <div class="CSSTableGenerator">
+          <table class="stock-contents" data-hook="stock-contents">
+            <thead>
+              <th>Image</th>
+              <th>Item</th>
+              <th>SKU</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Actions</th>
+            </thead>
+            <tbody>
+              <% line_items.each do |item| %>
+                <tr>
+                  <td><%= (mini_image(item.variant) rescue "") %></td>
+                  <% product_name = truncate(item.variant.name, :length => 50, :separator => ' ') + (!item.variant.option_values.blank? ? ": #{item.variant.option_values.collect(&:name).join(",")}" : "") %>
+                  <td title="<%= item.variant.name %>"><%= link_to product_name, edit_admin_product_path(item.product), :target=> "_blank" %></td>
+                  <td><%= item.variant.sku %></td>
+                  <td><%= item.quantity %></td>
+                  <%if spree_current_user.has_spree_role? 'admin' %>
+                    <td><%= line_item_shipment_price(item, item.quantity) %></td>
+                  <%end%>
+                  <td width="60px">
+                    <%= link_to '', "javascript:void(0)", :no_text => true, :class => 'icon-edit', :onclick=>"findVariantForOrder('#{@order.id}', '#{item.id}');" %> &nbsp;
+                    <%= link_to '', admin_order_line_item_path(item.order.number, item.id), :no_text => true, :method => :delete, :class => 'icon-trash', :confirm => "Are you sure, you want to remove the product?" %>
+                  </td>
+                </tr>
+              <%end %>
+              </tbody>
+            </table>
+          </div>
+      </div>
+    </div>
+  </fieldset>
+<% end %>
+<%= render :partial => 'spree/admin/shared/order_sub_menu' %>

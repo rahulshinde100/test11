@@ -1,0 +1,26 @@
+
+
+    <%unless request.original_url.include? 'business.ship.li'%>
+        <div id="main-search-box">
+           <%= form_tag spree.products_path, :method => :get, :class => "asholder",  :remote => true do %>
+            <input type="submit" value="Search" id="home-search">
+            <input type="text" name="keywords" id="autocomplete-ajax" style="" placeholder="Search thousands of products"/>
+            <%if controller.controller_name == "sellers" && controller.action_name == "show"%>
+                <input type="hidden" name="retailer" id="retailer" value="<%= @seller.permalink%>"> 
+            <%end%>
+           <%end%>
+        </div>
+     <%end%>
+
+<script type="text/javascript">
+	var options = {
+		script:"/products/search?json=true&",
+		varname:"keywords",
+		json:true,
+                maxentries: 5
+		//callback: function (obj) { document.getElementById('testid').value = obj.id; }
+	};
+	var as_json = new AutoSuggest('autocomplete-ajax', options);
+	
+</script>
+

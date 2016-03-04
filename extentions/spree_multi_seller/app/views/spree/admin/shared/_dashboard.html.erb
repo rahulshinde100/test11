@@ -1,0 +1,107 @@
+<% content_for :page_title do %>
+  <%= seller.name %>
+  <% order_class = 'selected'%>
+<% end %>
+
+<div data-hook="new_seller_attrs" class="row dashboard-gui">
+  <a href = "<%= admin_orders_path%>">
+    <div class="alpha three columns slate listed">
+      <div class="count_div">
+        <count><%= seller.orders.complete.count %></count>
+      </div>
+      <div class="label_div">
+        <label>Total<br/>Orders</label>      
+      </div>
+    </div>
+  </a>
+  <a href = "<%= admin_orders_path(:dash => 'in_process')%>">
+    <div class="three columns slate processed">
+      <div class="count_div">
+        <count><%= seller.in_process.count %></count>
+      </div>  
+      <div class="label_div">
+        <label>Incoming<br/>Orders</label>
+      </div>  
+    </div>
+  </a>
+  <a href = "<%= admin_products_path(:dash => 'out_stock')%>">
+    <div class="three columns slate sales">
+      <div class="count_div">
+        <count><%= seller.out_of_stock_products.count%></count>
+      </div>
+      <div class="label_div">
+        <label>Out Of Stock<br/> Products</label>
+      </div>
+    </div>
+  </a>  
+  <a href = "<%= seller_wise_sale_total_admin_reports_path(:permalink => seller.permalink, 'q[completed_at_gt]' => seller.establishment_date, 'q[completed_at_lt]' => Time.now)%>">
+    <div class="three columns slate current">
+      <div class="count_div">        
+        <count><%= number_to_currency seller.total_sale %></count>        
+      </div>
+      <div class="label_div">
+        <label>Sales</label>
+      </div>
+    </div>
+  </a>
+  <a href = "<%= admin_products_path(:dash => 'sold')%>">
+    <div class="omega three columns slate user">
+      <div class="count_div">        
+        <count><%= seller.sold_products %></count>
+      </div>
+      <div class="label_div">
+        <label>Products Sold</label>
+      </div>
+    </div>
+  </a>
+  <a href = "<%= admin_products_path%>">
+    <div class="alpha three columns slate oos">
+      <div class="count_div">
+        <count><%= seller.products.count%></count>
+      </div>
+      <div class="label_div">  
+        <label>Listed<br/>Products</label>
+      </div>  
+    </div>
+  </a>  
+  <a href = "<%= admin_products_path(:dash => 'sale')%>">
+    <div class="three columns slate in_process">
+      <div class="count_div">
+        <count><%= seller.products.sale_products.count %></count>
+      </div>
+      <div class="label_div">
+        <label>Products On<br/>Sales</label>
+      </div>  
+    </div>
+  </a>  
+  <a href = "<%= admin_products_path(:dash => '99min')%>">
+    <div class="three columns slate gst_feed">
+      <div class="count_div">
+        <count><%= seller.products.in_99minute.count %></count>
+      </div>
+      <div class="label_div">  
+        <label>Products in <br/>99-minutes</label>
+      </div>  
+    </div>
+  </a>  
+  <a href = "<%= admin_products_path(:dash => 'same_day')%>">
+    <div class="three columns slate completed">
+      <div class="count_div">
+        <count><%= seller.products.in_same_day.count %></count>
+      </div>
+      <div class="label_div">
+        <label>Products In<br/>Same Day</label>
+      </div>  
+    </div>
+  </a>  
+  <a href = <%= admin_seller_seller_users_path(seller)%>>
+    <div class="omega three columns slate stores">      
+      <div class="count_div">        
+        <count><%= seller.users.count%></count>
+      </div>
+      <div class="label_div">
+        <label>Users</label>
+      </div>  
+    </div>
+  </a>  
+</div>

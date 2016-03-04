@@ -1,0 +1,124 @@
+<%unless line_items.blank?%>
+  <fieldset id='shipping_method' data-hook>
+    <legend align="center" id="cart_heading">Items for Delivery at your doorstep</legend>
+    <div class="inner" data-hook="shipping_method_inner" style="margin-top:5px;padding-right:0px;">
+      <div id="methods">
+        <div class="shipment">          
+          <table class="stock-contents cart_table" data-hook="stock-contents">
+            <colgroup>
+              <col style="width: 77px;" />
+              <col style="width: 342px;" />
+              <col style="width: 136px;" />
+              <col style="width: 76px" />
+              <col style="width: 136px;" />
+            </colgroup>
+            <thead>
+              <th></th>                
+              <th style="text-align: left;">Items</th>              
+              <th>price</th>
+              <th>quantity</th>
+              <th>total</th>
+            </thead>
+            <tbody>
+              <% @cart_item = 1 %>              
+              <% line_items.each do |item| %>
+                <% if !item.is_pick_at_store  
+                    @cart_item = 0 %>                    
+                <% end %>    
+                <%next if item.is_pick_at_store %>
+                <tr class="stock-item">
+                  <td class="item-image"><%= (mini_image(item.variant) rescue "") %></td>
+                  <td class="item-name">
+                    <%=item.variant.name %> <%= ": #{item.variant.option_values.collect(&:name).join(",")}" unless item.variant.option_values.blank? %>
+                  </td>
+                  <td class="item-price">
+                    <%= number_to_currency item.price %>
+                  </td>
+                  <td class="item-qty"><%= item.quantity %></td>
+                  <td class="item-price">
+                    <%= item.display_amount.to_html unless item.quantity.nil? %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <% if @cart_item == 0 %>       
+      <div style="font-weight:bold;margin-bottom:10px;">
+        Select your preferred delivery slot
+      </div>
+
+      <div id="delivery-days-block">
+        <% order.possible_delivery_date.each_with_index do |dd, index|%>
+          <div class="delivery-day">
+            <div class="delivery-date"><%= dd %></div>
+            <div class="delivery-slot" id="<%= Date.parse(dd).strftime("%d%m%Y") %>">
+              <div>
+                <button type="button" id="1pm-6pm" name="button" class="continue button primary <%= index== 0 ? 'selected' : ''%> pickup-item pickup_<%=index%>" onclick="return setDeliveryDate('<%= dd %>', '1pm - 6pm', this);">
+                  <i class="icon-timer"></i>
+                  1pm - 6pm
+                </button>
+              </div>
+              <div>
+                <button type="button" id="6pm-8pm" name="button" class="continue button primary pickup-item" onclick="return setDeliveryDate('<%= dd %>', '6pm - 8pm', this);">
+                  <i class="icon-timer"></i>
+                  6pm - 8pm
+                </button>
+              </div>
+              <div>
+                <button type="button" id="8pm-11pm" name="button" class="continue button primary pickup-item" onclick="return setDeliveryDate('<%= dd %>', '8pm - 11pm', this);">
+                  <i class="icon-timer"></i>
+                  8pm - 11pm
+                </button>
+              </div>
+            </div>
+          </div>
+        <% end %>  
+      <%end%>
+    </div>
+
+    <div class="clearboth"></div>   
+    <% if @cart_item == 0 %> 
+      <p>
+        <div id="delivery-message-block">
+          Your Order will be delivered on "<%= @order.possible_delivery_date.first%>, between 1pm - 6pm".
+        </div>
+        <input type="hidden" name="order[delivery_date]" id="order_delivery_date" value="<%= order.delivery_date || order.possible_delivery_date.first %>" />
+        <input type="hidden" name="order[delivery_time]" id="order_delivery_time" value="<%= order.delivery_time.present? ? order.delivery_time : '1pm - 6pm'%>"/>
+      </p>    
+    <% end %>
+  </fieldset>
+<%end%>
+
+<script type="text/javascript">
+  function setDeliveryDate(del_Date, del_time, current){
+    $(".pickup-item").removeClass("selected");
+    $("#delivery-message-block").html("Your Order will be delivered on " + del_Date + ", between " + del_time);
+    $("#order_delivery_date").val();
+    $("#order_delivery_time").val();
+    $("#order_delivery_date").val(del_Date);
+    $("#order_delivery_time").val(del_time);
+    $(current).addClass("selected");
+    return false;
+  }
+
+  function resetDeliveryDates(){
+    $("#delivery-days-block .delivery-day .delivery-slot button").each(function(i){
+      if(i > 0){
+        $(this).removeClass("selected");
+      }else{
+        $(this).click();
+      }
+    });
+  }
+  $(document).ready(function(){ 
+    if(<%=@cart_item%>){
+      $('.cart_table').css('display','none');
+      $('#cart_heading').css('display','none');
+      $('#shipping_method').css('margin-top','-55px');      
+    }  
+  });
+</script>

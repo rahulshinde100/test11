@@ -1,0 +1,453 @@
+@import 'compass';
+@import 'compass/css3';
+@import 'admin/globals/_variables';
+@import 'admin/ship.li_admin';
+
+.container {
+    figure, nav {
+        margin-top: 2%;
+        margin-bottom: 2%;
+    }
+}
+
+/* CSS for Menu */
+#admin-menu li .dropdown {
+    a {
+        background-color: $color-3 !important;
+    }
+}
+
+#admin-menu li {
+    margin-right: -3px;
+
+    a:hover{
+        background-color:$menu_hover !important;
+    }
+    .dropdown{
+        a {
+            text-align: left;
+            width: 144px;
+        }
+    }
+    a:hover:after {
+        border-top-color: $menu_hover !important;
+    }
+}
+
+#admin-menu #top-navigation-bar li a {
+    padding-left:10px;
+    padding-right:10px;
+}
+
+#admin-menu #more a:hover:after {
+    content: none !important;
+}
+
+#admin-menu #more #a-cms-list{
+    width:117px;
+}
+
+#sub_news_letter_list {
+    top: 68px !important;
+    right: 117px !important;
+}
+
+#admin-menu #news_list{
+    margin-right: 0px !important;
+}
+
+#wrapper #admin-menu .container .main-menu-wrapper #top-navigation-bar #more .more-sub-menu ul li div p a{
+    width:125px;
+}
+
+/* Dashboard Page */
+breadcrumb {
+    font-size:14px;
+}
+
+#table-filter{
+    display:none;
+    margin-bottom:4%;
+}
+
+.dashboard-gui {
+    .listed {
+        background-color: #2E8B57;
+    }
+    .processed {
+        background-color: #27AE60;
+    }
+    .sales {
+        background-color: #0AA7AE;
+    }
+    .current {
+        background-color: #C9A0DC;
+    }
+    .user {
+        background-color: #151B54;
+    }
+    .oos {
+        background-color: #FFA500;
+    }
+    .in_process {
+        background-color: #F87217;
+    }
+    .gst_feed {
+        background-color: #EE3233;
+    }
+    .completed {
+        background-color: #C0C0C0;
+    }
+    .stores {
+        background-color: #7f8c8d;
+    }
+    .slate {
+        border: none;
+        box-shadow: none;
+        border-radius: 0px !important;
+        height:187px;
+        width:187px !important;
+        margin:0px !important;
+        .count_div {
+            width:100%;
+            display:table;
+            height:80%
+        }
+        .label_div {
+            height:20%;
+            width:100%;
+            text-align:center;
+        }
+    }
+}
+
+/* Company_Profile Page */
+.custom_table {
+    margin-bottom: 0px;
+    th, td{
+        padding: 5px;
+        vertical-align: middle !important;
+    }
+}
+
+table {
+    tbody {
+        tr td.actions {
+            a {
+                margin-bottom: 2px;
+            }
+        }
+        tr.state-complete td:first-child {
+            border-left-color: $action_border !important;
+        }
+        tr[class*="state"] td:first-child {
+            border-left-width: thin !important;
+        }
+        tr:first-child th.actions, tr:first-child td.actions {
+            border-top: 1px solid $action_border !important;
+        }
+        tr:hover td {
+            background-color: $tr_Hover !important;
+        }
+    }
+}
+
+.seller_account {
+    border-bottom : medium none;
+}
+
+.state.Delivered:before, .state.Completed:before {
+    background-color: green !important;
+}
+
+.state.New:before {
+    background-color: red !important;
+}
+
+.state.Un:before {
+    background-color: $color-6 !important;
+}
+
+.state.resumed:before, .state.In:before, .state.Packed:before {
+    background-color: yellow !important;
+}
+
+/* Pages under Orders Menu */
+.select2-results li .select2-result-label, .select2-search input, .select2-container-multi .select2-choices {
+    color: $color-6 !important;
+}
+
+#search_orders, #search_product, #upload-file, #export-file, #list-product, #search_kit, #import-data, #category_serach {
+    cursor:pointer;
+}
+
+.set_margin{
+    margin-right: 2% !important;
+}
+
+.actions {
+    background-color:none !important;
+}
+
+/* Pages under Product Menu */
+.icon-remove {
+    background-color: #BCBDBC !important;
+}
+
+.icon-remove:hover {
+    background-color: #8D8E8D !important;
+}
+
+.custom_margin {
+    margin-top:5%;
+}
+
+.custom_add {
+    padding: 26px 0;
+}
+
+.li_block {
+    display: block;
+    float: right;
+}
+
+.select2-container .select2-choice .select2-arrow b {
+    display: table-cell !important;
+}
+
+.custom_checkbox {
+    width:6% !important;
+}
+
+.custom_label {
+    cursor: pointer;
+    display: block;
+    float: left;
+    padding-top: 10px;
+}
+
+.custom_width {
+    width: 60px !important;
+}
+
+.qty_div{
+    float:left;
+    margin-left:5px;
+    padding-right:5px;
+}
+
+.OOS_global{
+    border: medium none !important;
+    padding-right: 0;
+    padding-top: 15px;
+    text-align: right;
+}
+
+.OOS_global:hover{
+    background-color: #fff !important;
+}
+
+.variant_heading, .variant_heading:hover {
+    background-color:#CCF3F9 !important;
+}
+
+#listing_product_stock {
+    .custom_stock_table{
+        margin-bottom: 0px;
+        th, td{
+            padding: 5px;
+            border: none !important;
+            vertical-align: middle !important;
+        }
+    }
+    tr:hover td{
+        background-color:#fff ;
+    }
+}
+
+#listing-products tr.even td.actions{
+    background-color: 1px solid #CCF3F9 !important;
+}
+
+.edit, .delete-resource {
+    float: left;
+    margin-right: 3%;
+}
+
+.edit_label {
+    width:5%;
+    float:left;
+}
+
+.product_seller_list {
+    margin-top: -3px;
+    .select2-choice{
+        height: 34px !important;
+    }
+}
+
+.seller_selector{
+    display: inline;
+    float: left;
+    margin-right: 5px;
+    margin-top: 3px;
+    width: 160px;
+    font-weight:600;
+    font-size: 100%;
+    text-align: left;
+}
+
+#attache_delivery_order_scan_copy {
+    margin-left: 5%;
+}
+
+.upload-file, .export-file, .list-product, .import-data {
+    display:none;
+    margin-bottom:20px;
+}
+
+/* Pages under Seller Menu */
+[data-hook="admin_product_form_left"] textarea {
+    height: 173px;
+}
+
+.custom_field {
+    padding: 30px 0;
+}
+
+.custom-top {
+    margin-top:3%;
+}
+
+.custom_email {
+    margin-left: 1% !important;
+}
+
+.custom_table_cell {
+    // width: 55%;
+}
+
+/* Pages under Configuration Menu */
+.no-top-border{
+    border-top: medium none;
+}
+
+.custom_payment_method {
+    margin-top: 10%;
+
+    input{
+        margin-bottom:6%;
+    }
+}
+
+.custom_add_header {
+    margin-top: 26px;
+}
+
+.custom_value {
+    margin-top: 20px;
+}
+
+.new_s3_headers {
+    margin-left: -9px;
+}
+
+.destroy_new_s3_headers, .destroy_new_attachment_styles {
+    width: 111px;
+    margin-top: 16px !important;
+}
+
+/* Pages under Users Menu */
+.custom_password{
+    margin-top:1%;
+}
+
+
+span.info {
+    color: $color-6;
+}
+
+#store_address_address_field textarea {
+    height: 103px;
+}
+
+.container .custom_upload_file {
+    width:520px !important;
+}
+
+.stock_destination {
+    margin-top:-68px;
+}
+
+.edit_stock_location #state .select2-container-disabled {
+    display: none;
+}
+
+.select2-container-multi .select2-choices .select2-search-field input {
+    height: 17px;
+}
+
+.select2-drop {
+    border-color: none;
+}
+
+[id*="ui-id-"]{
+    width: 301px !important;
+    color: $color-3;
+    border: 1px solid #E7DBE0;
+    li {
+        display: inline-block;
+    }
+}
+
+[class*=" icon-"] {
+    font-family: "Open Sans", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif !important;
+}
+
+.custom_text_area {
+    resize: none;
+}
+
+/* DataTables CSS */
+
+table.dataTable {
+    thead th{
+        background-color: #F0FBFD !important;
+        border-bottom: none !important;
+    }
+    tr.odd {
+        background-color: #E2E4FF !important;
+    }
+}
+
+.table_footer{
+    text-align: left;
+}
+
+.select2-results {
+    max-height: 220px !important;
+}
+.more-sub-menu{
+    right: 10px;
+
+}
+.more-active{
+    background-color: #18ADC2;
+
+}
+
+#admin-menu li .dropdown > p > a{
+    padding-left:32px;
+}
+#admin-menu li .dropdown a{
+    width: 176px;
+}
+#admin-menu li#news_list:hover{
+    margin-right: 0px !important;
+}
+#new_product_wrapper{
+    margin-bottom: 4%;
+}
+#new_kit_wrapper{
+    display: none;
+}

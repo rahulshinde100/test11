@@ -1,0 +1,50 @@
+<div id="checkout" data-hook>  
+  <%= render :partial => 'spree/shared/error_messages', :locals => { :target => @order } %>
+  
+    
+
+  <div class="row" data-hook="checkout_header">    
+    <div id="ship-li-logo-checkout">
+     <a href="https://www.ship.li" title="Home">
+        <%=image_tag "/assets/store/logo_blue.png" %>
+    </a>
+    </div>
+    <div class="columns ten omega" data-hook="checkout_progress"><%= checkout_progress %></div>
+  </div>
+  
+  <div class="row <%= @order.state %>" data-hook="checkout_content">
+    <%if @order.state == 'payment'%>
+      <div id="checkout-summary" data-hook="checkout_summary_box" class="columns omega four">
+        <%= render :partial => 'summary', :locals => { :order => @order } %>
+      </div>
+      <div style="clear:both;"/>
+    <% end %>
+    <div class="columns <%= if @order.state != 'confirm' then 'alpha twelve' else 'alpha omega sixteen' end %>" data-hook="checkout_form_wrapper">
+      <%= form_for @order, :url => update_checkout_path(@order.state), :html => { :id => "checkout_form_#{@order.state}" } do |form| %>
+        <% unless @order.email? %>
+          <p class="field" style='clear: both'>
+            <%= form.label :email %><br />
+            <%= form.text_field :email %>
+          </p>
+        <% end %>
+        <%= render @order.state, :form => form %>
+      <% end %>
+    </div>    
+    <% if @order.state != 'confirm' && @order.state != 'payment' %>
+      <div id="checkout-summary" data-hook="checkout_summary_box" class="columns omega four">
+        <%= render :partial => 'summary', :locals => { :order => @order } %>
+      </div>
+    <% end %>
+  </div>
+
+   
+<div style="height: 100px;"></div>
+</div>
+
+
+<style>
+#header-container{display: none;}
+#category-main-menu{display: none;}
+#subheader{margin-top: 70px;}
+#footer{display: none;}
+</style>

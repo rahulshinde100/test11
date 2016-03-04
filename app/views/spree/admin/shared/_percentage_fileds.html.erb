@@ -1,0 +1,24 @@
+<div class="alpha four columns">
+  <%= f.field_container :revenue_share do %>
+    <%= f.label :revenue_share, "revenue share (%)"%><span class="required">*</span>
+    <%= f.error_message_on :revenue_share %>
+    <% if spree_current_user.has_spree_role? 'admin' %>
+        <%= f.text_field :revenue_share, :class => 'fullwidth', :required => true %>
+    <% else %>
+        </br><%= f.label :revenue_share, " #{f.object.revenue_share}" ,{:style => "border:1px solid #CCF3F9;display:block;border-radius:3px;width:223px !important;height:30px;padding:7px 5px 5px 11px; "}%>
+    <% end %>
+    <span class="required">%</span>
+  <% end %>
+</div>
+<div class="alpha four columns">
+  <%= f.field_container :revenue_share_on_ware_house_sale do %>
+    <%= f.label :revenue_share_on_ware_house_sale, "revenue share on warehouse sale (%)"%><span class="required">*</span>
+    <%= f.error_message_on :revenue_share_on_ware_house_sale %>
+   <% if spree_current_user.has_spree_role? 'admin' %>
+        <%= f.text_field :revenue_share_on_ware_house_sale, :class => 'fullwidth', :required => true %>
+    <% else %>
+        </br><%= f.label :revenue_share_on_ware_house_sale, "  #{f.object.revenue_share_on_ware_house_sale}",{:style => "border:1px solid #CCF3F9;display:block;border-radius:3px;width:223px !important;height:30px;padding:7px 5px 5px 11px; "}%>
+    <% end %>
+    <span class="required">%</span>
+  <% end %>
+</div>

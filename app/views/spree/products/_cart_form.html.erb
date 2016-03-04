@@ -1,0 +1,335 @@
+<script src="https://maps.google.com/maps/api/js?sensor=false"></script>
+<script src="/js/handlebars-1.0.0.min.js"></script>
+<script src="/js/jquery.storelocator.js"></script>
+<%= form_for :order, :url => populate_orders_path, :remote => true do |f| %>
+  <div id="inside-product-cart-form" data-hook="inside_product_cart_form" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+    <% if @product.price_in(current_currency) and !@product.price.nil? %>
+      <div data-hook="product_price" class="columns five <% if !@product.has_variants? %> alpha <% else %> omega <% end %>">
+        <div id="product-price">
+        </div>
+        <div class="clearboth"></div>
+          <% if @product.variants_and_option_values(current_currency).any? %>
+            <div id="product-variants" class="">
+              <h6 class="product-section-title">Select your option:</h6>
+              <ul>
+                <% @product.variants_and_option_values(current_currency).each_with_index do |variant, index| %>
+                  <li>
+                    <%if variant.in_stock? %>
+                      <%= radio_button_tag "products[#{@product.id}]", variant.id, index == 0, 'data-price' => variant.price_in(current_currency).display_price %>
+                      <label for="<%= ['products', @product.id, variant.id].join('_') %>">
+                        <span class="variant-description">
+                          <%= variant_options variant %>
+                        </span>
+                        <% if variant_price variant %>
+                          <span class="price diff"><%= variant_price variant %></span>
+                        <% end %>
+                      </label>
+                    <%else%>
+                      <%#= render :partial => 'notify_me', :locals => { :product => @product } %>
+                    <%end%>
+                  </li>
+                <% end%>
+              </ul>
+            </div>
+          <% end%>
+          <div style="clear: both;"></div>
+          <div>
+            <h3 id="product_delivery_time" class="section-title strongly-show"><%#= @product.delivery_time_detail %></h3>
+            <h6 class="product-section-title">Packed by <%= link_to @product.seller.try(:name), seller_path(@product.seller.permalink)%>, Shipped <%#= @product.shipping_category.try(:name)%> by Ship.li</h6>
+          </div>
+          <div id="cart-buttons" class="cart-buttons">
+            <%if @product.in_stock? || @product.variants_and_option_values(current_currency).any? %>
+              <div class="qty" style="display:none;">
+                  <div id="subtract" ><i class="icon-minus"></i></div>
+                <div id="qty-box">
+                  <%= text_field_tag (@product.variants_and_option_values.any? ? :quantity : "variants[#{@product.master.id}]"),1, :class => 'title', :min => 1 , :id => 'quantity'%>
+                  <%hide_id = @product.master.id %>
+                  <%= hidden_field_tag "is_pickup[is_pick_at_store_#{@product.master.id}]", false, :id => 'is_pick_at_store'%>
+                  <%= hidden_field_tag "stock_location[stock_location_#{@product.master.id}]", nil, :id => 'stock_location_id'%>
+                </div>
+                <div id="add"><i class="icon-plus"></i></div>
+              </div>
+              <div id="qty-slider">
+                <ul>
+
+                </ul>
+              </div>
+              <div class="add-to-cart">
+                <%= button_tag :class => 'large primary',  :id => 'add-to-cart-button', :onclick =>"$('#is_pick_at_store').val(false); $('#stock_location_id').val('');" , :type => :submit do  %>
+                  <%= Spree.t(:add_to_cart) %>
+                <% end %>
+              </div>
+              <div class="clearboth"></div>
+              <div class="clearboth"></div>
+               <div id="out_of_stock_msg"></div>
+              <div style="margin-top: 30px; margin-left: 4px; font-size: 20px;" id="or-separator">-------------------- OR ----------------------</div>
+              <div class="pick-up-info">
+                <h3 class="section-title">Pick up from <%= link_to @product.seller.try(:name), seller_path(@product.seller.permalink)%> Stores</h3>
+                <div  class="pick-up-info-text">
+                  <h6 class="product-section-title">Cut the queue and pick-up this product from any of the following stores at your convenience.</h6>
+                </div>
+              </div>
+            <%end %>
+          </div>
+        <div class="cart-buttons" id="notify-variant">
+        </div>
+      </div>
+    <% else %>
+      <div id="product-price">
+        <br/>
+        <div><span class="price selling" itemprop="price"><%= Spree.t('product_not_available_in_this_currency') %></span></div>
+      </div>
+    <% end %>
+  </div>
+  <div id="pickup-map-info">
+    <%= render :partial => 'map_info'%>
+  </div>
+<% end %>
+
+<input type="hidden" id="load_master_image" value="1" />
+<script type="text/javascript">
+  $(document).ready(function(){
+
+    var matrixToArray = function(str){
+        return str.match(/(-?[0-9\.]+)/g);
+    };
+
+    var transform_array = new Array();
+    $('#add-to-cart-button, #pickup-at-store-button').click(function(){
+        transform_array = matrixToArray($('#qty-slider ul').css("transform"));
+        var qty_pos =  (parseFloat(transform_array[4]) / (-100)) + 1   ;
+        if (navigator.userAgent.indexOf('IE') == -1 ) {
+            $('#qty-box #quantity').val(qty_pos);
+        }
+    });
+
+    var product_stock = 9
+    load_map();
+    var_notiry();
+    $("#quantity").change(function(){
+      if($(this).val() <= 0)
+        $(this).val(1);
+    });
+
+    $(".list-content").click(function(){
+      $('#is_pick_at_store').val(true);
+      $('#stock_location_id').val($(this).find('.store-id').val());
+    });
+
+
+   // thumbnail image logic
+    $("#product_size_variant").change(function(){
+    $("#load_master_image").val(0);
+      var_notiry();
+      load_map();
+    });
+
+    $('ul.thumbnails li a').click(function(){
+      var variant_id = $(this).parent('li').attr('id');
+      if(variant_id != $('#product_size_variant').val()){
+        $('#product_size_variant').val(variant_id);
+        var_notiry();
+        load_map();
+      }
+    }); //
+
+
+    //select one variant by default
+    $(".variants-buttons span.variant-description").first().click();
+
+    $('#pickup-at-store-button').click(function(){
+      if($(this).hasClass('not-pick-at-store'))
+        return false;
+      //reset address box
+      if($("#is_pick_at_store").val() == 'false')
+        {
+            alert("Please select map location");
+            return false;
+          }
+      else
+        $("#cart-form form").submit();
+        // load_map();
+    });
+
+
+    $('#qty-box #quantity').val(1);
+
+
+
+    $('#close-icon-div').click(function (){
+       $('#map-box').css('visibility', 'hidden');
+       $('ul#list li').each(function(){
+              if($(this).hasClass('list-focus'));
+                  $(this).removeClass('list-focus');
+          });
+    });
+  function var_notiry(){
+    <%if @product.variants_and_option_values(current_currency).any? %>
+      var var_id = $("#product_size_variant").val();
+    <%else%>
+      var var_id = '<%=@product.master.id%>';
+    <%end%>
+    if (var_id == null ){
+
+            $("#product_size_variant")[0].selectedIndex = 0;
+            var_notiry();
+
+     }
+    var url = "/products/<%=@product.permalink%>/notify?variant_id="+var_id
+    $.ajax({
+        type: 'GET',
+        url: url,
+        success: function(r){
+          product_stock = product_stock - 1
+
+          $('#qty-slider .bx-next').click(function(){
+            //$(".list-label").removeClass('store-pin');
+            var total = parseFloat($('#qty-box #quantity').val());
+
+            if (navigator.userAgent.indexOf('IE') != -1 ) {
+
+                if(total <= product_stock){
+                  $('#qty-box #quantity').val(total + 1);
+                }
+            }
+
+          });
+
+           $('#qty-slider .bx-prev').click(function(){
+            //$(".list-label").removeClass('store-pin');
+
+            if (navigator.userAgent.indexOf('IE') != -1 ) {
+                if($('#qty-box #quantity').val() > 1)
+                  $('#qty-box #quantity').val(parseFloat($('#qty-box #quantity').val()) - 1);
+                 }
+          });
+
+          //alert($("#load_master_image").val());
+          if($("#load_master_image").val() == '1'){
+            <% if @product.master.images.nil? %>
+              $("#large_img").attr("src","<%= @product.master.images.first.attachment.url(:large)%>");
+              $(".zoomImg").attr("src","<%= @product.master.images.first.attachment.url(:large)%>");
+            <% end%>
+          }
+
+        }
+    });
+  }
+});
+  function load_map(){
+    <%if @product.variants_and_option_values(current_currency).any? %>
+      var var_id = $("#product_size_variant").val();
+    <%else%>
+      var var_id = '<%=@product.master.id%>';
+    <%end%>
+
+    $("#is_pick_at_store").attr('name',"is_pickup[is_pick_at_store_"+var_id+"]");
+    $('#stock_location_id').attr('name',"stock_location[stock_location_"+var_id+"]");
+
+    var url = "/products/<%=@product.permalink%>/stores?variant_id="+var_id
+    var lat = 1.3400
+    var lng = 1.455
+    $.getJSON(url, function(data) {
+
+    }).done(function(data){
+      if (data.length == 0){
+        $('#pickup-at-store-button').addClass('not-pick-at-store');
+        $('#list').html('');
+        $('#map-container').hide();
+        $('#scroll').hide();
+        $('#pickup-at-store-button').hide();
+        $('#or-separator').hide();
+        $('.pick-up-info').hide();
+        $('#pickup-map-info h6.product-section-title').hide();
+
+
+
+
+        return;
+      }else{
+        $('#map-container').show();
+        $('#pickup-at-store-button').removeClass('not-pick-at-store');
+        $('#pickup-at-store-button').show();
+         $('#or-separator').show();
+        $('.pick-up-info').show();
+        $('#pickup-map-info h6.product-section-title').show();
+        $('#map-container').storeLocator({'dataType': 'json',  'dataLocation': url, 'slideMap': false, 'defaultLoc': true, 'defaultLat': 1.320302, 'defaultLng': 103.840599 , 'autoGeocode': false, distanceAlert: 40000, 'listColor1' : 'F8F8F9' , 'listColor2': 'F8F8F9' , 'originpinColor': 'blue', 'bounceMarker' : 'false', 'zoomLevel' : 11 , 'callbackComplete': function(){ $('#scrollbar-locator').tinyscrollbar();  }   });
+
+      }
+    });
+  }
+  function move_to_packing_bag(id,obj){
+
+    if($('#list-label-'+id).hasClass("store-pin"))
+    {
+
+        $('#is_pick_at_store').val(false);
+        $('#stock_location_id').val(null);
+       $(".list-label").removeClass('store-pin');
+       $('#list-label-'+id).next().removeClass("active-store");
+
+
+    }
+    else{
+         // $("#map-container").hide();
+    $('#is_pick_at_store').val(true);
+    $('#stock_location_id').val(id);
+
+    $(".list-label").removeClass('store-pin');
+
+
+    $("#list-label-"+id).addClass('store-pin');
+    // $("#cart-form form").submit();
+    $('#list-label-'+id).next().addClass("active-store");
+
+    }
+
+
+  }
+
+$(window).load(function () {
+
+
+});
+
+
+
+
+
+
+
+(function($){
+    // console.log(navigator.userAgent);
+    /* Adjustments for Safari on Mac */
+    if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Mac') != -1 && navigator.userAgent.indexOf('Chrome') == -1) {
+        // console.log('Safari on Mac detected, applying class...');
+        $('#qty-slider .bx-wrapper .bx-controls-direction a').css('height', '67px').css('margin-top', '-15px');
+    }
+})(jQuery);
+
+
+</script>
+
+<style type="text/css">
+  #map-container{width: 200px; height: auto; margin-bottom: 20px;}
+  #loc-list{width: 100%;}
+  #loc-list ul{width: 100%;}
+  #loc-list li{width: 98%; border-color: #F8F8F9; margin:0;}
+  #loc-list{height: auto; border: none;}
+  #map-box{ margin-bottom: 10px; visibility: visible; margin-top: -7px;}
+  #map{float: none;width: 100%; border: none; z-index: 400; height: 300px;}
+    #add-to-cart-button .icon-plus{display:none;}
+    .btn-gmap-choose-store{ display: none; }
+
+
+#qty-slider .bx-viewport{height: 68px !important;}
+.bx-wrapper .bx-controls-direction a.disabled{display: block;0}
+a.disabled{background-color: #C8E9ED !important;}
+
+
+
+
+
+</style>
+
+

@@ -1,0 +1,15 @@
+<div id = "logo_img">
+  <%= image_tag "admin/logo.png", :id => "logo" %>      
+</div>
+<div id =  "cust_inv">
+  <p class="title" style ="color: black;"><span style="text-transform:capitalize;"><%= "#{@order.ship_address.try(:firstname)} #{@order.ship_address.try(:lastname)}" %> </span></p>
+  <p class="bold" style ="margin: -16px 0 10px;"><%= Spree.t(:order_number).to_s + " #" + @order.number  %></br>
+ 		<%= "Order Date : #{@order.completed_at.strftime("%d/%m/%Y")}" if @order.completed_at.present?%></p> 
+</div>
+<style type="text/css">
+
+
+div#cust_inv{
+  padding: 0px;
+}
+</style>

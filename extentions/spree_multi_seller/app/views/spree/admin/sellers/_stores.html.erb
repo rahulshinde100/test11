@@ -1,0 +1,36 @@
+<% if seller.stock_locations.present? %>
+  <div>
+    <table>
+      <thead>
+      <th>#</th>
+      <th>Name</th>
+      <th>Address</th>
+      <th>Email</th>
+      <th>Contact</th>
+      <th>Operating Hours</th>
+      <th>Pickup</th>
+      <th class="actions"></th>
+      </thead>
+      <tbody>
+        <% seller.stock_locations.each_with_index do |store, index| %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><%= link_to store.name, edit_admin_stock_location_path(store, :return => admin_seller_store_addresses_path(seller)) %></td>
+            <td><%= raw store.address %></td>
+            <td><%= mail_to store.email%></td>
+            <td><%= store.phone%></td>
+            <td><%= store.operating_hours%></td>
+            <td><%= check(store.pickup_at, "Pickup Point") %></td>
+            <td class="actions"><%= link_to '', edit_admin_stock_location_path(store, :return => admin_seller_store_addresses_path(seller)), :no_text => true, :class => 'edit icon_link with-tip icon-edit no-text'%>
+              &nbsp;
+              <%= link_to '', admin_stock_location_path(store), :no_text => true, :method => :delete, :class => 'delete-resource icon_link with-tip icon-trash no-text', :confirm => 'Are you sure, you want to delete this Store?'%></td>
+          </tr>
+        <% end%>
+      </tbody>
+    </table>
+  </div>
+<%else%>
+  <div class="error-message" style="text-align: center;">
+    <h2>No Categories are added, You can add new category</h2>
+  </div>
+<%end%>

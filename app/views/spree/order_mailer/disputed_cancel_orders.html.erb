@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+</head>
+<body>
+Hello Team, <br/>
+
+<p>Please take neccessary action for following order that are not cancelled on FBA: </p>
+
+<table border="2">
+  <tr>
+    <th>Seller</th>
+    <th>Marketplace</th>
+    <th>FBA Order #</th>
+    <th>Order #</th>
+    <th>FBA Tracking</th>
+    <th>Cancelled On</th>
+    <th>Order Date</th>
+  </tr>
+  <% @orders.each do |order| %>
+
+          <%# order = Spree::Order.where(:market_place_order_no=>num).try(:first) %>
+          <% if order.present? %>
+              <tr>
+                <td><%= order.seller.name.capitalize %></td>
+                <td><%= order.market_place.name.capitalize %></td>
+                <td><%= order.cart_no %></td>
+                <td><%= order.market_place_order_no %></td>
+                <td><%= order.fulflmnt_tracking_no %></td>
+                <td><%= order.order_canceled_date.strftime("%a, %d %b %Y %H:%M:%S").to_s %></td>
+                <td><%= order.order_date.strftime("%a, %d %b %Y").to_s %></td>
+              </tr>
+          <% end %>
+      <% end %>
+</table>
+
+<br/>
+Regards,<br/>
+Team Channel Manger
+
+</body>
+</html>

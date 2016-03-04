@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+	<head>
+            <link href="/css/skeleton.css" rel="stylesheet" type="text/css">
+            <link href="/css/screen.css" rel="stylesheet" type="text/css">
+            <link href="/css/style.css" rel="stylesheet" type="text/css">
+            <link href="/css/homepage.css" rel="stylesheet" type="text/css">
+	    <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet" type="text/css">
+	    <link href="https://fonts.googleapis.com/css?family=Arimo" rel="stylesheet" type="text/css">
+	    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+            <title></title>
+            <link href="/images/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+
+
+
+	</head>
+	<body>
+
+
+
+
+
+	  <div class="style-background">
+                <div class="container">
+
+                        <div class="homepage-login">
+                            <button id="home-login-link" class="active" href="#" onClick="goto('#login-home', 'login'); return false">Log in</button>
+                            <button id="home-goback-link"  href="#" onClick="goto('#signup-home', 'goback'); return false">Go back</button>
+                        </div>
+
+                        <div class="clearboth"></div>
+
+                         <div class="main-home-box">
+                             <img src="/assets/store/ship_li_white.png">
+                             <div>Same day delivery from <strong>Le Vigne, Parisilk,</strong></div>
+                             <div><strong>Visio, Mums & Babes, I Wanna Go Home and many more stores!</strong></div>
+
+                             <!-- <p style="font-size: 20px;"><strong>We will be Live to All in 2nd Beta from September 9th. See you soon!</strong></p> -->
+
+                             <div id="content-home">
+                                    <div class="contentbox-wrapper">
+                                       <div class="registration-box contentbox" id="signup-home">
+                                           <div class="sign-up">
+                                               <%= render :partial => 'spree/shared/temp_sign_up' %>
+                                           </div>
+                                           <% Spree::AuthenticationMethod.available_for(@spree_user).each do |method| %>
+                                           <div class="facebook-signup">
+                                                <div class="header-signup">Signup with Facebook</div>
+                                                    <% img = "/assets/store/btn_facebook_login.png" %>
+                                                    <%= link_to(image_tag(img, :alt => "#{method.provider}"), spree_user_omniauth_authorize_path(provider: method.provider),  :title => Spree.t(:sign_in_with, :provider => method.provider)) if method.active %>
+                                                <div class="fb-down-1">No password to remember</div>
+                                                <div class="fb-down-2">And we won't post anything</div>
+                                           </div>
+                                           <% end %>
+                                       </div>
+
+                                       <div class="registration-box contentbox" id="login-home">
+                                           <div class="sign-up">
+                                               <%= render :partial => 'spree/shared/temp_login' %>
+                                           </div>
+                                           <% Spree::AuthenticationMethod.available_for(@spree_user).each do |method| %>
+                                           <div class="facebook-signup">
+                                                <div class="header-signup">Login with Facebook</div>
+                                                    <% img = "/assets/store/btn_facebook_login.png" %>
+                                                    <%= link_to(image_tag(img, :alt => "#{method.provider}"), spree_user_omniauth_authorize_path(provider: method.provider),  :title => Spree.t(:sign_in_with, :provider => method.provider)) if method.active %>
+                                                <div class="fb-down-1">No password to remember</div>
+                                                <div class="fb-down-2">And we won't post anything</div>
+                                           </div>
+                                           <% end %>
+                                       </div>
+                                    </div>
+                             </div>
+
+
+                         </div>
+
+
+                 </div>
+            </div>
+
+
+
+            <div class="container">
+                  <div class="clearboth" style="height: 40px;"></div>
+                    <div class="stepinfo">
+                        <div class="how-it-works">How Does Ship.li Work?</div>
+                        <div class="stepwiseinfo">
+                            <div class="stepinfo-boxes">
+                                <div class="stepinfo-header">Step 1</div>
+                                <div class="stepinfo-content">Order products at stores like Le Vigne, Parisilk, Visio, Dr Hauschka</div>
+                            </div>
+                            <div class="stepinfo-boxes">
+                                <div class="stepinfo-header">Step 2</div>
+                                <div class="stepinfo-content">Ship.li routes your order to store staff and to our delivery champs within minutes</div>
+                            </div>
+                            <div class="stepinfo-boxes">
+                                <div class="stepinfo-header">Step 3</div>
+                                <div class="stepinfo-content">Our delivery team picks & delivers your order in as little as 99 minutes!</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="clearboth" style="height: 40px;"></div>
+
+                     <div class="stepinfo">
+                            <div class="how-it-works">Product Categories available on Ship.li</div>
+                            <div class="category-list">
+                                <div class="cat-boxes">
+                                    <h6>Beauty & Grooming</h6>
+                                    <ul>
+                                        <li>Bath & Body *</li>
+                                        <li>Cosmetics</li>
+                                        <li>Hair Care</li>
+                                        <li>Health Care *</li>
+                                        <li>Makeup</li>
+                                        <li>Natural & Organic *</li>
+                                        <li>Nutrition & Wellness *</li>
+                                        <li>Perfume & Cologne</li>
+                                        <li>Sexual Wellness *</li>
+                                        <li>Skin Care</li>
+                                        <li>Tools & Accessories *</li>
+                                    </ul>
+                                </div>
+                                <div class="cat-boxes">
+                                    <h6>Kids & Baby</h6>
+                                    <ul>
+                                        <li>Activities & Playtime</li>
+                                        <li>Baby Clothing</li>
+                                        <li>Boys Clothing</li>
+                                        <li>Footwear</li>
+                                        <li>Girls Clothing</li>
+                                        <li>Strollers</li>
+                                        <li>Toys</li>
+                                    </ul>
+                                </div>
+                                 <div class="cat-boxes">
+                                    <h6>Electronics</h6>
+                                    <ul>
+                                        <li>Audio & Home Theater</li>
+                                        <li>Car Electronics *</li>
+                                        <li>Cell Phones & Accessories</li>
+                                        <li>GPS & Navigation *</li>
+                                        <li>Home Appliances</li>
+                                        <li>Industrial & Scientific</li>
+                                        <li>Kitchen & Dining</li>
+                                        <li>Players & Recorders</li>
+                                        <li>Printers</li>
+                                        <li>Televisions</li>
+                                    </ul>
+                                </div>
+                                <div class="cat-boxes">
+                                    <h6>Food & Groceries</h6>
+                                    <ul>
+                                        <li>Alcohol</li>
+                                        <li>Baby Foods *</li>
+                                        <li>Beer & Spirits *</li>
+                                        <li>Beverages *</li>
+                                        <li>Breakfast Food *</li>
+                                        <li>Candy and Chocolate *</li>
+                                        <li>Kitchen Supplies *</li>
+                                        <li>Snack Food *</li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="clearboth"></div>
+                            <div class="coming-soon">* Coming soon</div>
+                     </div>
+
+                     <div class="clearboth" style="height: 40px;"></div>
+
+                      <div class="stepinfo">
+                            <div class="how-it-works">Brands on Ship.li</div>
+
+                            <div class="logos">
+                                <div>
+                                    <img src="/assets/logo/1.png" title="Calvin Klein"/>
+                                    <img src="/assets/logo/2.png" title="Bosch"/>
+                                    <img src="/assets/logo/3.png" title="Samsung"/>
+                                    <img src="/assets/logo/4.png" title="D&G"/>
+                                    <img src="/assets/logo/5.png" title="Disel"/>
+                                    <img src="/assets/logo/6.png" title="Electrolux" />
+                                    <img src="/assets/logo/7.png" title="Esprit" />
+                                    <img src="/assets/logo/8.png" title="Dunhill" />
+                                    <img src="/assets/logo/9.png" title="Kitchen Aid"/>
+                                    <img src="/assets/logo/10.png" title="Jl"/>
+                                    <img src="/assets/logo/11.png" title="Sharp"/>
+                                    <img src="/assets/logo/12.png" title="Gramin" />
+                                    <img src="/assets/logo/13.png" title="Estee" />
+                                    <img src="/assets/logo/14.png" title="Exclusive" />
+                                    <img src="/assets/logo/15.png" title="Kenzo"/>
+                                    <img src="/assets/logo/16.png" title="Ferrari"/>
+                                    <img src="/assets/logo/17.png" title="Panasonic"/>
+                                    <img src="/assets/logo/18.png" title="Chanel"/>
+                                    <img src="/assets/logo/19.png" title="Mistral"/>
+                                    <img src="/assets/logo/20.png" title="DKNY"/>
+                                    <img src="/assets/logo/21.png" title="Issey Miyake"/>
+                                    <img src="/assets/logo/22.png" title="Christian Dior"/>
+                                    <img src="/assets/logo/23.png" title="Novita" />
+                                    <img src="/assets/logo/24.png" title="Hugo Boss"/>
+                                    <img src="/assets/logo/25.png" title="Jawbone" />
+                                    <img src="/assets/logo/26.png" title="Jean Louis David"/>
+                                    <img src="/assets/logo/27.png" title="Jaguar"/>
+                                    <img src="/assets/logo/28.png" title="Kate Moss"/>
+                                    <img src="/assets/logo/29.png" title="Krups"/>
+                                    <img src="/assets/logo/30.png" title="Clinique"/>
+                                    <img src="/assets/logo/31.png" title="Hilary Duff"/>
+                                    <img src="/assets/logo/32.png" title="Fcuk"/>
+                                    <img src="/assets/logo/33.png" title="KDK"/>
+                                    <img src="/assets/logo/34.png" title="Lalique"/>
+                                    <img src="/assets/logo/35.png" title="Rowenta"/>
+                                    <img src="/assets/logo/36.png" title="Tefal"/>
+                                    <img src="/assets/logo/37.png" title="Lancaster"/>
+                                    <img src="/assets/logo/38.png" title="Chopard"/>
+                                    <img src="/assets/logo/39.png" title="Jaun Paul"/>
+                                    <img src="/assets/logo/40.png" title="Karl Legerfield"/>
+                                    <img src="/assets/logo/41.png" title="Escada"/>
+                                    <img src="/assets/logo/42.png" title="Jacomo" />
+                                    <img src="/assets/logo/43.png" title="Lancome"/>
+                                    <img src="/assets/logo/44.png" title="Cerruti"/>
+                                    <img src="/assets/logo/45.png" title="Iceberg"/>
+                                    <img src="/assets/logo/46.png" title="Vintec" />
+                                    <img src="/assets/logo/48.png" title="Christian Lacroix" />
+                                    <img src="/assets/logo/49.png" title="Giargia" />
+                                    <img src="/assets/logo/57.png" title="Blackberry"/>
+                                    <img src="/assets/logo/51.png" title="Britney Spears"/>
+                                    <img src="/assets/logo/52.png" title="Celine"/>
+                                    <img src="/assets/logo/53.png" title="Boucheron"/>
+                                    <img src="/assets/logo/54.png" title="Armandbasi"/>
+                                    <img src="/assets/logo/55.png" title="Cacharel"/>
+                                    <!--<img src="/assets/logo/58.png" title="Adidas"/>
+                                    <img src="/assets/logo/59.png" title="Agent Provocateur"/>
+                                    <img src="/assets/logo/60.png" title="Annasui"/>
+                                    <img src="/assets/logo/61.png" title="Aramis"/>
+                                    <img src="/assets/logo/62.png" title="Arden"/>
+                                    <img src="/assets/logo/63.png" title="Azzaro"/>
+                                    <img src="/assets/logo/64.png" title="Benetton"/>
+                                    <img src="/assets/logo/65.png" title="Carolina Herrera"/>
+                                    <img src="/assets/logo/66.png" title="Givenchy"/>
+                                    <img src="/assets/logo/67.png" title="Guerlain"/>
+                                    <img src="/assets/logo/68.png" title="Guy Laroche"/>                         -->
+
+                                </div>
+
+
+                            </div>
+
+                      </div>
+
+                      <p></p><p></p>
+                        <div style="width: 100%; text-align: center;">Anchanto &copy; 2015</div>
+                      <p></p><p></p>
+
+            </div>
+
+
+
+
+
+	    <script>
+
+                function goto(id, t){
+
+                    $(".contentbox-wrapper").animate({"left": -($(id).position().left)}, 600);
+
+
+                    $('.homepage-login button').removeClass('active');
+                    if(t == "login")
+                        $('#home-goback-link').addClass('active');
+                    else
+                        $('#home-login-link').addClass('active');
+                }
+
+            </script>
+
+
+
+
+	</body>
+	</html>
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-43042247-1', 'ship.li');
+  ga('send', 'pageview');
+
+</script>

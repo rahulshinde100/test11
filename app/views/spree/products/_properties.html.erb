@@ -1,0 +1,21 @@
+<div id="description">
+              <div itemprop="description" data-hook="description">
+                <div class="details-desc">
+                 <h6 class="product-section-title"><strong>Description</strong></h6>       
+                  <h6 class="product-section-title"><%= product_description(@product) rescue Spree.t(:product_has_no_description) %>
+                  </h6> 
+                </div>
+              </div>
+            </div>
+            <% unless @product_properties.empty? %>
+              <% @product_properties.each do |product_property| %>
+              <div class="details-desc">
+                <h6 class="product-section-title"><strong class="bold-style"><%= product_property.property.presentation %></strong></h6>
+                <h6 class="product-section-title"><div id="<%= product_property.property.name.sub(" ", "-") %>">
+                  <%= raw product_property.value %>
+                </div>
+                </h6>
+               </div>
+              <% end %>
+            <%end%>
+         

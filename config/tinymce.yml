@@ -1,0 +1,28 @@
+# Spree Editor TinyMCE Configuration
+#
+# These are the options that will automatically be passed into the tinyMCE.init function
+# whenever TinyMCE is loaded in one of your spree pages. Please edit this file to
+# customise your TinyMCE setup in your spree installation. If you wish to see the full
+# range of configuration options then please go here:
+#
+#    http://www.tinymce.com/wiki.php/configuration
+
+# TinyMCE Options
+theme_advanced_toolbar_location: top
+theme_advanced_toolbar_align: left
+theme_advanced_statusbar_location: bottom
+toolbar1: bold italic alignleft aligncenter alignright alignjustify bullist numlist outdent indent 
+toolbar2: forecolor backcolor link image media preview code fullscreen
+toolbar3: styleselect fontselect fontsizeselect custombackground
+plugins:
+  - table
+  - fullscreen
+  - advlist autolink lists
+  - link image
+  - print preview
+  - charmap
+  - hr anchor pagebreak
+  - searchreplace wordcount visualblocks visualchars code fullscreen
+  - insertdatetime media nonbreaking save table contextmenu directionality
+  - textcolor 
+    

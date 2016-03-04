@@ -1,0 +1,8 @@
+<div data-hook="search_result">	
+    <% if @products.empty? %>
+      <h6 class="search-results-title"><%= Spree.t(:no_products_found) %></h6>
+    <% else %>
+    	<h6 class="search-results-title">Search Result for "<%= params[:keywords] %>"</h6>
+      <%= render :partial => 'spree/shared/product_new', :locals => { :products => @products}%>
+    <% end %>
+ </div>

@@ -1,0 +1,16 @@
+<%= f.field_container :amount do %>
+  <%= f.label :amount, Spree.t("amount")%><span class="required">*</span><br />
+  <%= f.text_field :amount, :required => true %>
+<% end %>
+<%= f.field_container :reason do %>
+  <%= f.label :reason, Spree.t("reason")%><span class="required">*</span><br />
+  <%= f.text_field :reason, :required => true %>
+<% end %>
+<%= f.field_container :expires_at do %>
+  <%= f.label :expires_at %>
+  <%= f.text_field :expires_at, :value => datepicker_field_value(@store_credit.expires_at), :class => 'datepicker datepicker-to' %>
+<% end %>
+<%if params[:action] == 'new' %>
+	<%= f.label :store_credit_email_text%><span class="required">*</span><br />
+	<%= f.text_area :store_credit_email_text, :required => true %>
+<%end%>

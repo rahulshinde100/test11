@@ -1,0 +1,2 @@
+object @locations
+attributes *location_attributes

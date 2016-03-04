@@ -1,0 +1,37 @@
+<div class="alpha sixteen columns">
+</br>
+<fieldset data-hook="products">
+  <legend align="center"><%= Spree.t(:products) %></legend>
+<% if @kit_products.present? %>
+    <div class="alpha sixteen columns custom_responsive CSSTableGenerator">
+    <table class="index" id="listing_products">
+      <thead>
+        <tr data-hook="admin_products_index_headers">
+          <th><%= Spree.t(:name) %></th>
+          <th><%= Spree.t(:sku) %></th>
+          <th><%= Spree.t(:quantity) %></th>
+          <th width="70">Remove</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @kit_products.each do |kp| %>
+              <tr height="30">
+              <td><%= (kp.variant.present? && kp.variant.option_values.present? ? kp.variant.name+" -> "+kp.variant.option_values.first.presentation : kp.variant.name) rescue '' %></td>
+              <td><%= kp.variant.sku rescue '' %></td>
+              <td><%= kp.quantity rescue '' %></td>
+              <td>
+                <%= link_to '', admin_kit_product_path(kp), :no_text => true, :method => :delete, :class => 'icon-trash', :confirm => "Are you sure, you want to remove the product?"%>
+              </td>
+            </tr>
+        <% end %>
+      </tbody>
+    </table>
+ </div>
+  <% else %>
+    <div class="no-objects-found field" style="text-align: center;">
+      <h5>No products are added yet, You can add product</h5>
+    </div>
+  <% end %>
+<%= paginate @kit_products %>
+</fieldset>
+</div>

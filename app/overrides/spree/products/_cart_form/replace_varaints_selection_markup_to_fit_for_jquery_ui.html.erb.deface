@@ -1,0 +1,6 @@
+<select name="products[<%=@product.id%>]" id="product_size_variant" class="custom-select product-option regular-select initialized-element" >
+    <% @product.stock_wise_variants.each_with_index do |v, index|
+      %>
+      <option value="<%=v.id%>" id="<%=  v.id  %>"><%= variant_options v %></option>
+    <%end%>
+  </select>

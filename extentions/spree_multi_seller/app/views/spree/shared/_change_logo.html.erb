@@ -1,0 +1,7 @@
+<figure id="logo" data-hook="logo-wrapper">
+  <%= link_to image_tag("/assets/store/anchanto-logo.png", height: '40', width: '45'), root_url %>
+</figure>
+<div class="project-name"><span class="">Channel Manager</span></div>
+<% unless spree_current_user.has_spree_role? 'admin' %>
+  <%#= link_to image_tag(spree_current_user.seller.logo(:medium), :id => 'logo'), spree.admin_sellers_path %>
+<%end%>

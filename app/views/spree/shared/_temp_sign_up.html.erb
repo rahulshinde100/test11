@@ -1,0 +1,34 @@
+<% @body_id = 'signup' %>
+
+<%= render :partial => 'spree/shared/error_messages', :locals => { :target => @user } %>
+
+<div id="new-customer">
+
+  <div class="header-signup">Signup with email ID</div>  
+  <div data-hook="signup">
+
+    <%= form_for Spree::User.new, :as => :spree_user, :url => spree.registration_path(@user) do |f| %>
+      <div data-hook="signup_inside_form">
+                    
+        <%= f.text_field :firstname, :class => 'title', :required => true, :placeholder=>"Firstname" %>            
+        <%= f.email_field :email, :class => 'title email', :required => true, :placeholder=>"Email ID for receipts" %>
+          
+          <div id="password-credentials">
+                      
+              <%= f.password_field :password, :class => 'title', :required => true, :placeholder => "Choose Password" %>
+            
+
+                         
+              <%#= f.password_field :password_confirmation, :class => 'title' %>
+                       
+          </div>
+
+          <div data-hook="signup_below_password_fields"></div>
+        <div align="right"><%= f.submit "Create Account", :class => 'button primary' %></div>
+      </div>
+    <% end %>
+  </div>
+  <!-- <div data-hook="login_extras"> -->
+    <%#= render :partial => "spree/shared/social" %>
+  <!-- </div> -->
+</div>

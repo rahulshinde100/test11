@@ -1,0 +1,99 @@
+
+
+<div class="row steps-data" style="margin-top:20px">
+  <% if order.has_step?("address") %>
+    <div class="columns alpha four" data-hook="order-ship-address">
+      <h6><%= Spree.t(:shipping_address) %> <%= link_to "(#{Spree.t(:edit)})", checkout_state_path(:address) unless @order.completed? %></h6>
+      <%= render :partial => 'spree/shared/address', :locals => { :address => order.ship_address } %>
+    </div>
+
+    <div class="columns alpha four" data-hook="order-bill-address">
+      <h6><%= Spree.t(:billing_address) %> <%= link_to "(#{Spree.t(:edit)})", checkout_state_path(:address) unless @order.completed? %></h6>
+      <%= render :partial => 'spree/shared/address', :locals => { :address => order.bill_address } %>
+    </div>
+
+    
+      <div class="columns alpha four">
+        <h6><%= Spree.t(:payment_information) %> <%= link_to "(#{Spree.t(:edit)})", checkout_state_path(:payment) unless @order.completed? %></h6>
+         <div class="payment-info">
+         <% order.payments.valid.each do |payment| %>
+            <%= render payment%><br/>
+            <span>On : <%= order.completed_at.to_date%></span><br/>
+        <% end %>
+        </div>
+        </div>
+    <% end %>
+</div>
+
+<hr />
+<%if order.split?%>
+  <%= render :partial => "spree/shared/same_day_and_99_minute", :locals => {:line_items => order.same_day_items} if order.same_day_items.present?%>
+  <%= render :partial => "spree/shared/general_delivery", :locals => {:line_items => order.general_items} if order.general_items.present?%>
+  <%= render :partial => "spree/shared/pickup_at_store", :locals => {:line_items => order.pickup_items} if order.pickup_items.present?%>
+<%else%>
+  <%= render :partial => "spree/shared/general_delivery", :locals => {:line_items => order.line_items} if order.line_items.present?%>
+<%end%>
+
+<table id='line-items' class="index columns alpha omega sixteen" data-hook="order_details">
+  <col width="15%" valign="middle" halign="center">
+  <col width="70%" valign="middle">
+  <col width="5%" valign="middle" halign="center">
+  <col width="5%" valign="middle" halign="center">
+  <col width="5%" valign="middle" halign="center">
+  <tfoot id="order-total" data-hook="order_details_total">
+    <tr class="total">
+       <td class="inline-alignment"></td>    
+      <td colspan="3"><b><%= Spree.t(:order_total) %>:</b></td>
+      <td class="total"><span id="order_total"><%= @order.display_total.to_html %></span></td>
+    </tr>
+  </tfoot>
+  <tfoot id="subtotal" data-hook="order_details_subtotal">
+    <tr class="total" id="subtotal-row">
+      <td class="inline-alignment"></td>  
+      <td colspan="3"><b><%= Spree.t(:subtotal) %>:</b></td>
+      <td class="total"><span><%= @order.display_item_total.to_html %></span></td>
+    </tr>
+  </tfoot>
+  <tfoot id="order-charges" data-hook="order_details_adjustments">
+    <% @order.adjustments.eligible.each do |adjustment| %>
+      <% next if (adjustment.originator_type == 'Spree::TaxRate') and (adjustment.amount == 0) %>
+      <% next if @order.is_free_shipping? && adjustment.source_type == 'Spree::Shipment' %>
+      <tr class="total">
+        <td class="inline-alignment"></td>  
+        <%if adjustment.is_free_shipping? @order %>                  
+          <td colspan="3">
+            <strong>
+              <%if adjustment.originator.promotion.code.present? %>
+                Coupon (<%= adjustment.originator.try(:promotion).try(:code)%>)
+              <%else%>
+                <%= Spree.t(:shipping)%>:
+              <%end%>
+            </strong>
+          </td>
+          <td class="total"><span><%= Spree.t(:free_shipping) %></span></td>        
+        <%else%>
+          <td colspan="3">
+            <strong>
+              <%if adjustment.source_type == 'Spree::Shipment'%>
+                <%= adjustment.label %>
+              <%elsif adjustment.source_type == "Spree::StoreCredit" %>
+                Store Credit Redeem
+              <%elsif adjustment.originator.promotion.code.present? %>
+                Coupon (<%= adjustment.originator.try(:promotion).try(:code)%>)
+              <%else%>
+                <%= adjustment.label[11..adjustment.label.length-2] %>                  
+              <%end%>
+            </strong>
+          </td>
+          <td class="total"><span><%= number_to_currency adjustment.amount %></span></td>        
+        <% end %>
+      </tr>
+    <% end unless @order.adjustments.eligible.blank?%>
+  </tfoot>
+</table>
+
+<style type="text/css">
+#summary-order-charges td:last-child:before, #order-charges td:last-child:before{
+  content: "" !important;
+}
+</style>

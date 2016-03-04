@@ -1,0 +1,29 @@
+<span style="display: none;">
+<%= f.field_container :is_featured do %>
+  <%= f.label :is_featured, t(:featured, :scope => 'activerecord.attributes.spree/subscription') %>
+  <%= f.check_box :is_featured , :class => 'custom_checkbox' %>
+<% end %>
+
+<%= f.field_container :is_new_arrival do %>
+  <%= f.label :is_new_arrival, t(:new_arrival, :scope => 'activerecord.attributes.spree/subscription') %>
+  <%= f.check_box :is_new_arrival , :class => 'custom_checkbox' %>
+<% end %>
+
+<%= f.field_container :company do %>
+  <%= f.label :company, t(:company) %><br />
+  <%= f.text_field :company %>
+  <%= f.error_message_on :company %>
+<% end %>
+
+<%= f.field_container :website do %>
+  <%= f.label :website, t(:website) %><br />
+  <%= f.url_field :website %>
+  <%= f.error_message_on :website %>
+<% end %>
+
+<%= f.field_container :url do %>
+  <%= f.label :url, t(:product_link) %><br />
+  <%= f.url_field :url %>
+  <%= f.error_message_on :url %>
+<% end %>
+</span>

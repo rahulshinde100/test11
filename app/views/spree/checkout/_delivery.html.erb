@@ -1,0 +1,42 @@
+<% unless Time.now > (Time.now.beginning_of_day + Spree::Config[:operating_hours].to_i.hours) %>
+  <div id="same-day-shipping-box">
+    <label for="same_day_shipping">The products are put in 2-3 days delivery option. To receive products in respective delivery options check here</label>
+    <input type="checkbox" name="same_day_shipping" id ="same_day_shipping" class= "same_day_shipping"/>
+  </div>
+<%end if @order.split_shipping?%>
+<div class="same-day"></div>
+<div class="general-shipping"></div>
+<% unless @order.pickup_items.blank? %>
+  <%= render :partial => 'pickup_store', :locals => {:form => form} %>
+<%end%>
+
+<br />
+
+<div class="form-buttons" data-hook="buttons">
+  <%= submit_tag Spree.t(:save_and_continue), :class => 'continue button primary' %>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    if($("#same_day_shipping").is(':checked'))
+      {
+        $("div.same-day").html('<%= escape_javascript render :partial => "same_day_shipping", :locals => {:form => form}%>');
+        $("div.general-shipping").html('<%= escape_javascript render :partial => "general_shipping", :locals => {:order => @order, :line_items => @order.general_items}%>');
+        $(".pickup_0").addClass('selected');
+      }else{
+        $("div.same-day").html('');
+        $("div.general-shipping").html('<%= escape_javascript render :partial => "general_shipping", :locals => {:order => @order, :line_items => @order.line_items}%>');
+      }
+    $("#same_day_shipping").change(function(){
+      if($(this).is(':checked'))
+      {
+        $("div.same-day").html('<%= escape_javascript render :partial => "same_day_shipping", :locals => {:form => form}%>');
+        $("div.general-shipping").html('<%= escape_javascript render :partial => "general_shipping", :locals => {:order => @order, :line_items => @order.general_items}%>');
+        $(".pickup_0").addClass('selected');
+      }else{
+        $("div.same-day").html('');
+        $("div.general-shipping").html('<%= escape_javascript render :partial => "general_shipping", :locals => {:order => @order, :line_items => @order.line_items}%>');
+      }
+    });
+  });
+</script>

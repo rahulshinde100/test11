@@ -1,0 +1,145 @@
+<% content_for :page_title do %>
+    <%= "Completed List" %>
+<% end %>
+
+<% content_for :page_actions do %>
+    <li id="search_orders">
+      <span class="button icon-search">Search</span>
+    </li>
+    <br />
+<%end %>
+<% unless @orders.empty? %>
+    <div class="CSSTableGenerator">
+      <table class="index responsive" id="listing_orders" data-hook>
+        <thead>
+        <tr data-hook="admin_orders_index_headers">
+          <th>#</th>
+          <th>Order #</th>
+          <th>FBA Order #</th>
+          <th>FBA Tracking #</th>
+          <th>Seller</th>
+          <th>Customer Name</th>
+          <th>Order Date</th>
+          <th>Cancelled Date</th>
+          <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @page = params[:page] ? params[:page].to_i : 0 %>
+        <% @orders.each_with_index do |order, index| %>
+            <tr height="40" data-hook="admin_orders_index_rows" class="state-<%= order.state.downcase %> <%= cycle('odd', 'even') %>">
+              <% start_value = ((@page == 0 ? 0 : (@page - 1)) * Spree::Config[:orders_per_page]) rescue 0 %>
+              <td><%= start_value + index + 1 %></td>
+              <td><%= link_to order.market_place_order_no, admin_order_path(order), :title => "Click here" %></td>
+              <td><%= order.cart_no.present? ? order.cart_no : "-" %></td>
+              <td>
+                <% if order.fulflmnt_tracking_no.present? %>
+                    <%= link_to order.fulflmnt_tracking_no, "#{FULFLMNT_PATH}/order/#{order.fulflmnt_tracking_no}", :target => "_blank" %>
+                <% else %>
+                    -
+                <% end %>
+              </td>
+              <td><%= order.seller_id.present? ? order.seller.try(:name) : "-" %></td>
+              <td align="left"><%= order.ship_address.present? ? order.ship_address.try(:firstname) : "-" %></td>
+              <td><%= order.order_date.present? ? order.order_date.strftime('%d %b %Y %H:%M') : "-" %></td>
+              <td><%= order.order_canceled_date.present? ? order.order_canceled_date.strftime('%d %b %Y %H:%M') : "-" %></td>
+              <td>
+                <% if spree_current_user.has_spree_role?('seller')%>
+                <% else %>
+                    <%= order.display_total.to_html %>
+                <% end %>
+              </td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+<% else %>
+    <div class="no-objects-found">
+      No Completed Orders Found
+    </div>
+<% end %>
+
+<%= paginate @orders %>
+
+<% content_for :table_filter_title do %>
+    Completed List :: Search
+<%end %>
+
+<% content_for :table_filter do %>
+    <div data-hook="admin_orders_sidebar">
+      <%= form_for :order, :url => disputed_cancel_orders_admin_orders_path, :method => :get do |f| %>
+          <% unless spree_current_user.has_spree_role?('seller')%>
+              <div class="field-block alpha five columns">
+                <%= f.field_container :seller_id do %>
+                    <%= f.label :seller_id, "Seller:" %><br />
+                    <%= f.collection_select(:seller_id, @sellers, :id, :name, {:class=>'select2', :prompt=>"All", :selected=>@seller_id}) %>
+                    <%= f.error_message_on :seller_id %>
+                <% end %>
+              </div>
+          <%end%>
+          <div class="field-block alpha five columns">
+            <%= f.field_container :market_place_id do %>
+                <%= f.label :market_place_id, "Market Place:" %><br />
+                <%= f.collection_select(:market_place_id, @market_places, :id, :name, {:class=>'select2', :prompt=>"All", :selected=>@market_place_id}) %>
+                <%= f.error_message_on :market_place_id %>
+            <% end %>
+          </div>
+          <div class="clear"></div>
+          <div class="field-block alpha five columns">
+            <%= f.field_container :search_text do %>
+                <%= f.label :search_text, "Search Text" %>&nbsp;
+                <%= f.text_field :search_text, :value => @search_text, :class => 'fullwidth', :size => 80 %>
+            <% end %>
+          </div>
+          <div class="field-block alpha five columns">
+            <%= f.field_container :order_date do %>
+                <label>Start Date</label>
+                <%= text_field_tag("created_at_gt")%>
+            <% end %>
+          </div>
+          <div class="field-block alpha five columns">
+            <%= f.field_container :order_date do %>
+                <label>End Date</label>
+                <%= text_field_tag("created_at_lt")%>
+            <% end %>
+          </div>
+          <div class="five columns omega">
+            <label>
+              <%= "Customer Pickup" %>
+              <%= f.check_box :is_pick_at_store, {:checked => @customer_pickup}, true, false %>
+            </label>
+          </div>
+
+          <div class="clear"></div>
+          <div class="form-buttons actions filter-actions" data-hook="admin_orders_index_search_buttons">
+            <%= button Spree.t(:search), 'icon-search' %>
+          </div>
+      <% end %>
+    </div>
+<% end %>
+
+<%= render :partial => 'spree/admin/shared/order_sub_menu' %>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#format').val('');
+        $("#created_at_gt").val('<%= params[:created_at_gt].to_date.strftime("%Y-%m-%d") rescue Time.zone.now.beginning_of_month.to_date%>');
+        $("#created_at_lt").val('<%= params[:created_at_lt].to_date.strftime("%Y-%m-%d") rescue Time.zone.now.beginning_of_day.to_date %>');
+
+        $('#created_at_gt').datepicker({
+            dateFormat: 'yy-m-dd',
+            maxDate:$("#created_at_lt").val(),
+            onSelect: function(dateText, inst){
+                $('#created_at_lt').datepicker('option', 'minDate', $(this).datepicker('getDate'));
+            }
+        });
+        $('#created_at_lt').datepicker({
+            dateFormat: 'yy-m-dd',
+            maxDate:0,
+            onSelect: function(dateText, inst){
+                $('#created_at_gt').datepicker('option', 'maxDate', $(this).datepicker('getDate'));
+            }
+        });
+    });
+</script>
+

@@ -1,0 +1,51 @@
+<table class="admin-report display" border="0" cellpadding="0" cellspacing="0" width="100%">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th><%= Spree.t(:order_number) %></th>
+      <th><%= Spree.t(:order_date) %></th>
+      <th><%= Spree.t(:payment_date) %></th>
+      <th><%= Spree.t(:payment_mode) %></th>
+      <th><%= Spree.t(:total_products) %></th>      
+      <th><%= Spree.t(:sub_total) + " (excl GST)"%></th>
+      <th><%= Spree.t(:sub_total) + " (incl GST)"%></th>
+      <th><%= Spree.t(:discount) + " (excl GST)"%></th>
+      <th><%= Spree.t(:discount) + " (incl GST)"%></th>
+      <th><%= Spree.t(:shipping_charges) + " (excl GST)"%></th>
+      <th><%= Spree.t(:shipping_charges) + " (incl GST)"%></th>
+      <th><%= Spree.t(:paid_amount) + " (excl GST)"%></th>
+      <th><%= Spree.t(:paid_amount) + " (incl GST)"%></th>
+      <th><%= Spree.t(:total_gst_paid) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% orders.each_with_index do |order, index|%>
+      <% next if totals[order.number].nil? %>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= link_to totals[order.number][:order_number], admin_order_path(order) %></td>
+        <td><%= totals[order.number][:order_date] %></td>
+        <td><%= totals[order.number][:payment_date] %></td>
+        <td><%= totals[order.number][:payment_mode] %></td>
+        <td><%= totals[order.number][:total_number_of_products] %></td>
+        <td><%= totals[order.number][:sub_total_excl] %></td>
+        <td><%= totals[order.number][:sub_total_incl] %></td>
+        <td><%= totals[order.number][:discount_excl] %></td>
+        <td><%= totals[order.number][:discount_incl] %></td>
+        <td><%= totals[order.number][:shipping_charges_excl] %></td>
+        <td><%= totals[order.number][:shipping_charges_incl] %></td>
+        <td><%= totals[order.number][:paid_amount_excl] %></td>
+        <td><%= totals[order.number][:paid_amount_incl] %></td>
+        <td><%= totals[order.number][:total_gst_paid] %></td>
+      </tr>
+    <%end%>
+  </tbody>
+</table>
+<style type="text/css">
+  table{
+    display: block;
+    overflow-x: scroll;
+  }
+</style>
+
+<%= paginate(orders)%>

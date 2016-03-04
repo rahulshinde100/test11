@@ -1,0 +1,515 @@
+# Logfile created on 2016-03-01 12:47:45 +0530 by logger.rb/47272
+[2016-03-01 12:47:45 +0530 server.local (4886)] INFO : Starting the New Relic agent in "development" environment.
+[2016-03-01 12:47:45 +0530 server.local (4886)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[2016-03-01 12:47:45 +0530 server.local (4886)] INFO : Reading configuration from config/newrelic.yml (/Users/rahul-shinde/Desktop/SwitchFabric)
+[2016-03-01 12:47:45 +0530 server.local (4886)] INFO : New Relic Agent Developer Mode enabled.
+[2016-03-01 12:47:45 +0530 server.local (4886)] INFO : Environment: development
+[2016-03-01 12:47:45 +0530 server.local (4886)] INFO : No known dispatcher detected.
+[2016-03-01 12:47:45 +0530 server.local (4886)] INFO : Application: Channel Manager (Development)
+[2016-03-01 12:47:45 +0530 server.local (4886)] INFO : delayed_job not available: No DJ worker present. Skipping DJ queue sampler
+[2016-03-01 12:47:45 +0530 server.local (4886)] INFO : Installing ActiveMerchant instrumentation
+[2016-03-01 12:47:45 +0530 server.local (4886)] INFO : Installing ActiveRecord instrumentation
+[2016-03-01 12:47:45 +0530 server.local (4886)] INFO : Installing DelayedJob instrumentation [part 1/2]
+[2016-03-01 12:47:45 +0530 server.local (4886)] INFO : Installing Net instrumentation
+[2016-03-01 12:47:45 +0530 server.local (4886)] INFO : Installing deferred Rack::Builder instrumentation
+[2016-03-01 12:47:45 +0530 server.local (4886)] INFO : Installing Rack::Builder middleware instrumentation
+[2016-03-01 12:47:45 +0530 server.local (4886)] INFO : Installing Rails 3+ middleware instrumentation
+[2016-03-01 12:47:45 +0530 server.local (4886)] INFO : Installing Rails 3 Controller instrumentation
+[2016-03-01 12:47:45 +0530 server.local (4886)] INFO : Installing Rails 3.1/3.2 view instrumentation
+[2016-03-01 12:47:45 +0530 server.local (4886)] INFO : Installing Rails 3 Error instrumentation
+[2016-03-01 12:47:45 +0530 server.local (4886)] INFO : Finished instrumentation
+[2016-03-01 12:47:51 +0530 server.local (4886)] INFO : Reporting to: https://rpm.newrelic.com/accounts/703229/applications/19790714
+[2016-03-01 12:47:52 +0530 server.local (4886)] INFO : Doing deferred dependency-detection before Rack startup
+[2016-03-01 14:41:54 +0530 server.local (4886)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-01 14:58:27 +0530 server.local (4886)] INFO : Starting Agent shutdown
+[2016-03-01 14:58:50 +0530 server.local (14957)] INFO : Starting the New Relic agent in "development" environment.
+[2016-03-01 14:58:50 +0530 server.local (14957)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[2016-03-01 14:58:50 +0530 server.local (14957)] INFO : Reading configuration from config/newrelic.yml (/Users/rahul-shinde/Desktop/SwitchFabric)
+[2016-03-01 14:58:50 +0530 server.local (14957)] INFO : New Relic Agent Developer Mode enabled.
+[2016-03-01 14:58:50 +0530 server.local (14957)] INFO : Environment: development
+[2016-03-01 14:58:50 +0530 server.local (14957)] INFO : No known dispatcher detected.
+[2016-03-01 14:58:50 +0530 server.local (14957)] INFO : Application: Channel Manager (Development)
+[2016-03-01 14:58:50 +0530 server.local (14957)] INFO : delayed_job not available: No DJ worker present. Skipping DJ queue sampler
+[2016-03-01 14:58:51 +0530 server.local (14957)] INFO : Installing ActiveMerchant instrumentation
+[2016-03-01 14:58:51 +0530 server.local (14957)] INFO : Installing ActiveRecord instrumentation
+[2016-03-01 14:58:51 +0530 server.local (14957)] INFO : Installing DelayedJob instrumentation [part 1/2]
+[2016-03-01 14:58:51 +0530 server.local (14957)] INFO : Installing Net instrumentation
+[2016-03-01 14:58:51 +0530 server.local (14957)] INFO : Installing deferred Rack::Builder instrumentation
+[2016-03-01 14:58:51 +0530 server.local (14957)] INFO : Installing Rack::Builder middleware instrumentation
+[2016-03-01 14:58:51 +0530 server.local (14957)] INFO : Installing Rails 3+ middleware instrumentation
+[2016-03-01 14:58:51 +0530 server.local (14957)] INFO : Installing Rails 3 Controller instrumentation
+[2016-03-01 14:58:51 +0530 server.local (14957)] INFO : Installing Rails 3.1/3.2 view instrumentation
+[2016-03-01 14:58:51 +0530 server.local (14957)] INFO : Installing Rails 3 Error instrumentation
+[2016-03-01 14:58:51 +0530 server.local (14957)] INFO : Finished instrumentation
+[2016-03-01 14:58:56 +0530 server.local (14957)] INFO : Reporting to: https://rpm.newrelic.com/accounts/703229/applications/19790714
+[2016-03-01 14:59:00 +0530 server.local (14957)] INFO : Doing deferred dependency-detection before Rack startup
+[2016-03-01 15:39:55 +0530 server.local (14957)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-01 15:41:34 +0530 server.local (14957)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-01 15:42:15 +0530 server.local (14957)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-01 18:32:41 +0530 server.local (14957)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-01 18:34:59 +0530 server.local (14957)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-01 18:36:02 +0530 server.local (14957)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-01 18:37:04 +0530 server.local (14957)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-01 18:45:34 +0530 server.local (14957)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-01 18:53:44 +0530 server.local (14957)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-01 19:41:24 +0530 server.local (14957)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-01 19:47:29 +0530 server.local (14957)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-01 19:58:25 +0530 server.local (14957)] INFO : Starting Agent shutdown
+[2016-03-02 09:36:29 +0530 server.local (1876)] INFO : Starting the New Relic agent in "development" environment.
+[2016-03-02 09:36:29 +0530 server.local (1876)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[2016-03-02 09:36:29 +0530 server.local (1876)] INFO : Reading configuration from config/newrelic.yml (/Users/rahul-shinde/Desktop/SwitchFabric)
+[2016-03-02 09:36:29 +0530 server.local (1876)] INFO : New Relic Agent Developer Mode enabled.
+[2016-03-02 09:36:29 +0530 server.local (1876)] INFO : Environment: development
+[2016-03-02 09:36:29 +0530 server.local (1876)] INFO : No known dispatcher detected.
+[2016-03-02 09:36:29 +0530 server.local (1876)] INFO : Application: Channel Manager (Development)
+[2016-03-02 09:36:29 +0530 server.local (1876)] INFO : delayed_job not available: No DJ worker present. Skipping DJ queue sampler
+[2016-03-02 09:36:29 +0530 server.local (1876)] INFO : Installing ActiveMerchant instrumentation
+[2016-03-02 09:36:29 +0530 server.local (1876)] INFO : Installing ActiveRecord instrumentation
+[2016-03-02 09:36:29 +0530 server.local (1876)] INFO : Installing DelayedJob instrumentation [part 1/2]
+[2016-03-02 09:36:29 +0530 server.local (1876)] INFO : Installing Net instrumentation
+[2016-03-02 09:36:29 +0530 server.local (1876)] INFO : Installing deferred Rack::Builder instrumentation
+[2016-03-02 09:36:29 +0530 server.local (1876)] INFO : Installing Rack::Builder middleware instrumentation
+[2016-03-02 09:36:29 +0530 server.local (1876)] INFO : Installing Rails 3+ middleware instrumentation
+[2016-03-02 09:36:29 +0530 server.local (1876)] INFO : Installing Rails 3 Controller instrumentation
+[2016-03-02 09:36:29 +0530 server.local (1876)] INFO : Installing Rails 3.1/3.2 view instrumentation
+[2016-03-02 09:36:29 +0530 server.local (1876)] INFO : Installing Rails 3 Error instrumentation
+[2016-03-02 09:36:29 +0530 server.local (1876)] INFO : Finished instrumentation
+[2016-03-02 09:36:30 +0530 server.local (1876)] INFO : Starting Agent shutdown
+[2016-03-02 09:37:00 +0530 server.local (2137)] INFO : Starting the New Relic agent in "development" environment.
+[2016-03-02 09:37:00 +0530 server.local (2137)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[2016-03-02 09:37:00 +0530 server.local (2137)] INFO : Reading configuration from config/newrelic.yml (/Users/rahul-shinde/Desktop/SwitchFabric)
+[2016-03-02 09:37:00 +0530 server.local (2137)] INFO : New Relic Agent Developer Mode enabled.
+[2016-03-02 09:37:00 +0530 server.local (2137)] INFO : Environment: development
+[2016-03-02 09:37:00 +0530 server.local (2137)] INFO : No known dispatcher detected.
+[2016-03-02 09:37:00 +0530 server.local (2137)] INFO : Application: Channel Manager (Development)
+[2016-03-02 09:37:00 +0530 server.local (2137)] INFO : delayed_job not available: No DJ worker present. Skipping DJ queue sampler
+[2016-03-02 09:37:00 +0530 server.local (2137)] INFO : Installing ActiveMerchant instrumentation
+[2016-03-02 09:37:00 +0530 server.local (2137)] INFO : Installing ActiveRecord instrumentation
+[2016-03-02 09:37:00 +0530 server.local (2137)] INFO : Installing DelayedJob instrumentation [part 1/2]
+[2016-03-02 09:37:00 +0530 server.local (2137)] INFO : Installing Net instrumentation
+[2016-03-02 09:37:00 +0530 server.local (2137)] INFO : Installing deferred Rack::Builder instrumentation
+[2016-03-02 09:37:00 +0530 server.local (2137)] INFO : Installing Rack::Builder middleware instrumentation
+[2016-03-02 09:37:00 +0530 server.local (2137)] INFO : Installing Rails 3+ middleware instrumentation
+[2016-03-02 09:37:00 +0530 server.local (2137)] INFO : Installing Rails 3 Controller instrumentation
+[2016-03-02 09:37:00 +0530 server.local (2137)] INFO : Installing Rails 3.1/3.2 view instrumentation
+[2016-03-02 09:37:00 +0530 server.local (2137)] INFO : Installing Rails 3 Error instrumentation
+[2016-03-02 09:37:00 +0530 server.local (2137)] INFO : Finished instrumentation
+[2016-03-02 09:37:01 +0530 server.local (2137)] INFO : Starting Agent shutdown
+[2016-03-02 09:37:33 +0530 server.local (2376)] INFO : Starting the New Relic agent in "development" environment.
+[2016-03-02 09:37:33 +0530 server.local (2376)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[2016-03-02 09:37:33 +0530 server.local (2376)] INFO : Reading configuration from config/newrelic.yml (/Users/rahul-shinde/Desktop/SwitchFabric)
+[2016-03-02 09:37:33 +0530 server.local (2376)] INFO : New Relic Agent Developer Mode enabled.
+[2016-03-02 09:37:33 +0530 server.local (2376)] INFO : Environment: development
+[2016-03-02 09:37:33 +0530 server.local (2376)] INFO : No known dispatcher detected.
+[2016-03-02 09:37:33 +0530 server.local (2376)] INFO : Application: Channel Manager (Development)
+[2016-03-02 09:37:33 +0530 server.local (2376)] INFO : delayed_job not available: No DJ worker present. Skipping DJ queue sampler
+[2016-03-02 09:37:34 +0530 server.local (2376)] INFO : Installing ActiveMerchant instrumentation
+[2016-03-02 09:37:34 +0530 server.local (2376)] INFO : Installing ActiveRecord instrumentation
+[2016-03-02 09:37:34 +0530 server.local (2376)] INFO : Installing DelayedJob instrumentation [part 1/2]
+[2016-03-02 09:37:34 +0530 server.local (2376)] INFO : Installing Net instrumentation
+[2016-03-02 09:37:34 +0530 server.local (2376)] INFO : Installing deferred Rack::Builder instrumentation
+[2016-03-02 09:37:34 +0530 server.local (2376)] INFO : Installing Rack::Builder middleware instrumentation
+[2016-03-02 09:37:34 +0530 server.local (2376)] INFO : Installing Rails 3+ middleware instrumentation
+[2016-03-02 09:37:34 +0530 server.local (2376)] INFO : Installing Rails 3 Controller instrumentation
+[2016-03-02 09:37:34 +0530 server.local (2376)] INFO : Installing Rails 3.1/3.2 view instrumentation
+[2016-03-02 09:37:34 +0530 server.local (2376)] INFO : Installing Rails 3 Error instrumentation
+[2016-03-02 09:37:34 +0530 server.local (2376)] INFO : Finished instrumentation
+[2016-03-02 09:37:38 +0530 server.local (2376)] INFO : Reporting to: https://rpm.newrelic.com/accounts/703229/applications/19790714
+[2016-03-02 09:37:42 +0530 server.local (2376)] INFO : Doing deferred dependency-detection before Rack startup
+[2016-03-02 09:44:59 +0530 server.local (2376)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-02 10:53:14 +0530 server.local (2376)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-02 10:54:07 +0530 server.local (2376)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-02 10:55:10 +0530 server.local (2376)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-02 11:11:15 +0530 server.local (2376)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-02 11:34:04 +0530 server.local (2376)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-02 11:44:53 +0530 server.local (2376)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-02 11:53:08 +0530 server.local (2376)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-02 11:53:41 +0530 server.local (2376)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-02 12:10:40 +0530 server.local (2376)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-02 12:14:45 +0530 server.local (2376)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-02 12:17:04 +0530 server.local (2376)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-02 12:23:24 +0530 server.local (2376)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-02 12:41:33 +0530 server.local (2376)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-02 14:49:46 +0530 server.local (1610)] INFO : Starting the New Relic agent in "development" environment.
+[2016-03-02 14:49:46 +0530 server.local (1610)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[2016-03-02 14:49:46 +0530 server.local (1610)] INFO : Reading configuration from config/newrelic.yml (/Users/rahul-shinde/Desktop/SwitchFabric)
+[2016-03-02 14:49:47 +0530 server.local (1610)] INFO : New Relic Agent Developer Mode enabled.
+[2016-03-02 14:49:47 +0530 server.local (1610)] INFO : Environment: development
+[2016-03-02 14:49:47 +0530 server.local (1610)] INFO : No known dispatcher detected.
+[2016-03-02 14:49:47 +0530 server.local (1610)] INFO : Application: Channel Manager (Development)
+[2016-03-02 14:49:47 +0530 server.local (1610)] INFO : delayed_job not available: No DJ worker present. Skipping DJ queue sampler
+[2016-03-02 14:49:47 +0530 server.local (1610)] INFO : Installing ActiveMerchant instrumentation
+[2016-03-02 14:49:47 +0530 server.local (1610)] INFO : Installing ActiveRecord instrumentation
+[2016-03-02 14:49:47 +0530 server.local (1610)] INFO : Installing DelayedJob instrumentation [part 1/2]
+[2016-03-02 14:49:47 +0530 server.local (1610)] INFO : Installing Net instrumentation
+[2016-03-02 14:49:47 +0530 server.local (1610)] INFO : Installing deferred Rack::Builder instrumentation
+[2016-03-02 14:49:47 +0530 server.local (1610)] INFO : Installing Rack::Builder middleware instrumentation
+[2016-03-02 14:49:47 +0530 server.local (1610)] INFO : Installing Rails 3+ middleware instrumentation
+[2016-03-02 14:49:47 +0530 server.local (1610)] INFO : Installing Rails 3 Controller instrumentation
+[2016-03-02 14:49:47 +0530 server.local (1610)] INFO : Installing Rails 3.1/3.2 view instrumentation
+[2016-03-02 14:49:48 +0530 server.local (1610)] INFO : Installing Rails 3 Error instrumentation
+[2016-03-02 14:49:48 +0530 server.local (1610)] INFO : Finished instrumentation
+[2016-03-02 14:49:48 +0530 server.local (1610)] INFO : Starting Agent shutdown
+[2016-03-02 14:51:40 +0530 server.local (2077)] INFO : Starting the New Relic agent in "development" environment.
+[2016-03-02 14:51:40 +0530 server.local (2077)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[2016-03-02 14:51:40 +0530 server.local (2077)] INFO : Reading configuration from config/newrelic.yml (/Users/rahul-shinde/Desktop/SwitchFabric)
+[2016-03-02 14:51:40 +0530 server.local (2077)] INFO : New Relic Agent Developer Mode enabled.
+[2016-03-02 14:51:40 +0530 server.local (2077)] INFO : Environment: development
+[2016-03-02 14:51:40 +0530 server.local (2077)] INFO : No known dispatcher detected.
+[2016-03-02 14:51:40 +0530 server.local (2077)] INFO : Application: Channel Manager (Development)
+[2016-03-02 14:51:40 +0530 server.local (2077)] INFO : delayed_job not available: No DJ worker present. Skipping DJ queue sampler
+[2016-03-02 14:51:41 +0530 server.local (2077)] INFO : Installing ActiveMerchant instrumentation
+[2016-03-02 14:51:41 +0530 server.local (2077)] INFO : Installing ActiveRecord instrumentation
+[2016-03-02 14:51:41 +0530 server.local (2077)] INFO : Installing DelayedJob instrumentation [part 1/2]
+[2016-03-02 14:51:41 +0530 server.local (2077)] INFO : Installing Net instrumentation
+[2016-03-02 14:51:41 +0530 server.local (2077)] INFO : Installing deferred Rack::Builder instrumentation
+[2016-03-02 14:51:41 +0530 server.local (2077)] INFO : Installing Rack::Builder middleware instrumentation
+[2016-03-02 14:51:41 +0530 server.local (2077)] INFO : Installing Rails 3+ middleware instrumentation
+[2016-03-02 14:51:41 +0530 server.local (2077)] INFO : Installing Rails 3 Controller instrumentation
+[2016-03-02 14:51:41 +0530 server.local (2077)] INFO : Installing Rails 3.1/3.2 view instrumentation
+[2016-03-02 14:51:41 +0530 server.local (2077)] INFO : Installing Rails 3 Error instrumentation
+[2016-03-02 14:51:41 +0530 server.local (2077)] INFO : Finished instrumentation
+[2016-03-02 14:51:52 +0530 server.local (2077)] INFO : Doing deferred dependency-detection before Rack startup
+[2016-03-02 14:52:42 +0530 server.local (2077)] ERROR : Error establishing connection with New Relic Service at collector.newrelic.com:443:
+[2016-03-02 14:52:42 +0530 server.local (2077)] ERROR : NewRelic::Agent::ServerConnectionException: Recoverable error talking to collector.newrelic.com:443 after 2 attempts: getaddrinfo: nodename nor servname provided, or not known
+[2016-03-02 14:52:42 +0530 server.local (2077)] INFO : Will re-attempt in 60 seconds
+[2016-03-02 14:54:44 +0530 server.local (2077)] ERROR : Error establishing connection with New Relic Service at collector.newrelic.com:443:
+[2016-03-02 14:54:44 +0530 server.local (2077)] ERROR : NewRelic::Agent::ServerConnectionException: Recoverable error talking to collector.newrelic.com:443 after 2 attempts: getaddrinfo: nodename nor servname provided, or not known
+[2016-03-02 14:54:44 +0530 server.local (2077)] INFO : Will re-attempt in 120 seconds
+[2016-03-02 14:56:51 +0530 server.local (2077)] INFO : Reporting to: https://rpm.newrelic.com/accounts/703229/applications/19790714
+[2016-03-02 15:00:06 +0530 server.local (2077)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-02 15:01:05 +0530 server.local (2077)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-02 15:04:42 +0530 server.local (2077)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-02 15:14:17 +0530 server.local (2077)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-02 16:31:48 +0530 server.local (1853)] INFO : Starting the New Relic agent in "development" environment.
+[2016-03-02 16:31:48 +0530 server.local (1853)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[2016-03-02 16:31:48 +0530 server.local (1853)] INFO : Reading configuration from config/newrelic.yml (/Users/rahul-shinde/Desktop/SwitchFabric)
+[2016-03-02 16:31:49 +0530 server.local (1853)] INFO : New Relic Agent Developer Mode enabled.
+[2016-03-02 16:31:49 +0530 server.local (1853)] INFO : Environment: development
+[2016-03-02 16:31:49 +0530 server.local (1853)] INFO : No known dispatcher detected.
+[2016-03-02 16:31:49 +0530 server.local (1853)] INFO : Application: Channel Manager (Development)
+[2016-03-02 16:31:49 +0530 server.local (1853)] INFO : delayed_job not available: No DJ worker present. Skipping DJ queue sampler
+[2016-03-02 16:31:49 +0530 server.local (1853)] INFO : Installing ActiveMerchant instrumentation
+[2016-03-02 16:31:49 +0530 server.local (1853)] INFO : Installing ActiveRecord instrumentation
+[2016-03-02 16:31:49 +0530 server.local (1853)] INFO : Installing DelayedJob instrumentation [part 1/2]
+[2016-03-02 16:31:49 +0530 server.local (1853)] INFO : Installing Net instrumentation
+[2016-03-02 16:31:50 +0530 server.local (1853)] INFO : Installing deferred Rack::Builder instrumentation
+[2016-03-02 16:31:50 +0530 server.local (1853)] INFO : Installing Rack::Builder middleware instrumentation
+[2016-03-02 16:31:50 +0530 server.local (1853)] INFO : Installing Rails 3+ middleware instrumentation
+[2016-03-02 16:31:50 +0530 server.local (1853)] INFO : Installing Rails 3 Controller instrumentation
+[2016-03-02 16:31:50 +0530 server.local (1853)] INFO : Installing Rails 3.1/3.2 view instrumentation
+[2016-03-02 16:31:50 +0530 server.local (1853)] INFO : Installing Rails 3 Error instrumentation
+[2016-03-02 16:31:50 +0530 server.local (1853)] INFO : Finished instrumentation
+[2016-03-02 16:31:58 +0530 server.local (1853)] INFO : Reporting to: https://rpm.newrelic.com/accounts/703229/applications/19790714
+[2016-03-02 16:32:05 +0530 server.local (1853)] INFO : Doing deferred dependency-detection before Rack startup
+[2016-03-03 09:42:18 +0530 server.local (1995)] INFO : Starting the New Relic agent in "development" environment.
+[2016-03-03 09:42:18 +0530 server.local (1995)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[2016-03-03 09:42:18 +0530 server.local (1995)] INFO : Reading configuration from config/newrelic.yml (/Users/rahul-shinde/Desktop/SwitchFabric)
+[2016-03-03 09:42:18 +0530 server.local (1995)] INFO : New Relic Agent Developer Mode enabled.
+[2016-03-03 09:42:18 +0530 server.local (1995)] INFO : Environment: development
+[2016-03-03 09:42:18 +0530 server.local (1995)] INFO : No known dispatcher detected.
+[2016-03-03 09:42:18 +0530 server.local (1995)] INFO : Application: Channel Manager (Development)
+[2016-03-03 09:42:19 +0530 server.local (1995)] INFO : delayed_job not available: No DJ worker present. Skipping DJ queue sampler
+[2016-03-03 09:42:19 +0530 server.local (1995)] INFO : Installing ActiveMerchant instrumentation
+[2016-03-03 09:42:19 +0530 server.local (1995)] INFO : Installing ActiveRecord instrumentation
+[2016-03-03 09:42:19 +0530 server.local (1995)] INFO : Installing DelayedJob instrumentation [part 1/2]
+[2016-03-03 09:42:19 +0530 server.local (1995)] INFO : Installing Net instrumentation
+[2016-03-03 09:42:19 +0530 server.local (1995)] INFO : Installing deferred Rack::Builder instrumentation
+[2016-03-03 09:42:19 +0530 server.local (1995)] INFO : Installing Rack::Builder middleware instrumentation
+[2016-03-03 09:42:19 +0530 server.local (1995)] INFO : Installing Rails 3+ middleware instrumentation
+[2016-03-03 09:42:19 +0530 server.local (1995)] INFO : Installing Rails 3 Controller instrumentation
+[2016-03-03 09:42:19 +0530 server.local (1995)] INFO : Installing Rails 3.1/3.2 view instrumentation
+[2016-03-03 09:42:19 +0530 server.local (1995)] INFO : Installing Rails 3 Error instrumentation
+[2016-03-03 09:42:19 +0530 server.local (1995)] INFO : Finished instrumentation
+[2016-03-03 09:42:23 +0530 server.local (1995)] INFO : Reporting to: https://rpm.newrelic.com/accounts/703229/applications/19790714
+[2016-03-03 09:42:32 +0530 server.local (1995)] INFO : Doing deferred dependency-detection before Rack startup
+[2016-03-03 13:08:51 +0530 server.local (1995)] INFO : Starting Agent shutdown
+[2016-03-03 13:20:35 +0530 server.local (20244)] INFO : Starting the New Relic agent in "development" environment.
+[2016-03-03 13:20:35 +0530 server.local (20244)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[2016-03-03 13:20:35 +0530 server.local (20244)] INFO : Reading configuration from config/newrelic.yml (/Users/rahul-shinde/Desktop/SwitchFabric)
+[2016-03-03 13:20:35 +0530 server.local (20244)] INFO : New Relic Agent Developer Mode enabled.
+[2016-03-03 13:20:35 +0530 server.local (20244)] INFO : Environment: development
+[2016-03-03 13:20:35 +0530 server.local (20244)] INFO : No known dispatcher detected.
+[2016-03-03 13:20:35 +0530 server.local (20244)] INFO : Application: Channel Manager (Development)
+[2016-03-03 13:20:35 +0530 server.local (20244)] INFO : delayed_job not available: No DJ worker present. Skipping DJ queue sampler
+[2016-03-03 13:20:35 +0530 server.local (20244)] INFO : Installing ActiveMerchant instrumentation
+[2016-03-03 13:20:35 +0530 server.local (20244)] INFO : Installing ActiveRecord instrumentation
+[2016-03-03 13:20:35 +0530 server.local (20244)] INFO : Installing DelayedJob instrumentation [part 1/2]
+[2016-03-03 13:20:35 +0530 server.local (20244)] INFO : Installing Net instrumentation
+[2016-03-03 13:20:35 +0530 server.local (20244)] INFO : Installing deferred Rack::Builder instrumentation
+[2016-03-03 13:20:35 +0530 server.local (20244)] INFO : Installing Rack::Builder middleware instrumentation
+[2016-03-03 13:20:35 +0530 server.local (20244)] INFO : Installing Rails 3+ middleware instrumentation
+[2016-03-03 13:20:35 +0530 server.local (20244)] INFO : Installing Rails 3 Controller instrumentation
+[2016-03-03 13:20:35 +0530 server.local (20244)] INFO : Installing Rails 3.1/3.2 view instrumentation
+[2016-03-03 13:20:35 +0530 server.local (20244)] INFO : Installing Rails 3 Error instrumentation
+[2016-03-03 13:20:35 +0530 server.local (20244)] INFO : Finished instrumentation
+[2016-03-03 13:20:42 +0530 server.local (20244)] INFO : Reporting to: https://rpm.newrelic.com/accounts/703229/applications/19790714
+[2016-03-03 13:20:44 +0530 server.local (20244)] INFO : Starting Agent shutdown
+[2016-03-03 13:21:36 +0530 server.local (20357)] INFO : Starting the New Relic agent in "development" environment.
+[2016-03-03 13:21:36 +0530 server.local (20357)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[2016-03-03 13:21:36 +0530 server.local (20357)] INFO : Reading configuration from config/newrelic.yml (/Users/rahul-shinde/Desktop/SwitchFabric)
+[2016-03-03 13:21:36 +0530 server.local (20357)] INFO : New Relic Agent Developer Mode enabled.
+[2016-03-03 13:21:36 +0530 server.local (20357)] INFO : Environment: development
+[2016-03-03 13:21:36 +0530 server.local (20357)] INFO : No known dispatcher detected.
+[2016-03-03 13:21:36 +0530 server.local (20357)] INFO : Application: Channel Manager (Development)
+[2016-03-03 13:21:36 +0530 server.local (20357)] INFO : delayed_job not available: No DJ worker present. Skipping DJ queue sampler
+[2016-03-03 13:21:36 +0530 server.local (20357)] INFO : Installing ActiveMerchant instrumentation
+[2016-03-03 13:21:36 +0530 server.local (20357)] INFO : Installing ActiveRecord instrumentation
+[2016-03-03 13:21:36 +0530 server.local (20357)] INFO : Installing DelayedJob instrumentation [part 1/2]
+[2016-03-03 13:21:36 +0530 server.local (20357)] INFO : Installing Net instrumentation
+[2016-03-03 13:21:36 +0530 server.local (20357)] INFO : Installing deferred Rack::Builder instrumentation
+[2016-03-03 13:21:36 +0530 server.local (20357)] INFO : Installing Rack::Builder middleware instrumentation
+[2016-03-03 13:21:36 +0530 server.local (20357)] INFO : Installing Rails 3+ middleware instrumentation
+[2016-03-03 13:21:36 +0530 server.local (20357)] INFO : Installing Rails 3 Controller instrumentation
+[2016-03-03 13:21:36 +0530 server.local (20357)] INFO : Installing Rails 3.1/3.2 view instrumentation
+[2016-03-03 13:21:36 +0530 server.local (20357)] INFO : Installing Rails 3 Error instrumentation
+[2016-03-03 13:21:36 +0530 server.local (20357)] INFO : Finished instrumentation
+[2016-03-03 13:21:43 +0530 server.local (20357)] INFO : Starting Agent shutdown
+[2016-03-03 13:22:55 +0530 server.local (20487)] INFO : Starting the New Relic agent in "development" environment.
+[2016-03-03 13:22:55 +0530 server.local (20487)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[2016-03-03 13:22:55 +0530 server.local (20487)] INFO : Reading configuration from config/newrelic.yml (/Users/rahul-shinde/Desktop/SwitchFabric)
+[2016-03-03 13:22:55 +0530 server.local (20487)] INFO : New Relic Agent Developer Mode enabled.
+[2016-03-03 13:22:55 +0530 server.local (20487)] INFO : Environment: development
+[2016-03-03 13:22:55 +0530 server.local (20487)] INFO : No known dispatcher detected.
+[2016-03-03 13:22:55 +0530 server.local (20487)] INFO : Application: Channel Manager (Development)
+[2016-03-03 13:22:55 +0530 server.local (20487)] INFO : delayed_job not available: No DJ worker present. Skipping DJ queue sampler
+[2016-03-03 13:22:55 +0530 server.local (20487)] INFO : Installing ActiveMerchant instrumentation
+[2016-03-03 13:22:55 +0530 server.local (20487)] INFO : Installing ActiveRecord instrumentation
+[2016-03-03 13:22:55 +0530 server.local (20487)] INFO : Installing DelayedJob instrumentation [part 1/2]
+[2016-03-03 13:22:55 +0530 server.local (20487)] INFO : Installing Net instrumentation
+[2016-03-03 13:22:55 +0530 server.local (20487)] INFO : Installing deferred Rack::Builder instrumentation
+[2016-03-03 13:22:55 +0530 server.local (20487)] INFO : Installing Rack::Builder middleware instrumentation
+[2016-03-03 13:22:55 +0530 server.local (20487)] INFO : Installing Rails 3+ middleware instrumentation
+[2016-03-03 13:22:55 +0530 server.local (20487)] INFO : Installing Rails 3 Controller instrumentation
+[2016-03-03 13:22:55 +0530 server.local (20487)] INFO : Installing Rails 3.1/3.2 view instrumentation
+[2016-03-03 13:22:55 +0530 server.local (20487)] INFO : Installing Rails 3 Error instrumentation
+[2016-03-03 13:22:55 +0530 server.local (20487)] INFO : Finished instrumentation
+[2016-03-03 13:22:59 +0530 server.local (20487)] INFO : Reporting to: https://rpm.newrelic.com/accounts/703229/applications/19790714
+[2016-03-03 13:23:02 +0530 server.local (20487)] INFO : Starting Agent shutdown
+[2016-03-03 13:26:59 +0530 server.local (20812)] INFO : Starting the New Relic agent in "development" environment.
+[2016-03-03 13:26:59 +0530 server.local (20812)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[2016-03-03 13:26:59 +0530 server.local (20812)] INFO : Reading configuration from config/newrelic.yml (/Users/rahul-shinde/Desktop/SwitchFabric)
+[2016-03-03 13:26:59 +0530 server.local (20812)] INFO : New Relic Agent Developer Mode enabled.
+[2016-03-03 13:26:59 +0530 server.local (20812)] INFO : Environment: development
+[2016-03-03 13:26:59 +0530 server.local (20812)] INFO : No known dispatcher detected.
+[2016-03-03 13:26:59 +0530 server.local (20812)] INFO : Application: Channel Manager (Development)
+[2016-03-03 13:27:00 +0530 server.local (20812)] INFO : delayed_job not available: No DJ worker present. Skipping DJ queue sampler
+[2016-03-03 13:27:00 +0530 server.local (20812)] INFO : Installing ActiveMerchant instrumentation
+[2016-03-03 13:27:00 +0530 server.local (20812)] INFO : Installing ActiveRecord instrumentation
+[2016-03-03 13:27:00 +0530 server.local (20812)] INFO : Installing DelayedJob instrumentation [part 1/2]
+[2016-03-03 13:27:00 +0530 server.local (20812)] INFO : Installing Net instrumentation
+[2016-03-03 13:27:00 +0530 server.local (20812)] INFO : Installing deferred Rack::Builder instrumentation
+[2016-03-03 13:27:00 +0530 server.local (20812)] INFO : Installing Rack::Builder middleware instrumentation
+[2016-03-03 13:27:00 +0530 server.local (20812)] INFO : Installing Rails 3+ middleware instrumentation
+[2016-03-03 13:27:00 +0530 server.local (20812)] INFO : Installing Rails 3 Controller instrumentation
+[2016-03-03 13:27:00 +0530 server.local (20812)] INFO : Installing Rails 3.1/3.2 view instrumentation
+[2016-03-03 13:27:00 +0530 server.local (20812)] INFO : Installing Rails 3 Error instrumentation
+[2016-03-03 13:27:00 +0530 server.local (20812)] INFO : Finished instrumentation
+[2016-03-03 13:27:04 +0530 server.local (20812)] INFO : Reporting to: https://rpm.newrelic.com/accounts/703229/applications/19790714
+[2016-03-03 13:27:07 +0530 server.local (20812)] INFO : Doing deferred dependency-detection before Rack startup
+[2016-03-03 13:35:36 +0530 server.local (20812)] INFO : Starting Agent shutdown
+[2016-03-03 13:36:03 +0530 server.local (22678)] INFO : Starting the New Relic agent in "development" environment.
+[2016-03-03 13:36:03 +0530 server.local (22678)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[2016-03-03 13:36:03 +0530 server.local (22678)] INFO : Reading configuration from config/newrelic.yml (/Users/rahul-shinde/Desktop/SwitchFabric)
+[2016-03-03 13:36:03 +0530 server.local (22678)] INFO : New Relic Agent Developer Mode enabled.
+[2016-03-03 13:36:03 +0530 server.local (22678)] INFO : Environment: development
+[2016-03-03 13:36:03 +0530 server.local (22678)] INFO : No known dispatcher detected.
+[2016-03-03 13:36:03 +0530 server.local (22678)] INFO : Application: Channel Manager (Development)
+[2016-03-03 13:36:04 +0530 server.local (22678)] INFO : delayed_job not available: No DJ worker present. Skipping DJ queue sampler
+[2016-03-03 13:36:04 +0530 server.local (22678)] INFO : Installing ActiveMerchant instrumentation
+[2016-03-03 13:36:04 +0530 server.local (22678)] INFO : Installing ActiveRecord instrumentation
+[2016-03-03 13:36:04 +0530 server.local (22678)] INFO : Installing DelayedJob instrumentation [part 1/2]
+[2016-03-03 13:36:04 +0530 server.local (22678)] INFO : Installing Net instrumentation
+[2016-03-03 13:36:04 +0530 server.local (22678)] INFO : Installing deferred Rack::Builder instrumentation
+[2016-03-03 13:36:04 +0530 server.local (22678)] INFO : Installing Rack::Builder middleware instrumentation
+[2016-03-03 13:36:04 +0530 server.local (22678)] INFO : Installing Rails 3+ middleware instrumentation
+[2016-03-03 13:36:04 +0530 server.local (22678)] INFO : Installing Rails 3 Controller instrumentation
+[2016-03-03 13:36:04 +0530 server.local (22678)] INFO : Installing Rails 3.1/3.2 view instrumentation
+[2016-03-03 13:36:04 +0530 server.local (22678)] INFO : Installing Rails 3 Error instrumentation
+[2016-03-03 13:36:04 +0530 server.local (22678)] INFO : Finished instrumentation
+[2016-03-03 13:36:08 +0530 server.local (22678)] INFO : Reporting to: https://rpm.newrelic.com/accounts/703229/applications/19790714
+[2016-03-03 13:36:11 +0530 server.local (22678)] INFO : Doing deferred dependency-detection before Rack startup
+[2016-03-03 15:53:00 +0530 server.local (22678)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-03 15:53:49 +0530 server.local (22678)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-03 16:41:44 +0530 server.local (22678)] ERROR : 1 error(s) running task for event 'report_event_data' in Agent Event Loop:
+[2016-03-03 16:41:44 +0530 server.local (22678)] ERROR : NewRelic::Agent::ServerConnectionException: Recoverable error connecting to collector-143.newrelic.com:443 after 0.000801 seconds: getaddrinfo: nodename nor servname provided, or not known
+[2016-03-03 16:47:19 +0530 server.local (22678)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-03 17:42:07 +0530 server.local (22678)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-03 17:45:09 +0530 server.local (41969)] INFO : Starting the New Relic agent in "development" environment.
+[2016-03-03 17:45:09 +0530 server.local (41969)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[2016-03-03 17:45:09 +0530 server.local (41969)] INFO : Reading configuration from config/newrelic.yml (/Users/rahul-shinde/Desktop/SwitchFabric)
+[2016-03-03 17:45:09 +0530 server.local (41969)] INFO : New Relic Agent Developer Mode enabled.
+[2016-03-03 17:45:09 +0530 server.local (41969)] INFO : Environment: development
+[2016-03-03 17:45:09 +0530 server.local (41969)] INFO : No known dispatcher detected.
+[2016-03-03 17:45:09 +0530 server.local (41969)] INFO : Application: Channel Manager (Development)
+[2016-03-03 17:45:09 +0530 server.local (41969)] INFO : delayed_job not available: No DJ worker present. Skipping DJ queue sampler
+[2016-03-03 17:45:09 +0530 server.local (41969)] INFO : Installing ActiveMerchant instrumentation
+[2016-03-03 17:45:09 +0530 server.local (41969)] INFO : Installing ActiveRecord instrumentation
+[2016-03-03 17:45:09 +0530 server.local (41969)] INFO : Installing DelayedJob instrumentation [part 1/2]
+[2016-03-03 17:45:09 +0530 server.local (41969)] INFO : Installing Net instrumentation
+[2016-03-03 17:45:09 +0530 server.local (41969)] INFO : Installing deferred Rack::Builder instrumentation
+[2016-03-03 17:45:09 +0530 server.local (41969)] INFO : Installing Rack::Builder middleware instrumentation
+[2016-03-03 17:45:09 +0530 server.local (41969)] INFO : Installing Rails 3+ middleware instrumentation
+[2016-03-03 17:45:09 +0530 server.local (41969)] INFO : Installing Rails 3 Controller instrumentation
+[2016-03-03 17:45:09 +0530 server.local (41969)] INFO : Installing Rails 3.1/3.2 view instrumentation
+[2016-03-03 17:45:09 +0530 server.local (41969)] INFO : Installing Rails 3 Error instrumentation
+[2016-03-03 17:45:09 +0530 server.local (41969)] INFO : Finished instrumentation
+[2016-03-03 17:45:13 +0530 server.local (41969)] INFO : Reporting to: https://rpm.newrelic.com/accounts/703229/applications/19790714
+[2016-03-03 17:45:20 +0530 server.local (41969)] INFO : Starting Agent shutdown
+[2016-03-03 18:16:32 +0530 server.local (22678)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-03 18:32:13 +0530 server.local (22678)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-03 18:37:14 +0530 server.local (22678)] INFO : Starting Agent shutdown
+[2016-03-03 18:37:30 +0530 server.local (46248)] INFO : Starting the New Relic agent in "development" environment.
+[2016-03-03 18:37:30 +0530 server.local (46248)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[2016-03-03 18:37:30 +0530 server.local (46248)] INFO : Reading configuration from config/newrelic.yml (/Users/rahul-shinde/Desktop/SwitchFabric)
+[2016-03-03 18:37:30 +0530 server.local (46248)] INFO : New Relic Agent Developer Mode enabled.
+[2016-03-03 18:37:30 +0530 server.local (46248)] INFO : Environment: development
+[2016-03-03 18:37:30 +0530 server.local (46248)] INFO : No known dispatcher detected.
+[2016-03-03 18:37:30 +0530 server.local (46248)] INFO : Application: Channel Manager (Development)
+[2016-03-03 18:37:30 +0530 server.local (46248)] INFO : delayed_job not available: No DJ worker present. Skipping DJ queue sampler
+[2016-03-03 18:37:30 +0530 server.local (46248)] INFO : Installing ActiveMerchant instrumentation
+[2016-03-03 18:37:30 +0530 server.local (46248)] INFO : Installing ActiveRecord instrumentation
+[2016-03-03 18:37:30 +0530 server.local (46248)] INFO : Installing DelayedJob instrumentation [part 1/2]
+[2016-03-03 18:37:30 +0530 server.local (46248)] INFO : Installing Net instrumentation
+[2016-03-03 18:37:30 +0530 server.local (46248)] INFO : Installing deferred Rack::Builder instrumentation
+[2016-03-03 18:37:30 +0530 server.local (46248)] INFO : Installing Rack::Builder middleware instrumentation
+[2016-03-03 18:37:30 +0530 server.local (46248)] INFO : Installing Rails 3+ middleware instrumentation
+[2016-03-03 18:37:30 +0530 server.local (46248)] INFO : Installing Rails 3 Controller instrumentation
+[2016-03-03 18:37:30 +0530 server.local (46248)] INFO : Installing Rails 3.1/3.2 view instrumentation
+[2016-03-03 18:37:30 +0530 server.local (46248)] INFO : Installing Rails 3 Error instrumentation
+[2016-03-03 18:37:30 +0530 server.local (46248)] INFO : Finished instrumentation
+[2016-03-03 18:37:40 +0530 server.local (46248)] INFO : Doing deferred dependency-detection before Rack startup
+[2016-03-03 18:37:40 +0530 server.local (46248)] INFO : Reporting to: https://rpm.newrelic.com/accounts/703229/applications/19790714
+[2016-03-03 18:41:50 +0530 server.local (46248)] INFO : Starting Agent shutdown
+[2016-03-03 18:42:05 +0530 server.local (46585)] INFO : Starting the New Relic agent in "development" environment.
+[2016-03-03 18:42:05 +0530 server.local (46585)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[2016-03-03 18:42:05 +0530 server.local (46585)] INFO : Reading configuration from config/newrelic.yml (/Users/rahul-shinde/Desktop/SwitchFabric)
+[2016-03-03 18:42:05 +0530 server.local (46585)] INFO : New Relic Agent Developer Mode enabled.
+[2016-03-03 18:42:05 +0530 server.local (46585)] INFO : Environment: development
+[2016-03-03 18:42:05 +0530 server.local (46585)] INFO : No known dispatcher detected.
+[2016-03-03 18:42:05 +0530 server.local (46585)] INFO : Application: Channel Manager (Development)
+[2016-03-03 18:42:05 +0530 server.local (46585)] INFO : delayed_job not available: No DJ worker present. Skipping DJ queue sampler
+[2016-03-03 18:42:05 +0530 server.local (46585)] INFO : Installing ActiveMerchant instrumentation
+[2016-03-03 18:42:05 +0530 server.local (46585)] INFO : Installing ActiveRecord instrumentation
+[2016-03-03 18:42:05 +0530 server.local (46585)] INFO : Installing DelayedJob instrumentation [part 1/2]
+[2016-03-03 18:42:05 +0530 server.local (46585)] INFO : Installing Net instrumentation
+[2016-03-03 18:42:05 +0530 server.local (46585)] INFO : Installing deferred Rack::Builder instrumentation
+[2016-03-03 18:42:05 +0530 server.local (46585)] INFO : Installing Rack::Builder middleware instrumentation
+[2016-03-03 18:42:05 +0530 server.local (46585)] INFO : Installing Rails 3+ middleware instrumentation
+[2016-03-03 18:42:05 +0530 server.local (46585)] INFO : Installing Rails 3 Controller instrumentation
+[2016-03-03 18:42:05 +0530 server.local (46585)] INFO : Installing Rails 3.1/3.2 view instrumentation
+[2016-03-03 18:42:06 +0530 server.local (46585)] INFO : Installing Rails 3 Error instrumentation
+[2016-03-03 18:42:06 +0530 server.local (46585)] INFO : Finished instrumentation
+[2016-03-03 18:42:09 +0530 server.local (46585)] INFO : Reporting to: https://rpm.newrelic.com/accounts/703229/applications/19790714
+[2016-03-03 18:42:14 +0530 server.local (46585)] INFO : Doing deferred dependency-detection before Rack startup
+[2016-03-03 18:59:08 +0530 server.local (46585)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-03 18:59:14 +0530 server.local (46585)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-03 19:03:53 +0530 server.local (46585)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-03 20:21:44 +0530 server.local (46585)] WARN : Skipping RUM instrumentation. Unable to find <body> tag in first 50000 bytes of document.
+[2016-03-03 20:32:57 +0530 server.local (46585)] INFO : Starting Agent shutdown
+[2016-03-03 20:33:19 +0530 server.local (55430)] INFO : Starting the New Relic agent in "development" environment.
+[2016-03-03 20:33:19 +0530 server.local (55430)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[2016-03-03 20:33:19 +0530 server.local (55430)] INFO : Reading configuration from config/newrelic.yml (/Users/rahul-shinde/Desktop/SwitchFabric)
+[2016-03-03 20:33:19 +0530 server.local (55430)] INFO : New Relic Agent Developer Mode enabled.
+[2016-03-03 20:33:19 +0530 server.local (55430)] INFO : Environment: development
+[2016-03-03 20:33:19 +0530 server.local (55430)] INFO : No known dispatcher detected.
+[2016-03-03 20:33:19 +0530 server.local (55430)] INFO : Application: Channel Manager (Development)
+[2016-03-03 20:33:19 +0530 server.local (55430)] INFO : delayed_job not available: No DJ worker present. Skipping DJ queue sampler
+[2016-03-03 20:33:19 +0530 server.local (55430)] INFO : Installing ActiveMerchant instrumentation
+[2016-03-03 20:33:19 +0530 server.local (55430)] INFO : Installing ActiveRecord instrumentation
+[2016-03-03 20:33:19 +0530 server.local (55430)] INFO : Installing DelayedJob instrumentation [part 1/2]
+[2016-03-03 20:33:19 +0530 server.local (55430)] INFO : Installing Net instrumentation
+[2016-03-03 20:33:19 +0530 server.local (55430)] INFO : Installing deferred Rack::Builder instrumentation
+[2016-03-03 20:33:19 +0530 server.local (55430)] INFO : Installing Rack::Builder middleware instrumentation
+[2016-03-03 20:33:19 +0530 server.local (55430)] INFO : Installing Rails 3+ middleware instrumentation
+[2016-03-03 20:33:19 +0530 server.local (55430)] INFO : Installing Rails 3 Controller instrumentation
+[2016-03-03 20:33:19 +0530 server.local (55430)] INFO : Installing Rails 3.1/3.2 view instrumentation
+[2016-03-03 20:33:19 +0530 server.local (55430)] INFO : Installing Rails 3 Error instrumentation
+[2016-03-03 20:33:19 +0530 server.local (55430)] INFO : Finished instrumentation
+[2016-03-03 20:33:23 +0530 server.local (55430)] INFO : Reporting to: https://rpm.newrelic.com/accounts/703229/applications/19790714
+[2016-03-03 20:33:29 +0530 server.local (55430)] INFO : Doing deferred dependency-detection before Rack startup
+[2016-03-04 09:42:40 +0530 server.local (1879)] INFO : Starting the New Relic agent in "development" environment.
+[2016-03-04 09:42:40 +0530 server.local (1879)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[2016-03-04 09:42:40 +0530 server.local (1879)] INFO : Reading configuration from config/newrelic.yml (/Users/rahul-shinde/Desktop/SwitchFabric)
+[2016-03-04 09:42:40 +0530 server.local (1879)] INFO : New Relic Agent Developer Mode enabled.
+[2016-03-04 09:42:40 +0530 server.local (1879)] INFO : Environment: development
+[2016-03-04 09:42:40 +0530 server.local (1879)] INFO : No known dispatcher detected.
+[2016-03-04 09:42:40 +0530 server.local (1879)] INFO : Application: Channel Manager (Development)
+[2016-03-04 09:42:40 +0530 server.local (1879)] INFO : delayed_job not available: No DJ worker present. Skipping DJ queue sampler
+[2016-03-04 09:42:41 +0530 server.local (1879)] INFO : Installing ActiveMerchant instrumentation
+[2016-03-04 09:42:41 +0530 server.local (1879)] INFO : Installing ActiveRecord instrumentation
+[2016-03-04 09:42:41 +0530 server.local (1879)] INFO : Installing DelayedJob instrumentation [part 1/2]
+[2016-03-04 09:42:41 +0530 server.local (1879)] INFO : Installing Net instrumentation
+[2016-03-04 09:42:41 +0530 server.local (1879)] INFO : Installing deferred Rack::Builder instrumentation
+[2016-03-04 09:42:41 +0530 server.local (1879)] INFO : Installing Rack::Builder middleware instrumentation
+[2016-03-04 09:42:41 +0530 server.local (1879)] INFO : Installing Rails 3+ middleware instrumentation
+[2016-03-04 09:42:41 +0530 server.local (1879)] INFO : Installing Rails 3 Controller instrumentation
+[2016-03-04 09:42:41 +0530 server.local (1879)] INFO : Installing Rails 3.1/3.2 view instrumentation
+[2016-03-04 09:42:41 +0530 server.local (1879)] INFO : Installing Rails 3 Error instrumentation
+[2016-03-04 09:42:41 +0530 server.local (1879)] INFO : Finished instrumentation
+[2016-03-04 09:42:41 +0530 server.local (1879)] INFO : Starting Agent shutdown
+[2016-03-04 09:46:17 +0530 server.local (2293)] INFO : Starting the New Relic agent in "development" environment.
+[2016-03-04 09:46:17 +0530 server.local (2293)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[2016-03-04 09:46:17 +0530 server.local (2293)] INFO : Reading configuration from config/newrelic.yml (/Users/rahul-shinde/Desktop/SwitchFabric)
+[2016-03-04 09:46:17 +0530 server.local (2293)] INFO : New Relic Agent Developer Mode enabled.
+[2016-03-04 09:46:17 +0530 server.local (2293)] INFO : Environment: development
+[2016-03-04 09:46:17 +0530 server.local (2293)] INFO : No known dispatcher detected.
+[2016-03-04 09:46:17 +0530 server.local (2293)] INFO : Application: Channel Manager (Development)
+[2016-03-04 09:46:18 +0530 server.local (2293)] INFO : delayed_job not available: No DJ worker present. Skipping DJ queue sampler
+[2016-03-04 09:46:18 +0530 server.local (2293)] INFO : Installing ActiveMerchant instrumentation
+[2016-03-04 09:46:18 +0530 server.local (2293)] INFO : Installing ActiveRecord instrumentation
+[2016-03-04 09:46:18 +0530 server.local (2293)] INFO : Installing DelayedJob instrumentation [part 1/2]
+[2016-03-04 09:46:18 +0530 server.local (2293)] INFO : Installing Net instrumentation
+[2016-03-04 09:46:18 +0530 server.local (2293)] INFO : Installing deferred Rack::Builder instrumentation
+[2016-03-04 09:46:18 +0530 server.local (2293)] INFO : Installing Rack::Builder middleware instrumentation
+[2016-03-04 09:46:18 +0530 server.local (2293)] INFO : Installing Rails 3+ middleware instrumentation
+[2016-03-04 09:46:18 +0530 server.local (2293)] INFO : Installing Rails 3 Controller instrumentation
+[2016-03-04 09:46:18 +0530 server.local (2293)] INFO : Installing Rails 3.1/3.2 view instrumentation
+[2016-03-04 09:46:18 +0530 server.local (2293)] INFO : Installing Rails 3 Error instrumentation
+[2016-03-04 09:46:18 +0530 server.local (2293)] INFO : Finished instrumentation
+[2016-03-04 09:46:21 +0530 server.local (2293)] INFO : Reporting to: https://rpm.newrelic.com/accounts/703229/applications/19790714
+[2016-03-04 09:46:28 +0530 server.local (2293)] INFO : Doing deferred dependency-detection before Rack startup
+[2016-03-04 09:54:15 +0530 server.local (2293)] INFO : Starting Agent shutdown
+[2016-03-04 09:54:31 +0530 server.local (2913)] INFO : Starting the New Relic agent in "development" environment.
+[2016-03-04 09:54:31 +0530 server.local (2913)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[2016-03-04 09:54:31 +0530 server.local (2913)] INFO : Reading configuration from config/newrelic.yml (/Users/rahul-shinde/Desktop/SwitchFabric)
+[2016-03-04 09:54:31 +0530 server.local (2913)] INFO : New Relic Agent Developer Mode enabled.
+[2016-03-04 09:54:31 +0530 server.local (2913)] INFO : Environment: development
+[2016-03-04 09:54:31 +0530 server.local (2913)] INFO : No known dispatcher detected.
+[2016-03-04 09:54:31 +0530 server.local (2913)] INFO : Application: Channel Manager (Development)
+[2016-03-04 09:54:31 +0530 server.local (2913)] INFO : delayed_job not available: No DJ worker present. Skipping DJ queue sampler
+[2016-03-04 09:54:32 +0530 server.local (2913)] INFO : Installing ActiveMerchant instrumentation
+[2016-03-04 09:54:32 +0530 server.local (2913)] INFO : Installing ActiveRecord instrumentation
+[2016-03-04 09:54:32 +0530 server.local (2913)] INFO : Installing DelayedJob instrumentation [part 1/2]
+[2016-03-04 09:54:32 +0530 server.local (2913)] INFO : Installing Net instrumentation
+[2016-03-04 09:54:32 +0530 server.local (2913)] INFO : Installing deferred Rack::Builder instrumentation
+[2016-03-04 09:54:32 +0530 server.local (2913)] INFO : Installing Rack::Builder middleware instrumentation
+[2016-03-04 09:54:32 +0530 server.local (2913)] INFO : Installing Rails 3+ middleware instrumentation
+[2016-03-04 09:54:32 +0530 server.local (2913)] INFO : Installing Rails 3 Controller instrumentation
+[2016-03-04 09:54:32 +0530 server.local (2913)] INFO : Installing Rails 3.1/3.2 view instrumentation
+[2016-03-04 09:54:32 +0530 server.local (2913)] INFO : Installing Rails 3 Error instrumentation
+[2016-03-04 09:54:32 +0530 server.local (2913)] INFO : Finished instrumentation
+[2016-03-04 09:54:38 +0530 server.local (2913)] INFO : Reporting to: https://rpm.newrelic.com/accounts/703229/applications/19790714
+[2016-03-04 09:54:40 +0530 server.local (2913)] INFO : Doing deferred dependency-detection before Rack startup
+[2016-03-04 10:08:09 +0530 server.local (2913)] INFO : Starting Agent shutdown
+[2016-03-04 10:08:22 +0530 server.local (4136)] INFO : Starting the New Relic agent in "development" environment.
+[2016-03-04 10:08:22 +0530 server.local (4136)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[2016-03-04 10:08:22 +0530 server.local (4136)] INFO : Reading configuration from config/newrelic.yml (/Users/rahul-shinde/Desktop/SwitchFabric)
+[2016-03-04 10:08:22 +0530 server.local (4136)] INFO : New Relic Agent Developer Mode enabled.
+[2016-03-04 10:08:22 +0530 server.local (4136)] INFO : Environment: development
+[2016-03-04 10:08:22 +0530 server.local (4136)] INFO : No known dispatcher detected.
+[2016-03-04 10:08:22 +0530 server.local (4136)] INFO : Application: Channel Manager (Development)
+[2016-03-04 10:08:22 +0530 server.local (4136)] INFO : delayed_job not available: No DJ worker present. Skipping DJ queue sampler
+[2016-03-04 10:08:23 +0530 server.local (4136)] INFO : Installing ActiveMerchant instrumentation
+[2016-03-04 10:08:23 +0530 server.local (4136)] INFO : Installing ActiveRecord instrumentation
+[2016-03-04 10:08:23 +0530 server.local (4136)] INFO : Installing DelayedJob instrumentation [part 1/2]
+[2016-03-04 10:08:23 +0530 server.local (4136)] INFO : Installing Net instrumentation
+[2016-03-04 10:08:23 +0530 server.local (4136)] INFO : Installing deferred Rack::Builder instrumentation
+[2016-03-04 10:08:23 +0530 server.local (4136)] INFO : Installing Rack::Builder middleware instrumentation
+[2016-03-04 10:08:23 +0530 server.local (4136)] INFO : Installing Rails 3+ middleware instrumentation
+[2016-03-04 10:08:23 +0530 server.local (4136)] INFO : Installing Rails 3 Controller instrumentation
+[2016-03-04 10:08:23 +0530 server.local (4136)] INFO : Installing Rails 3.1/3.2 view instrumentation
+[2016-03-04 10:08:23 +0530 server.local (4136)] INFO : Installing Rails 3 Error instrumentation
+[2016-03-04 10:08:23 +0530 server.local (4136)] INFO : Finished instrumentation
+[2016-03-04 10:08:25 +0530 server.local (4136)] INFO : Reporting to: https://rpm.newrelic.com/accounts/703229/applications/19790714
+[2016-03-04 10:08:32 +0530 server.local (4136)] INFO : Doing deferred dependency-detection before Rack startup

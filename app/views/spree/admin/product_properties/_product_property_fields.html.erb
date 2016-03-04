@@ -1,0 +1,25 @@
+<%# raise f.object.product_properties.inspect %>
+
+<%= f.fields_for :product_properties do |pp_form, index| %>
+  <tr class="product_property fields" id="spree_<%= dom_id(f.object) %>" data-hook="product_property">
+    <td class="no-border">
+      <span class="handle"></span>
+      <%= pp_form.hidden_field :id %>
+    </td>
+    <td class='property_name'>
+      <%= pp_form.text_field :property_name, :class => 'autocomplete' %>
+    </td>
+    <td class='value'>
+      <%= pp_form.text_area :value, :class => 'autocomplete', :rows => 5 %>
+    </td>
+    <td class="actions">
+      <% if pp_form.object.persisted? %>      
+
+        <%= link_to "", admin_product_product_property_path(@product, pp_form.object), :confirm => "Are you sure", :method => :delete, :class => "icon_link with-tip icon-trash no-text"%>
+
+      <% else %>
+         <span style="text-align:center;display:block;">--</span>  
+      <% end %>
+    </td>
+  </tr>
+<% end %>

@@ -1,0 +1,57 @@
+<p>
+  Dear Team,
+  <br />
+	Following SKU/s were updated recently on FBA that resulted in stock synchronization on CM and respective marketplaces. The below table is for your information.
+	Action from Channel Management team will be required in case any discrepancy that is highlighted in Red color in the table.
+</p>
+<br />
+<% mps = Spree::MarketPlace.all %>
+<table cellpadding="1" cellspacing="1" border="black">
+  <thead>
+    <tr>
+      <th>Seller Name</th>
+      <th>SKU</th>
+      <th>FBA Stock</th>
+      <th>CM Stock</th>
+      <th colspan="<%= mps.count %>">MP Allocated Stock</th>
+      <th>Message</th>
+    </tr>
+    <tr>
+      <td colspan="4"></td>	
+      <% mps.each do |mp| %>
+        <th><%= mp.name %></th>
+      <% end %>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @data.each do |data| %>
+      <% variant = Spree::Variant.where(:sku => data[0]).first rescue nil %>
+      <tr>
+        <td><%= variant.product.seller.name.capitalize rescue "-" %></td>
+        <td><%= variant.sku rescue data[0] %></td>
+        <td><%= data[2] %></td>
+        <td><%= variant.fba_quantity rescue "-" %></td>
+        <% mps.each do |mp| %>
+          <% sp = variant.stock_products.includes("sellers_market_places_product").where("spree_sellers_market_places_products.market_place_id=?", mp.id).try(:first) rescue nil %>
+          <td><%= sp.present? ? sp.count_on_hand : "-" %></td>
+        <% end %>
+        <% if data[3] %>
+          <td style="color: red;"><%= data[1] %></td>
+        <% else %>
+          <td><%= data[1] %></td>
+        <% end %>  
+      </tr>
+    <% end if @data.present? %>
+  </tbody>
+</table>
+<br />
+<p>
+  For any queries, help@anchanto.com.
+  <br /><br />
+  Regards,
+  <br />
+  Team CM @ Anchanto
+</p>
+
+

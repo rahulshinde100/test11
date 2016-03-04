@@ -1,0 +1,22 @@
+<div class="span-wrapper">
+  <div class="summary">
+    <a href="<%= seller.try(:url)%>" target="_blank"><%= image_tag seller.logo.url(:medium) if seller.logo.present? %></a><br/>
+    <%unless seller.url.nil? %><url><%= link_to seller.url, seller.url, :target => "_blank" %></url><%end%>
+  </div>
+
+  <div class="summary">
+    <h3><%= !seller.name.blank? ? seller.name : "<span class='null'>Not Provided</span>".html_safe %></h3>
+    <%= raw !seller.address.blank? ? seller.address : "<span class='null'>Not Provided</span>".html_safe %>
+
+    <br/><br/>
+    <span><%= t(:contact_person_name) %>:</span>
+    <label><%= raw !seller.contact_person_name.blank? ? seller.contact_person_name : "<span class='null'>Not Provided</span>".html_safe %></label><br/>
+    <span><%= t(:contact_person_email) %>:</span>
+    <label><%= raw !seller.contact_person_email.blank? ? mail_to(seller.contact_person_email) : "<span class='null'>Not Provided</span>".html_safe %></label><br/>
+    <span><%= t(:phone) %>:</span>
+    <label><%= raw !seller.phone.blank? ? seller.phone : "<span class='null'>Not Provided</span>".html_safe %></label><br/>
+    <span><%= t(:roc_number) %>:</span>
+    <label><%= raw !seller.roc_number.blank? ? seller.roc_number : "<span class='null'>Not Provided</span>".html_safe %></label><br/>
+
+  </div>
+</div>

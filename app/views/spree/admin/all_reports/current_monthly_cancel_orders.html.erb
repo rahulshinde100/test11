@@ -1,0 +1,6 @@
+<% content_for :page_actions do %>
+  <li>
+   	<%= button_link_to "Back" ,:back ,  :id => 'static_chart_report' %>  
+   	<%= pie_chart @current_monthly_cancel_orders %> 	   	
+  </li>
+<% end %>

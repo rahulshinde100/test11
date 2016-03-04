@@ -1,0 +1,39 @@
+<meta charset="utf-8">
+<%if request.original_url.include? 'business.ship.li'%>
+<title>Welcome to Ship.li Business Central</title>
+<%else%>
+<title><%= seller_name || title %></title>
+<%end%>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport">
+<%== meta_data_tags %>
+<%= favicon_link_tag image_path('favicon.ico') %>
+<%= stylesheet_link_tag 'store/all', :media => 'screen' %>
+<%= csrf_meta_tags %>
+<%= javascript_include_tag 'store/all' %>
+<!--[if lt IE 9]>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6/html5shiv.min.js"></script>
+<![endif]-->
+
+<%= render "spree/shared/routes" %>
+<%= yield :head %>
+
+<!--[if IE 9]>
+<link rel="stylesheet" href="/css/ie-9.css" />
+<script type="text/javascript"src="/js/ie-9.js"></script>
+<![endif]-->
+
+<%if current_page?(root_url)%>
+<script>
+ $(function() {
+    $('#category-main-menu').scrollToFixed({marginTop: 40, zIndex : 1000});
+});
+</script>
+<%else%>
+<style>
+    #header-container{display: none;}
+    #category-main-menu{ position: fixed;top: 40px;width: 100%;z-index: 1000;}
+    #subheader{margin-top: 94px;}
+    #search-bar-new{display: block;}
+</style>
+<%end%>

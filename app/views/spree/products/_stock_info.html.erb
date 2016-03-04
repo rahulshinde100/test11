@@ -1,0 +1,83 @@
+<hr />
+<div class="in-stock">
+    <h2>IN STOCK AT 10+ STORES</h2>
+    <div>Vivo city, Raffles City, West Cost Mall, Changi Point Mall, <br />
+    <a href="" id="find-nearest" onclick="return false;"><i>find nearest store</i></a>
+    </div>
+
+    <div>
+    sold by <i><b>Home Fix, shipped at your doorstep by Anchanto</b></i>
+    </div>
+
+    <div id="store-map-nearest">
+        <div id="map-nearest" style="width: 100%; height: 300px;"></div>
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+
+
+    $(document).ready(function(){
+        $('#find-nearest').click(function(){
+        
+      
+           
+        
+            var locations = [
+                                ['Bukit Mehra', 1.276797, 103.827224, 4],
+                                ['Vivo City', 1.272679, 103.823411, 5],
+                                ['Thiong Bahru Plaza', 1.287438, 103.827059, 3],
+                                ['4 Leng Kee Road', 1.291428, 103.814317, 2],
+                                ['Clarke Quay', 1.29117, 103.844851, 1]
+                              ];
+
+                var map = new google.maps.Map(document.getElementById('map-nearest'), {
+                  zoom: 12,
+                  center: new google.maps.LatLng(1.330599, 103.862158),
+                  mapTypeId: google.maps.MapTypeId.ROADMAP
+                });
+
+                var infowindow = new google.maps.InfoWindow();
+
+                var marker, i;
+
+                for (i = 0; i < locations.length; i++) {  
+                  marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+                    map: map
+                    
+                  });
+
+                  google.maps.event.addListener(marker, 'mouseover', (function(marker, i) {
+                    return function() {
+                      infowindow.setContent(locations[i][0]);
+                      infowindow.open(map, marker);
+                    }
+                  })(marker, i));
+
+                   google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                    return function() {
+                      infowindow.setContent(locations[i][0]);
+                      infowindow.open(map, marker);
+                    }
+                  })(marker, i));
+                  
+                 
+                }
+
+
+           
+                $('#store-map-nearest').slideDown().slow(5000);
+                return false;
+            });
+
+    });
+
+
+
+
+
+    
+  </script>

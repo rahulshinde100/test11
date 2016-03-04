@@ -1,0 +1,41 @@
+<thead>
+  <tr>
+    <th style="border-bottom: 2px solid black;">SKU</th>
+    <th style="border-bottom: 2px solid black;">Product</th>
+    <th style="border-bottom: 2px solid black;">Price</th>
+    <th style="border-bottom: 2px solid black;">Quantity</th>
+    <th style="border-bottom: 2px solid black;">Total</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <th colspan="5" style="text-align:left;">For Delivery</th>
+  </tr>
+  <% line_items.each do |item| %>
+    <%next if item.is_pick_at_store %>
+    <tr>
+      <td style="text-align:left; vertical-align:top;"><%= item.variant.try(:sku)%></td>
+      <td style="text-align:left; padding-left: 10px"><%= item.variant.try(:name)%></td>
+      <td style="text-align:right;"><%= number_to_currency item.price %></td>
+      <td style="text-align:center;"><%= item.quantity %></td>
+      <td style="text-align:right;"><%= number_to_currency item.amount %></td>
+    </tr>    
+  <% end %>
+  <tr style="padding-top: 10px">
+    <th colspan="5" style="text-align:left;">For Pick up</th>
+  </tr>
+  <% line_items.each do | item |%>
+    <%next unless item.is_pick_at_store %>
+    <tr>
+        <td style="text-align:left; vertical-align:top;"><%= item.variant.try(:sku)%></td>
+
+        <td style="text-align:left; padding-left: 10px"><%= item.variant.try(:name)%><br/>From 
+            <%store = item.product.seller.stock_locations.where(:is_warehouse => true).first%>
+            <%= store.try(:name) %>: <span style="color:#156CA2;"><%= raw store.address.gsub(/<br\/>/, ', ') if store.present?%></span>
+        </td>
+        <td style="text-align:right;"><%= number_to_currency item.price %></td>
+        <td style="text-align:center;"><%= item.quantity %></td>
+        <td style="text-align:right;"><%= number_to_currency item.amount %></td>
+    </tr>
+  <%end%>
+</tbody>

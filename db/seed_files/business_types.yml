@@ -1,0 +1,8 @@
+---
+#Bussiness Types
+-
+  business_type: "Price Based"
+  description: "Price Based"
+-
+  business_type: "Percentage Based"
+  description: "Percentage Based"

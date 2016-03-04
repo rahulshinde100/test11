@@ -1,0 +1,19 @@
+<%= render :partial => 'spree/admin/shared/configuration_menu' %>
+
+<% content_for :page_title do %>
+  <%= Spree.t(:new_taxonomy) %>
+<% end %>
+
+<% content_for :page_actions do %>
+  <li>
+    <%= button_link_to Spree.t(:back_to_taxonomies_list), spree.admin_taxonomies_path, :icon => 'icon-arrow-left' %>
+  </li>
+<% end %>
+
+<%= form_for [:admin, @taxonomy] do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f } %>
+    <div class="filter-actions actions twelve columns" data-hook="buttons">
+      <br /><br /><br /><br />
+      <%= button Spree.t(:create), 'icon-ok' %>
+    </div>
+<% end %>

@@ -1,0 +1,71 @@
+<% if products.count > 0%>
+    <div class="prod-cat-box"> 
+    <% if taxon.parent.present?%>
+      <hr class="legend-effect" />  
+      <div class="cat-name-home"><span><%= "#{taxon.parent.name}'s" unless taxon.parent.name.capitalize == "Categories".capitalize%>  <%= taxon.name %></span></div>  
+    <% else %>
+      <hr class="legend-effect" />  
+      <div class="cat-name-home"><span><%= taxon.name %></span></div>
+    <% end %> 
+    
+      <ul id="products" class="inline product-listing" data-hook>
+        <% products.in_groups_of(6, false).each do |product_row| %>
+          <li class="product-row">
+            <ul>
+              <% product_row.each do |product| %> 
+                <% 
+                current_var = product.variants_and_option_values(current_currency).any? ? product.variants.first : product
+                %>
+                <li id="product_<%= product.id %>" class="columns homethree alpha" data-hook="products_list_item" itemscope itemtype="http://schema.org/Product">                 
+
+                   <%if current_var.special_price.present? && product.is_new_arrival == true %>
+                    <% if current_var.warehouse_discount > 0 %>
+                    <div class="<%= product.is_warehouse ? 'warehouse_sale' : 'discounted_sale'%>">
+                         <div><%= current_var.warehouse_discount%>% OFF</div>
+                    </div>
+                    <% end %>
+                <% elsif current_var.special_price.present? %>
+                    <% if current_var.warehouse_discount > 0 %>
+                    <div class="<%= product.is_warehouse ? 'warehouse_sale' : 'discounted_sale'%>">
+                        <div><%= current_var.warehouse_discount%>% OFF</div>
+                    </div>
+                    <% end %>
+                  <% elsif product.is_new_arrival == true %>
+                    <div class="new_arrival_activated"></div>
+                <%end%>
+                  
+                  
+                  <div class="product-image">
+                    <%= link_to small_image(product, :itemprop => "image"), product_path(product), :itemprop => 'url' %>
+                  </div>
+                  <%= link_to truncate(product.name, :length => 40), product_path(product), :class => 'info', :itemprop => "name", :title => product.name %>
+                  <div class="clearboth"></div>
+                  <span class="retailer-name" itemprop="seller"><%= product.seller.try(:name)%></span>                  
+                  <div class="clearboth"></div>
+                  <%if current_var.special_price%>
+                    <span class="price discounted" itemprop="price"><%= number_to_currency(current_var.special_price) %></span>
+                    <span class="price selling avail-discount" itemprop="price"><%= current_var.price_in(current_currency).display_price %></span>
+                  <% else %>
+                    <span class="price selling only-selling" itemprop="price"><%= current_var.price_in(current_currency).display_price %></span>
+                 <%end%>
+                 <div class="clearboth"></div>
+                 <% unless product.in_stock?%>
+                    <span class="shipping-method-info" itemprop="shipping-method-info">Out of stock</span>
+                    <% else%>
+                    <span class="shipping-method-info <% if product.shipping_category.present? && product.shipping_category.is_same_day_shipping? || product.shipping_category.present? && product.shipping_category.is_99minute? %>message-red<%end%>" itemprop="shipping-method-info"><%= product.delivery_time%></span>
+                  <%end%>
+                  <div class="clearboth"></div>
+                </li>
+              <% end %>
+            </ul>
+          </li>
+        <% end %>
+        <% reset_cycle("classes") %>
+      </ul>
+    <%#if products.count > 12%>
+        <!-- <div class="more-products">
+          <a href="<%#=seo_url(taxon)%>?q=<%#= @seller.permalink%>">view more in <%= taxon.parent.name %>'s   <%#= taxon.name %> Department</a>
+        </div>  -->
+      <%# end %> 
+   </div>
+  <%end%>

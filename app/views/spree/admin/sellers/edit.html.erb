@@ -1,0 +1,21 @@
+<%= render :partial => 'spree/admin/shared/seller_sub_menu', :locals => { :seller => @seller, :title => "Edit" } %>
+<%= render :partial => 'spree/shared/error_messages', :locals => { :target => @seller } %>
+
+<%= form_for @seller, :url => admin_seller_path(@seller.id), :method => :put, :html => { :multipart => true } do |f| %>
+  <fieldset data-hook="edit_seller">
+  	  <legend align="center">Edit Seller</legend>
+      <%= render :partial => "form", :locals => {:f => f} %>
+      <div class="clear"></div>
+      <div class="form-buttons filter-actions actions" data-hook="buttons">
+        <%= button "Update", 'icon-ok' %>
+        <span class="or"><%= Spree.t(:or) %></span>
+        <%= link_to_with_icon 'icon-remove', Spree.t('actions.cancel'), admin_sellers_path, :class => 'button' %>
+      </div>
+  </fieldset>
+<%end%>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#seller-detail").css("background-color", "#169AAD");
+  })
+</script>

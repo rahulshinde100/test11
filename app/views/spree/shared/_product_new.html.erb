@@ -1,0 +1,121 @@
+<ul id="products" class="inline product-listing" data-hook>
+  <%products = @avoid_promo == true ? products : (["promo"] + products)%>
+  <% products.in_groups_of(5, false).each_with_index do |product_row, i1| %>
+    <li class="product-row">
+      <ul>
+        <% product_row.each_with_index do |product, i2| %>
+
+        <%if i1 == 0 && i2 == 0 && @avoid_promo != true%>
+          <li id="product_promotion" class="columns homethree alpha"><div class="product-image"><a href="<%=ambassadors_path%>"><%=image_tag("/assets/products/refer_a_friend.png", :alt => "Refer a Friend")%></a></div><a href="ambassadors" class="info" title="Refer a Friend">Give $10 - Get $5</a><div class="clearboth"></div><span class="retailer-name" itemprop="seller">Be a hero, send your friends and family free goods + free delivery.</span><div class="clearboth"></div><span class="shipping-method-info " itemprop="shipping-method-info"></span><div class="clearboth"></div></li>
+          <%next%>
+        <%end%>
+
+          <li id="product_<%= product.id %>" class="columns homethree alpha" data-hook="products_list_item" itemscope itemtype="http://schema.org/Product">
+            <% current_var = get_product(product, params[:sort]) %>
+            <%if current_var.special_price.present? && product.is_new_arrival == true %>
+              <% if current_var.warehouse_discount > 0 %>
+                <a href="<%= product_path(product)%>">
+                  <div class="<%= product.is_warehouse ? 'warehouse_sale' : 'discounted_sale'%>">
+                    <div><%= current_var.warehouse_discount%>% OFF</div>
+                  </div>
+                </a>
+              <% end %>
+            <% elsif current_var.special_price.present? %>
+              <% if current_var.warehouse_discount > 0 %>
+                <a href="<%= product_path(product)%>">
+                  <div class="<%= product.is_warehouse ? 'warehouse_sale' : 'discounted_sale'%>">
+                    <div><%= current_var.warehouse_discount%>% OFF</div>
+                  </div>
+                </a>
+              <% end %>
+            <% elsif product.is_new_arrival == true %>
+              <a href="<%= product_path(product)%>">
+                <div class="new_arrival_activated"></div>
+              </a>
+            <%end%>
+            <div class="product-image">
+              <% img = product.images.present? ? product.images.first.attachment.url : ""%>
+              <a href="<%= product_path(product) %>">
+                <img class="lazy" src="/assets/noimage/small.png" data-original="<%= img%>" width="133" height="200"/>
+              </a>
+            </div>
+            <a class="info" href="<%= product_path(product) %>">
+              <%= truncate(product.name, :length => 40)%>
+            </a>
+            <div class="clearboth"></div>
+            <span class="retailer-name" itemprop="seller">
+              <%= product.seller.try(:name)%>
+            </span>
+            <div class="clearboth"></div>
+            <%if current_var.special_price%>
+              <span class="price discounted" itemprop="price">
+                <%= number_to_currency(current_var.special_price) %>
+              </span>
+              <span class="price selling avail-discount" itemprop="price">
+                <%= current_var.price_in(current_currency).display_price %>
+              </span>
+            <% else %>
+              <span class="price selling only-selling" itemprop="price">
+                <%= current_var.price_in(current_currency).display_price %>
+              </span>
+            <%end%>
+            <div class="clearboth"></div>
+            <% unless product.in_stock?%>
+              <span class="shipping-method-info" itemprop="shipping-method-info">
+                Out of stock
+              </span>
+            <% else%>
+              <span class="shipping-method-info <%#=if product.shipping_category.present? && product.shipping_category.is_same_day_shipping? || product.shipping_category.present? && product.shipping_category.is_99minute?  %>message-red<%#end%>" itemprop="shipping-method-info"><%#= product.delivery_time%></span>
+            <%end%>
+            <div class="clearboth"></div>
+          </li>
+         <%end%>
+      </ul>
+    </li>
+  <% end %>
+  <div id="load_products_<%= @page + 1%>"></div>
+  <% reset_cycle("classes") %>
+</ul>
+
+<style type="text/css">
+/*  @media only screen and (min-width: 768px) and (max-width: 959px){
+    #content{
+      width: 600px;
+    }
+    ul#products li.product-row ul li{
+      margin-left: 68px !important;
+      margin-right: 0px !important;
+    }
+    ul#products li{
+      display: inline;
+    }
+  }
+
+  @media only screen and (min-width: 480px) and (max-width: 767px){
+    ul#products li{
+      display: inline;
+    }
+    ul#products li.product-row ul li{
+      margin-left: 47px !important;
+    }
+  }
+
+  @media only screen and (min-width: 958px) {
+    #content{
+      width: 784px;
+    }
+  }*/
+  #content{
+    width: 784px;
+  }
+  aside#sidebar{
+    width: 124px;
+  }
+</style>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("img").lazyload();
+  });
+</script>

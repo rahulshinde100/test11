@@ -1,0 +1,64 @@
+
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript">
+		
+
+	</script>
+</head>
+<body>
+		<% content_for :page_title do %>
+  <%= Spree.t(:all_reports) %>
+<% end %>
+
+<% content_for :page_actions do %>
+  <li>
+   <%= button "static chart reports" ,nil , nil ,  :id => 'static_chart_report' %>
+   <%= button "manually chart reports" ,nil ,nil,  :id => "manually_chart_report"%>
+   <%= button "static excel reports" ,nil ,nil,  :id => "static_excel_report"%>
+   <%= button "manually excel reports" ,nil ,nil,  :id => "manually_excel_report" %>
+	   	
+  </li>
+<% end %>
+<div id="static_chart">
+	<fieldset>
+		<div>
+			<%= button_link_to "current monthly cancel orders" , current_monthly_cancel_orders_admin_all_reports_path %>
+
+		</div>
+
+	</fieldset>
+</div>
+
+<div id="manually_chart">
+	<fieldset>
+		<div>
+			<h1>manually_chart_report </h1>
+		</div>
+		
+	</fieldset>
+</div>
+<div id="static_excel">
+	<fieldset>
+		<div>
+			<h1>static_excel_report </h1>
+		</div>
+		
+	</fieldset>
+</div>
+<div id="manually_excel">
+	<fieldset>
+		<div>
+			<h1>manually_excel_report </h1>
+		</div>
+		
+	</fieldset>
+</div>
+
+<%#= pie_chart @seller_wise_orders %>
+</body>
+</html>
+
+
+

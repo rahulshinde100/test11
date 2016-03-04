@@ -1,0 +1,76 @@
+<div data-hook="admin_product_form_fields">
+	<div class="left four columns alpha">
+    <label><%= Spree.t(:name)%> </label></br>
+    <%= product.name %> </br>
+
+    <label><%= Spree.t(:permalink)%> </label></br>
+    <%= product.permalink %> </br>
+    <label><%= Spree.t(:description)%>  </label></br>
+    <%= product.description %></br>
+  </div>
+  <div class="right four columns alpha">
+  	<label><%= Spree.t(:price)%>  </label></br>
+    <%= product.price %></br>
+    <div class="alpha two columns">
+    	<label><%= Spree.t(:cost_price)%>  </label></br>
+    	<%= product.cost_price %></br>
+    </div>
+    <div class="omega two columns">
+    	<label><%= Spree.t(:cost_currency)%>  </label></br>
+    	<%= product.cost_currency %></br>
+    </div>
+    <div class="clear"></div>
+    	<label><%= Spree.t(:available_on)%>  </label></br>
+    	<%= product.available_on %></br>
+
+    	<% unless product.has_variants? %>
+    		<label><%= Spree.t(:sku)%>  </label></br>
+    		<%= product.sku %></br>
+
+ 	     <ul id="shipping_specs">
+        <li id="shipping_specs_weight_field" class="field alpha two columns">
+          <label><%= Spree.t(:weight)%>  </label></br>
+    			<%= product.weight %></br>
+        </li>
+        <li id="shipping_specs_height_field" class="field omega two columns">
+      		<label><%= Spree.t(:height)%>  </label></br>
+    			<%= product.height %></br>
+        </li>
+        <li id="shipping_specs_width_field" class="field alpha two columns">
+          <label><%= Spree.t(:width)%>  </label></br>
+    			<%= product.width %></br>
+        </li>
+        <li id="shipping_specs_depth_field" class="field omega two columns">
+        	<label><%= Spree.t(:depth)%>  </label></br>
+    			<%= product.depth %></br>
+        </li>
+      </ul>
+    <% end %>
+
+    <label><%= Spree.t(:shipping_categories)%>  </label></br>
+   	<%= product.shipping_category.try(:name) %></br>
+
+    <label><%= Spree.t(:tax_category)%>  </label></br>
+   	<%= product.tax_category.try(:name) %></br>
+    <div data-hook="admin_product_form_meta" class="alpha omega twelve columns">
+      <h6><%= Spree.t(:metadata) %></h6>
+      <label><%= Spree.t(:meta_keywords)%>  </label></br>
+      <%= product.try(:meta_keywords) %>
+      <label><%= Spree.t(:meta_description)%>  </label></br>
+      <%= product.try(:meta_description) %>
+    </div>
+  </div>
+
+  <div class="twelve columns alpha omega">
+  	<label><%= Spree.t(:taxons)%>  </label></br>
+   	<%= product.taxons.blank? ? "No Taxons" : product.taxons.collect(&:name).join(",")%></br>
+
+  	<label><%= Spree.t(:option_types)%>  </label></br>
+   	<%= product.option_types.blank? ? "No Option Types" : product.option_types.collect(&:name).join(",")%></br>
+  </div>
+  <div class="clear"></div>
+</div>
+<%= render :partial => "product_variants", :locals => {:variants => product.variants}%>
+<%= render :partial => "product_properties", :locals => {:product_properties => product.product_properties}%>
+<%= render :partial => "product_stock_items", :locals => {:stock_items => product.stock_items}%>
+

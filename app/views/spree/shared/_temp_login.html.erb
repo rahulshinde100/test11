@@ -1,0 +1,11 @@
+<div class="header-signup">Login with email ID</div>
+<%= form_for Spree::User.new, :as => :spree_user, :url => spree.create_new_session_path do |f| %>
+  <div id="password-credentials">
+      <%= f.email_field :email, :class => 'title email', :tabindex => 1, :required => true , :placeholder=> "Email"%>
+      <%= f.password_field :password, :class => 'title', :tabindex => 2, :required => true , :placeholder=> "Password"%>
+  </div>
+  <div align="right"><%= f.submit Spree.t(:login), :class => 'button primary', :tabindex => 3 %></div>
+<% end %>
+<!-- <div data-hook="login_extras">
+  <%#= render :partial => "spree/shared/social" %>
+</div> -->

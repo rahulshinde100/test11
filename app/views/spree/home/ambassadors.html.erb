@@ -1,0 +1,101 @@
+<p>
+  <h1><%= @campaign_name %></h1>
+  <div><%= @campaign_description %></div>
+  <!-- <div>Be a hero, send your friends and family <b>free groceries + free delivery.</b> Get <b>$10</b> when they place their first order.</div> -->
+</p>
+
+<div id="ambassador-box">
+  <div class="share-header"><div>1</div><div>Share this link</div></div>
+  <div class="clearboth"></div>
+  <div>Invite your friends using this link. They get $10 and free delivery just for signing up.</div>
+  <div><input type="text" id="box" readonly value="<%=@url%>"  disabled /><button id="copy-button" data-clipboard-text="http://sh.l/23144234" title="Click to copy me.">Copy to Clipboard</button></div>
+  <div>
+    <%unless spree_current_user.nil?%>
+      <div id="fb-ambassador">
+        <!-- Facebook sharing button -->
+        <a href="#" onclick="return shareOnFb();"></a>
+      </div>
+      <div id="tw-ambassador">
+        <a href="#" onclick="window.open('https://twitter.com/share?via=shipdotli&text='+encodeURIComponent('Free Delivery & S$ 10 Off on first order, on Shipli')+'.&url='+encodeURIComponent('<%=@url%>'),'twitter-share-dialog','width=626,height=436');return false;"></a>
+      </div>
+      <div id="em-ambassador">
+        <a href="mailto:?subject=Get Free Delivery %26 S$ 10 Off on shipli !&body=Free Delivery %26 S$ 10 Off on first order. <%=@url%>%0D%0AShip.li delivers thousands of products top retailers in Singapore." title="Share by Email"></a>
+      </div>
+    <%else%>
+      <div id="fb-ambassador">
+        <!-- Facebook sharing button -->
+        <a href="#" onclick="return askForLogin();"></a>
+      </div>
+      <div id="tw-ambassador">
+        <a href="#" onclick="return askForLogin();"></a>
+      </div>
+      <div id="em-ambassador">
+        <a href="#" title="Share by Email" onclick="return askForLogin();"></a>
+      </div>
+    <%end%>
+  </div>
+  <div class="clearboth"></div>
+</div>
+
+<p>
+  <div id="reward-box">
+    <div class="share-header"><div>2</div><div>Get your rewards easy</div></div>
+    <div class="clearboth"></div>
+    <div>You'll automatically receive S$5 as referral rewards when one of your friends signup & places their first order in your account. You can receive up to S$50 !</div>
+  </div>
+</p>
+
+<p>
+  <div id="reward-box">
+    <div class="share-header"><div>3</div><div>Rewards Statement</div></div>
+    <div class="clearboth"></div>
+    <div>Balance:&nbsp;<strong><%=number_to_currency @balance_money%></strong></div>
+    <div>Friends Invited:&nbsp;<strong><%=@unique_referrals%></strong></div>
+    <%if @balance_money.to_i >= 10%>
+      <div>Use <strong><%= @ambassador_promo.code %></strong> to redeem your rewards <div style="font-size: 14px;"><a href="#" title="Check Promotion Terms & Conditions">(You can use S$10 with one order of S$100 & above, simply redeem <%=@ambassador_promo.code%> code at checkout.)</a></div></div>
+    <%end%>
+  </div>
+</p>
+
+<div id="fb-root"></div>
+<script type="text/javascript" src="/js/Zeroclipboard.js"></script>
+
+<script>
+// main.js
+var clip = new ZeroClipboard( document.getElementById("copy-button"), {
+moviePath: "/movie/ZeroClipboard.swf"
+} );
+
+clip.on( "load", function(client) {
+// alert( "movie is loaded" );
+
+client.on( "complete", function(client, args) {
+// `this` is the element that was clicked
+//this.style.display = "none";
+$(this).text("Copied");
+//alert("Copied text to clipboard: " + args.text );
+} );
+} );
+</script>
+<script src="https://connect.facebook.net/en_US/all.js"></script>
+
+<script type="text/javascript">
+        FB.init({
+          appId:'<%=FB_APP_KEY%>',
+          cookie:true,
+          status:true,
+          xfbml:true
+        });
+
+function shareOnFb(){
+        FB.ui({ method: 'feed',
+          link: '<%=@url%>',
+          picture: 'https://ship.li/assets/store/logo_blue.png',
+          description: 'Ship.li delivers thousands of products from top retailers in Singapore.',
+          name: 'Free Delivery & S$ 10 Off on first order'});
+}
+
+function askForLogin(){
+  $.fancybox('<p>You are not logged in, please <%= link_to "login", login_path(:return => "#{ambassadors_path}"), :style => "color: #FBA433" %> first.</p>');
+}
+</script>

@@ -1,0 +1,30 @@
+<a href="javascript:void(0);" onclick="closePopup('add_products_to_order');" class="close-link red">x</a>
+<br />
+<fieldset style="max-height:180px;">
+<legend align="center"><%= "Add Product To Order" %></legend>
+ <div class="omega six columns">
+     <input type="hidden" name="order_id" id="order_id" value="<%= @order.id %>" />
+     <label for="product">SKU : </label>
+     <input type="text" name="product_sku" id="product_sku" class="alpha six columns" />
+     <input type="hidden" name="product_variant_id" id="product_variant_id" />
+     <br />
+     <label for="quantity">Qty :</label>
+     <input type="number" min="1" name="quantity" id="qty_id" value=1 class="alpha six columns" />
+     <div class="alpha eight columns" style="margin-top:50px">
+         <%= button_link_to Spree.t(:Add), "javascript:void(0)", :disable_with => "Adding...", :icon => 'icon-ok', :onClick=>"addProducts('#{@order.id}');" %>
+         <span class="or"><%= Spree.t(:or) %></span>
+         <%= button_link_to Spree.t(:cancel), "javascript:void(0)", :icon => 'icon-remove', :onClick=>"closePopup('add_products_to_order');" %>
+     </div>
+ </div>
+</fieldset>
+
+<script type="text/javascript">
+  // Load products
+  $('#product_sku').autocomplete({
+    source: '/admin/orders/product_skus_json?order_id='+"<%= @order.id.to_s %>",
+    minLength: 1,
+    select: function (event, ui) {
+      $("#product_variant_id").val(ui.item.id);
+     }
+   });
+</script>

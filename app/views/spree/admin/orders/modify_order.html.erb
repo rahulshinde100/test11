@@ -1,0 +1,83 @@
+<%= render :partial => 'spree/admin/shared/order_tabs', :locals => { :current => 'Order Details' } %>
+<%= csrf_meta_tags %>
+<% content_for :page_actions do %>
+  <li>
+      <%= button_link_to Spree.t(:back_to_order_detail), admin_order_path(@order), :icon => 'icon-arrow-left' %>
+  </li>
+  <li>
+      <%= button_link_to Spree.t(:api_response), "javascript:void(0);", :icon => 'icon-search', :onclick=>"$('.api_response_popup').show();" %>
+  </li>
+<% end %>
+
+<% if !@order.nil? %>
+  <div data-hook="admin_order_edit_form">
+    <div id="order-form-wrapper">
+      <% if @order.line_items.empty? %>	
+      <div class="no-objects-found">
+           Your order is empty, please add products
+      </div>
+      <% end if !@order.nil? %>
+      <%if spree_current_user.has_spree_role? 'seller' %>
+        <% line_items = @order.seller_line_items(spree_current_user.seller)%>
+      <%else%>
+        <% line_items = @order.line_items%>
+      <%end%>
+      <%= render :partial => 'modify_shipping', :locals => { :line_items => line_items } %>
+    </div>
+    <br />
+    <%= button_link_to Spree.t(:add_product_to_order), "javascript:void(0)", :icon => 'icon-plus', :onclick=>"searchProducts('#{@order.id}');" %> &nbsp;
+    <span class="push_fba">
+      <% if @order.line_items.present? && !@order.fulflmnt_tracking_no.present? %>
+        <%= button_link_to Spree.t(:push_to_fba), validate_push_to_fba_admin_order_path(@order), :icon => 'icon-arrow-right', :confirm => "Are you sure, you want to Push the Order to FBA?" %>
+      <% end %>
+    </span>
+  </div>
+  <div class="api_response_popup">
+  	<a href="javascript:void(0);" onclick="$('.api_response_popup').hide();" class="close-link red">x</a><br />
+  	<h4>Marketplace API Response</h4><br />
+	<% @order.market_place_details.each do |k,v| %>
+	  <b><%= k %>:</b> <%= v %> <br /><br />
+	<% end if @order.market_place_details.present? %>  	
+  </div>	
+  <div class="black_overlay"></div>
+<% else %>
+ <div class="no-objects-found">
+    No Order Found
+ </div>
+<% end %>
+
+<% content_for :head do %>
+  <%= javascript_tag 'var expand_variants = true;' %>
+<% end %>
+
+<div id="add_products_to_order"></div>
+<div class="black_overlay"></div>
+
+<script type="text/javascript">
+  // Use: To add the products into order
+  function addProducts(ORDERID)
+  {
+    var VARIANTID = $("#product_variant_id").val();
+    var QTY = $("#qty_id").val();
+    if(VARIANTID == null || VARIANTID == "")
+    {
+      alert("Please Select Product SKU");
+    }
+    else if(QTY == "" || QTY == null || QTY <= 0 )
+    {
+      alert("Quantity should be a number greater than zero");
+    }
+    else
+    {
+      $.ajax({
+        url: "/admin/orders/add_product_skus?order_id="+ORDERID+"&variant_id="+VARIANTID+"&quantity="+QTY,
+        context: document.body
+        }).done(function(data) {
+          alert('Product added successfully !');
+          closePopup('add_products_to_order');
+          $("#order-form-wrapper").html(data);
+          $(".push_fba").html('<%= button_link_to Spree.t(:push_to_fba), validate_push_to_fba_admin_order_path(@order), :icon => 'icon-arrow-right', :confirm => "Are you sure, you want to Push the Order to FBA?" %>');
+      });
+    }
+  }
+</script>

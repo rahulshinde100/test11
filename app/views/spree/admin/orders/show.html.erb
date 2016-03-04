@@ -1,0 +1,78 @@
+<% if !@order.nil? && @order.is_cancel? %>
+<span><%= image_tag "cancelled.jpg", :alt =>"cancelled", :height => 70, :width => 120 %></span>
+<% end %>
+
+<%= render :partial => 'spree/admin/shared/order_tabs', :locals => { :current => 'Order Details' } %>
+
+<%= csrf_meta_tags %>
+
+<% content_for :page_title do %>
+  <i class="icon-arrow-right"></i> <%= Spree.t(:order_details) %>
+<% end %>
+
+<% content_for :page_actions do %>
+  <li>
+    <% if !@order.nil? && @order.products.present? && @order.fulflmnt_tracking_no.present? %>
+        <% if @order.fulflmnt_state.present? && @order.fulflmnt_state == 'complete' %>
+            <%= button_link_to Spree.t(:back_to_orders_list), complete_orders_admin_orders_path, :icon => 'icon-arrow-left' %>
+        <% elsif @order.fulflmnt_state.present? && @order.fulflmnt_state == 'cancel' %>
+            <%= button_link_to Spree.t(:back_to_orders_list), cancel_orders_admin_orders_path, :icon => 'icon-arrow-left' %>
+        <% else %>
+            <%= button_link_to Spree.t(:back_to_orders_list), admin_orders_path, :icon => 'icon-arrow-left' %>
+        <% end %>
+    <% elsif !@order.nil? && @order.products.present? && !@order.fulflmnt_tracking_no.present? %>
+       <%= button_link_to Spree.t(:modify_order), modify_order_admin_order_path(@order), :icon => 'icon-edit' %>
+       <%= button_link_to Spree.t(:back_to_orders_list), partial_orders_admin_orders_path, :icon => 'icon-arrow-left' %>
+    <% elsif !@order.nil? && !@order.products.present? && !@order.fulflmnt_tracking_no.present? %>
+       <%= button_link_to Spree.t(:modify_order), modify_order_admin_order_path(@order), :icon => 'icon-edit' %>
+       <%= button_link_to Spree.t(:back_to_orders_list), partial_orders_admin_orders_path, :icon => 'icon-arrow-left' %>
+    <% end %>
+  </li>
+<% end %>
+
+<% if @order.line_items.empty? %>
+  <div class="no-objects-found">
+    Your order is empty, please sync order details
+  </div>
+<% end if !@order.nil? %>
+<% if !@order.nil? %>
+	<div data-hook="admin_order_edit_form">
+	  <div id="order-form-wrapper">
+	  	<%if spree_current_user.has_spree_role? 'seller' %>
+	  		<% line_items = @order.seller_line_items(spree_current_user.seller)%>
+	  	<%else%>
+	  		<% line_items = @order.line_items%>
+	  	<%end%>
+	    <%= render :partial => 'shipping', :locals => { :line_items => line_items } %>
+	  <br />
+	  <br />
+	  <fieldset id='related_orders' data-hook>
+	    <legend align="center">Related Orders</legend>
+	       <% if @related_orders.present? %>
+	       <div class="no-objects-found">
+	        <% @related_orders.each do |rel_order| %>
+	            <% if @related_orders.count == 1 %>
+	                No Related Orders Found
+	            <% else %>
+	              <% if rel_order != @order %>
+	                <span class="related-order-button"><%=  button_link_to rel_order.market_place_order_no, admin_order_path(rel_order) %></span>
+	              <% end %>
+	            <% end %>
+	        <% end %>
+	         </div>
+	       <% else %>
+	             <div class="no-objects-found">
+	                No Related Orders Found
+	             </div>
+	       <% end %>
+	  </fieldset>
+	  </div>
+	</div>
+<% else %>
+ <div class="no-objects-found">
+    No Order Found
+ </div>
+<% end %>
+<% content_for :head do %>
+  <%= javascript_tag 'var expand_variants = true;' %>
+<% end %>

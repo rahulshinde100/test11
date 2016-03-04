@@ -1,0 +1,8 @@
+<div class="field alpha omega eight columns">
+  <label>Choose MarketPlace<%#= Spree.t('seller_rule.choose_sellers') %></label><br>
+  <input type='hidden' name='<%= param_prefix %>[market_place_ids_string]' class='rule_attr market_place_picker fullwidth ' value='<%= promotion_rule.market_place_ids.join(",") %>'>
+</div>
+
+<%= javascript_tag do %>
+    $('.market_place_picker').marketplaceAutocomplete();
+<% end %>

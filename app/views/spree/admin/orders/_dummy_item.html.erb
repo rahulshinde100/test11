@@ -1,0 +1,16 @@
+<tr style="margin-bottom: 10px; height: 45px;" class="sku">
+   <td><%= text_field_tag 'sku[]'%></td><td style="width: 10px;"></td>
+  <td><%= text_field_tag 'quantity[]'%></td><td style="width: 10px;"></td>
+
+  <td> <%= text_field_tag 'item_price[]'%></td><td style="width: 10px;"></td>
+  <td> <%= text_field_tag 'paid_price[]'%></td><td style="width: 10px;"></td>
+<td><a  class = 'icon-trash' confirm = "Are you sure, you want to delete?"></a></td>
+</tr>
+<!--<tr><td colspan="4" height="10px;"></td></tr>-->
+
+<script>
+    $(".icon-trash").click(function(){
+        $(this).closest('tr').remove();
+    });
+//    $(this).parent('.multi-field').remove();
+</script>

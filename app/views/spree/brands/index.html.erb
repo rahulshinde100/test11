@@ -1,0 +1,52 @@
+<div class="brand-header">
+  <h5>All Brands / </h5>
+  <%= brand_index(@brands) %>
+</div>
+
+<ul class="brands-navigation">
+  <% @brands.map{|b| b.name[0].upcase}.uniq.each do |b|%>
+    <li>
+      <h2 id="<%=b%>" name="<%=b%>"><%= b%></h2>
+      <ul class="inline">
+        <%brands = @seller.present? ? Spree::Brand.where("id IN (?) and name like ? ", @brands.map(&:id), "#{b}%") : @brands.where("name like ?", "#{b}%") %>
+        <% brands.each do |brand|%>
+          <li>
+            <%= link_to brand.name, brand_path(brand)%>
+
+          </li>
+        <%end%>
+      </ul>
+    </li>
+  <%end%>
+</ul>
+
+
+<% @brands.map{|b| b.name[0].upcase}.uniq.each do |b|%>
+<script>
+
+    $('#<%=b%>-navigator').click(function(){ 
+        ScrollToTop('#<%=b%>', function() { $('#<%=b%>').focus(); } , 108); 
+    });
+
+    var brand_nav_available = 0;
+    $('.brands-list li').each(function(){
+            brand_nav_available +=1;
+    });
+    
+    var list_width = $('.brands-list').width() / brand_nav_available;    
+
+    $('.brands-list li').each(function(){
+            $(this).width(list_width - 1);
+    });
+</script>
+<%end%>
+
+<%if @seller.present?%>
+    <style type="text/css">
+      @media only screen and (min-width: 958px) {
+        #content {
+          width: 784px !important;
+      }
+    }
+    </style>
+<%end%>

@@ -1,0 +1,9 @@
+<div id = "preMappedMarketPlaces">
+  <br />
+  <label for="market_place">Mapped Market Places</label><br />
+  <% @selected_mp_ids.each do |tmp| %>
+    <%= button_link_to Spree.t(tmp.market_place.name), "javascript:void(0)", :id =>'market_place_id', :onclick=>"unmappedMarketPlace('#{tmp.seller.id}', '#{tmp.market_place.id}', '#{tmp.product.id}');", :style => "height: 100%; margin-top: 3px" %>
+  <%#= button_link_to Spree.t(tmp.market_place.name), "javascript:void(0)", :id =>'market_place_id', :style => "height: 100%; margin-top: 3px" %>
+  <% end %>
+  <%= "No Market Place Mapped" if @selected_mp_ids.blank? %>
+</div>

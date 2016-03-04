@@ -1,0 +1,285 @@
+#map-box{
+    visibility: hidden;
+   
+}
+#map{
+     border: 1px solid #dedede;
+    border-left: none;
+    z-index: 1000;
+}
+#store-locator-container
+{
+	float: left;
+	margin-left: 20px;
+	width: 875px;
+	font: normal 12px Arial, Helvetica, sans-serif;
+	color: #333;
+}
+
+#page-header
+{
+	float: left;
+}
+
+#form-container
+{
+	clear: left;
+	float: left;
+	margin-top: 15px;
+	width: 100%;
+}
+
+#map-container
+{
+	clear: left;
+	float: left;
+	
+	height: 530px;
+	width: 1033px;
+}
+
+#map-container a
+{
+	color: #f52f71;
+	text-decoration: none;
+}
+
+#map-container a:hover, #map-container a:active
+{
+	text-decoration: underline;
+}
+
+#map-container .custom-marker
+{
+	width: 32px;
+	height: 37px;
+	color: #fff;
+	background: url(/assets/store/custom-marker.png) no-repeat;
+    padding: 3px;
+    cursor: pointer;
+}
+
+
+#loc-list
+{
+	float: left; 
+	width: 224px;
+	height: 530px;
+	overflow-y: auto;
+        overflow-x: hidden;
+        border: 1px solid #dedede;
+}
+
+#loc-list ul
+{
+	display: block;
+	clear: left;
+	float: left;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+#loc-list .list-label
+{
+   
+    color: #FFFFFF;
+    float: left;
+    font-weight: bold;
+    height: 26px;
+    margin: 0;
+    padding: 0 4px;
+    text-align: center;
+    width: 11px;
+        
+}
+
+#loc-list .store-pin{
+    background: url("/assets/store/pin.png") no-repeat scroll 0 0 transparent;
+    color: #FFFFFF;
+    float: left;
+    font-weight: bold;
+    height: 51px;
+    margin: 6px -27px 0 0;
+    padding: 0 4px;
+    text-align: center;
+    width: 38px;
+}
+#loc-list .list-details
+{
+	float: left;
+	margin-left: 6px;
+	width: 160px;
+        font-size: 14px;
+}
+
+#loc-list .list-content
+{
+	padding: 6px;
+}
+
+#loc-list .loc-dist
+{
+	font-weight: bold;
+	font-style: italic;
+	color: #8e8e8e;
+}
+
+#loc-list li
+{
+	display: block;
+	clear: left;
+	float: left;
+	margin: 6px 5px;
+	cursor: pointer;
+	width: 198px;
+	border: 1px solid #F8F8F9; /* Adding this to prevent moving li elements when adding the list-focus class*/
+}
+
+#loc-list .list-focus
+{
+	border: 1px solid #F8F8F9;
+	/*-moz-box-shadow: 0 0 8px rgba(245,47,113,0.7);
+	-webkit-box-shadow: 0 0 8px rgba(245,47,113,0.7);
+	box-shadow: 0 0 8px rgba(245,47,113,0.7);*/
+	transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+}
+#loc-list .list-focus div{/*font-weight: bold;*/}
+
+#map-container .loc-name
+{
+	color: #f52f71;
+	font-weight: bold;
+}
+
+#search-form
+{
+	clear: left;
+	float: left;
+	height: 60px;
+}
+
+#form-input
+{
+	float: left;
+	margin-top: 3px;
+}
+
+#form-input label
+{
+	font-weight: bold;
+}
+
+#address
+{
+	margin: 0 0 0 10px;
+}
+
+#submit-btn
+{
+	float: left;
+	cursor: pointer;
+	margin-left: 10px;
+}
+
+#loading-map
+{
+	float: left;
+	margin: 4px 0 0 10px;
+	width: 16px;
+	height: 16px;
+	background: url(/assets/store/ajax-loader.gif) no-repeat;
+}
+
+#map
+{
+	float: left; 
+	width: 70%; 
+	height: 530px; 
+}
+
+/* Modal window */
+
+#overlay
+{
+     position: fixed;
+     left: 0px;
+     top: 0px;
+     width:100%;
+     height:100%;
+     z-index: 10000;
+     background: url(/assets/store/overlay-bg.png) repeat;
+}
+
+#modal-window
+{
+	position: absolute;
+	left: 50%;
+    margin-left: -460px; /* width divided by 2 */
+    margin-top: 12px;
+    width: 71.5%;
+	
+	z-index: 10010;
+	background: #fff;	
+	box-shadow: 0 0 10px #656565;
+}
+
+#modal-content
+{
+	float: left;
+	 /* there's already a margin on the top of the map-container div */
+}
+
+#close-icon
+{
+	position: absolute;
+	top: -6px;
+	right: -6px;
+	width: 18px;
+	height: 18px;
+	cursor: pointer;
+	background: #2c2c2c url(/assets/store/close-icon.png) 3px 3px no-repeat;
+	border: 1px solid #000;
+	border-radius: 3px;
+	box-shadow: 0 0 3px #656565;
+        z-index: 99999;
+        display: none;
+}
+
+#close-icon-div{
+    position: relative;
+	
+    top: -13px;
+	
+    right: 70px;
+	width: 18px;
+	height: 18px;
+	cursor: pointer;
+	
+    /* background: #2c2c2c url(../images/close-icon.png) 3px 3px no-repeat; */
+	border: 1px solid #f52f71;
+	border-radius: 3px;
+	font-size: 16px;
+        color: #f52f71;
+        font-weight: bold;
+        background: #fff;
+    /* right: 0px; */
+    float: right;
+    z-index: 1001;
+}
+
+
+/* The following is for the geocode page and not the store locator */
+
+#geocode-result
+{
+	clear: left;
+	float: left;
+	margin-top: 30px;
+	width: 100%;
+}
+.btn-gmap-choose-store{
+    height: 33px;
+    margin-top: 4px;
+    padding: 6px;
+}

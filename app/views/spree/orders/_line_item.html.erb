@@ -1,0 +1,48 @@
+<tr class="<%= cycle('', 'alt') %> line-item">
+  <td class="cart-item-image" data-hook="cart_item_image">
+    <% if variant.images.length == 0 %>
+      <%= link_to (mini_image(variant.product) rescue "Image"),  product_path(variant.product) %>
+    <% else %>
+      <%= link_to image_tag(variant.images.first.attachment.url(:mini)),  product_path(variant.product) %>
+    <% end %>
+  </td>
+  <td class="cart-item-description" data-hook="cart_item_description">
+    <h4><%= link_to variant.product.name, product_path(variant.product) %></h4>
+    <%= variant.options_text %>
+    <% if @order.insufficient_stock_lines.include? line_item %>
+      <span class="out-of-stock">
+        <%= Spree.t(:out_of_stock) %>&nbsp;&nbsp;<br />
+      </span>
+    <% end %>
+    <%= line_item_description(variant) %>
+  </td>
+  <td class="cart-item-price" data-hook="cart_item_price">
+    <%= line_item.single_money.to_html %>
+  </td>
+  <td class="cart-item-quantity" data-hook="cart_item_quantity">
+    <div class="subtract" id="substract_<%=variant.product.id%>"><i class="icon-minus"></i></div>
+    <div>
+      <%= item_form.text_field :quantity, :min => 0, :class => "line_item_quantity delete_line_items_#{variant.id}", :size => 5 , :readOnly => true %>
+      <%= hidden_field_tag :variant_quantity, (item_form.object.variant.stock_on_hand > 10 ? 9 : (item_form.object.variant.stock_on_hand-1))%>
+      <%= item_form.hidden_field :is_pick_at_store, :id => "is_pick_at_store_#{variant.id}" %>
+      <%= item_form.hidden_field :stock_location_id, :id => "stock_location_#{variant.id}" %>
+    </div>
+    <div class="add"  id="add_<%=variant.product.id%>"><i class="icon-plus"></i></div>
+  </td>
+  <td class="cart-item-total" data-hook="cart_item_total" colspan="2">
+    <%= line_item.display_amount.to_html unless line_item.quantity.nil? %>
+  </td>
+  <td class="cart-item-delete" data-hook="cart_item_delete">
+    
+  </td>
+</tr>
+
+<tr class="product-actions">
+    <td colspan="3"></td>
+    <td></td>
+    <td class="move-action">
+      <%= link_to image_tag('store/move-icon.png', :size => '28x28'),  '#', :class => 'move change_store', :title=> "Move to Picking Bag", :id => "#{variant.id}" if @order.pickup_items.present?%>
+      <%= hidden_field_tag "product_#{variant.id}", variant.product.permalink%>
+    </td>
+    <td><%= link_to image_tag('store/delete-icon.png', :size => '28x28'),  '#', :class => 'delete-item', :title=> "Remove from Cart", :id => "delete_line_items_#{variant.id}" %></td>
+</tr>

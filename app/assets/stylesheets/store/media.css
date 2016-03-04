@@ -1,0 +1,134 @@
+html,body{
+    width: 100%;
+}
+.container{
+    width: 960px!important;
+}
+@media only screen and (min-width: 0px) and (max-width: 959px){
+    #singapore-flag{display: none;}
+    .container .column, .container .columns{}
+    .container div[data-hook="product_right_part"] .columns, .container div[data-hook="product_right_part"].columns{margin-left: 10px!important;}
+    h1.prod-price, p.upai-seller{margin-left: 10px;}
+    body ul#products .product-image a img{height: auto!important;}
+    html, body{
+        width: 980px!important;
+    }
+    body footer#footer{
+        max-width: 100%!important;
+        min-width: 100%!important;
+    }
+    #main_nav_bar_container nav #main-nav-bar{
+        margin-left: 0px!important;
+    }
+    .container{
+        margin: 0!important;
+        padding-left: 0px!important;
+    }
+    body #main-nav-bar, body .product-order-form, body .product-description, body #sidebar nav#taxonomies{
+        display: block!important;
+    }
+    .open-menu, .close-menu{
+        display: none!important;
+    }
+    body ul#products .product-image a img{
+        border-radius: 0px!important;
+        -moz-border-radius: 0px!important;
+        -webkit-border-radius: 0px!important;
+    }
+    body ul#products li.product-row{
+        width: 100%!important;
+    }
+    body footer#footer div.four.columns{
+        width: 220px!important; 
+        text-align: left!important;
+    }
+    body footer#footer, body footer#footer a{
+        font-size: 14px!important;
+    }
+    .container .four.columns{
+        width: 220px!important;
+        margin-left: 10px!important;
+    }
+    nav#taxonomies{
+        text-align: left;
+    }
+    .container .homethree.columns{
+        width: 130px!important;
+    }
+    ul#products li .product-image{
+        min-height: auto!important;
+    }
+    body ul#products [data-hook="products_list_item"]{
+        width: 130px!important;
+    }
+
+    #wrapper{
+        padding-left: 20px!important;
+        padding-right: 0px!important;
+    }
+    .container .sixteen.columns{
+        width: 940px!important;
+    }
+    .container .six.columns{
+        width: 340px!important;
+    }
+    #header-container{
+        margin-top: 40px!important;
+    }
+    .container .one.column, .container .one.columns, .container .two.columns, .container .three.columns, .container .four.columns, .container .five.columns, .container .six.columns, .container .seven.columns, .container .eight.columns, .container .nine.columns, .container .ten.columns, .container .eleven.columns, .container .twelve.columns, .container .thirteen.columns, .container .fourteen.columns, .container .fifteen.columns, .container .sixteen.columns, .container .one-third.column, .container .two-thirds.column{
+        width: 700px;
+    }
+    #content{
+        text-align: inherit;
+    }
+    #styled-white-strip .container{
+        width: 100%!important;
+    }
+    #update-cart #subtotal, #update-cart .links{
+        float: right;
+        text-align: right;
+        width: 100%;
+    }
+    td[data-hook="cart_item_image"].cart-item-image{
+        width: 50px!important;
+    }
+    .cart-item-description-header-ok{
+        width: 579px!important;
+    }
+    table#cart-detail tbody tr td[data-hook="cart_item_description"], table#cart-detail tbody tr td[data-hook="order_item_description"], table[data-hook="order_details"] tbody tr td[data-hook="cart_item_description"], table[data-hook="order_details"] tbody tr td[data-hook="order_item_description"]{
+        width: auto;
+    }
+    table#cart-detail tbody tr td[data-hook="cart_item_image"] img, table#cart-detail tbody tr td[data-hook="order_item_image"] img, table[data-hook="order_details"] tbody tr td[data-hook="cart_item_image"] img, table[data-hook="order_details"] tbody tr td[data-hook="order_item_image"] img{
+        width: 60px;
+    }
+    table#cart-detail tbody tr td[data-hook="cart_item_description"], table#cart-detail tbody tr td[data-hook="order_item_description"], table[data-hook="order_details"] tbody tr td[data-hook="cart_item_description"], table[data-hook="order_details"] tbody tr td[data-hook="order_item_description"]{
+        line-height: inherit;
+    }
+    .subheader-wrapper div[data-hook="checkout_progress"]{
+        margin-left:  133px!important;
+    }
+    table#cart-detail tbody tr td[data-hook="cart_item_description"], table#cart-detail tbody tr td[data-hook="order_item_description"], table[data-hook="order_details"] tbody tr td[data-hook="cart_item_description"], table[data-hook="order_details"] tbody tr td[data-hook="order_item_description"]{
+        text-indent: 1px!important;
+    }
+    table#cart-detail tbody tr td[data-hook="cart_item_description"] h4, table#cart-detail tbody tr td[data-hook="order_item_description"] h4, table[data-hook="order_details"] tbody tr td[data-hook="cart_item_description"] h4, table[data-hook="order_details"] tbody tr td[data-hook="order_item_description"] h4{
+        display: block;
+    }
+    table#cart-detail tbody tr td[data-hook="cart_item_description"], table#cart-detail tbody tr td[data-hook="order_item_description"], table[data-hook="order_details"] tbody tr td[data-hook="cart_item_description"], table[data-hook="order_details"] tbody tr td[data-hook="order_item_description"]{
+        padding: 5px 10px!important;
+    }
+    .progress-steps li{width: auto;}
+    .progress-steps li span{display: inline; padding: 0px;}   
+    #footer .four.columns{
+    }
+}
+
+
+@media only screen and (max-width: 479px) {
+  /*table.order-summary th,table.order-summary, table.order-summary tbody, table.order-summary td{display: table-cell; width: 141px; }
+  table.order-summary{float: left;}*/
+}
+@media only screen and (max-width: 767px) {
+    nav#top-nav-bar ul li{
+        display: inline;
+    }    
+}

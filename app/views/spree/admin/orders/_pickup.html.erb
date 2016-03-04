@@ -1,0 +1,50 @@
+<%unless @order.pickup_items.blank?%>
+  <fieldset data-hook="" id="pickup_at_store">
+    <legend align="center">Pick Up</legend>
+    <div data-hook="shipping_method" class="inner" style="clear: both">
+      <div id="methods">
+        <div class="order_picking">
+          <table data-hook="stock-contents" class="stock-contents">
+            <colgroup>
+              <col style="width: 10%;" />
+              <col style="width: 50%;" />
+              <col style="width: 20%;" />
+              <col style="width: 10%;" />
+              <col style="width: 20%;" />
+              <col style="width: 20%;" />
+            </colgroup>
+            <thead>
+              <tr><th></th>
+                <th style="text-align: left;">Item</th>
+                <th><%=Spree.t(:customer_name)%></th>
+                <th>quantity</th>
+                <th>price</th>
+                <th>Pickup</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% line_items.each do |item| %>
+              <%next unless item.is_pick_at_store%>
+              <%next if item.variant.nil?%>
+                <tr class="stock-item">
+                  <td class="item-image"><%= (mini_image(item.variant) rescue "") %></td>
+                  <td class="item-name"><%=item.variant.name %> <%= ": #{item.variant.option_values.collect(&:name).join(",")}" unless item.variant.option_values.blank? %></td>
+                  <td class="item-name"><%= item.order.ship_address.try(:full_name) %></td>
+                  <td class="item-qty"><%= item.quantity %></td>
+                  <%if spree_current_user.has_spree_role? 'admin' %>
+                    <td class="item-price"><%= number_to_currency item.price %></td>
+                  <%else%>
+                    <td class="item-price"><%= number_to_currency item.rcp.to_f %></td>
+                  <%end%>
+                  <td class="item-status align-center" id="<%=item.id%>">
+                    <%= render :partial => "pick_up", :locals => {:line_item => item} %>
+                  </td>
+                </tr>
+              <%end%>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+<%end%>

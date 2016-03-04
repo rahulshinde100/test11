@@ -1,0 +1,59 @@
+<p>
+  Dear Team,
+    <br />
+    Please find below the report on recently completed promotion with inflated stock count for at least one or more products.
+    Below table indicates the total units to be ordered from the source. Also, note that the quantity for these products is updated on the marketplace based on the setting selected when the inflation request was submitted.
+    <br />
+    PFA...
+</p>  
+<br /><br />
+<% mps = Spree::MarketPlace.all %>
+
+<table cellpadding="1" cellspacing="1" border="black">
+  <thead>
+    <tr>
+      <th>Seller Name</th>
+      <th>Product Name</th>
+      <th>SKU</th>
+      <th>Total Carts</th>
+      <th>Total Units Sold</th>
+      <th>Total Units to Order</th>
+      <th colspan="<%= mps.count %>">Stock on Marketplace</th>
+    </tr>
+    <tr>
+      <td colspan="6"></td>	
+      <% mps.each do |mp| %>
+        <th><%= mp.name %></th>
+      <% end %>
+    </tr>
+  </thead>	
+  <tbody>
+  	<% @data.each do |data| %>
+  	  <% data.each do |v_id, ord_qty| %>
+  	    <% variant = Spree::Variant.includes(:stock_products=>:sellers_market_places_product).find(v_id) %>
+        <tr>
+          <td><%= variant.product.seller.name %></td>	 
+          <td><%= variant.name %></td>
+          <td><%= variant.sku %></td>
+          <td><%= ord_qty[2] %></td>
+          <td><%= ord_qty[0] %></td>
+          <td><%= ord_qty[1] %></td>
+          <% mps.each do |mp| %>
+            <% sp = variant.stock_products.includes("sellers_market_places_product").where("spree_sellers_market_places_products.market_place_id=?", mp.id).try(:first) %>
+            <td><%= sp.present? ? sp.count_on_hand : "-" %></td>
+          <% end %>
+        </tr>
+      <% end %>  
+    <% end %>  
+  </tbody>
+</table>
+<br /><br />
+<p>
+  For any queries, help@anchanto.com.
+<br /><br />
+  Regards,
+<br />
+  Team CM @ Anchanto
+</p>  
+
+

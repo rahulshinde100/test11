@@ -1,0 +1,33 @@
+<%= render :partial => 'spree/admin/shared/order_sub_menu' %>
+<div style="float:right">
+  <p><%= link_to 'Success', oms_success_admin_orders_path, :class => 'button' %> | <label>Pending</label></p>
+</div>
+<% unless @oms_order_logs.blank? %>
+  <table id="oms_order_status" class="display" >
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Order No</th>
+        <th>OMS Reference No</th>
+        <th>OMS API Response</th>
+        <th>OMS API Message</th>
+        <th>Placed to OMS</th>
+     </tr>
+    </thead>
+    <tbody>
+      <% @oms_order_logs.each do |order| %>
+      <tr>
+        <td><%= order.id%></td>
+        <td><%= order.order.number%> </td>
+        <td><%= order.oms_reference_number%></td>
+        <td><%= order.oms_api_responce%></td>
+        <td><%= order.oms_api_message%></td>
+        <td><%= link_to "Placed to OMS", place_order_to_oms_admin_order_path(order.order_id), :method => :post %></td>
+      </tr>
+     <% end %>
+    </tbody>
+  </table>
+  <%= paginate @oms_order_logs %>
+<%else%>
+  <h3><%= Spree.t(:no_orders)%></h3>
+<%end%>

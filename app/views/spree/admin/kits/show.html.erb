@@ -1,0 +1,92 @@
+<% content_for :page_title do %>
+  <%= "Kit ''#{@kit.name}'' Details" %>
+<% end %>
+
+<% content_for :page_actions do %>
+  <%= button_link_to Spree.t(:back), admin_kits_url, :icon => 'icon-arrow-left' %>
+  <%= button_link_to Spree.t(:add_product_to_kit), "javascript:void(0)", :icon => 'icon-plus', :id =>'kit_id', :onclick=>"showProducts('#{@kit.id}', '#{@kit.seller.id}');" %>
+  <%= button_link_to "Edit Kit", edit_admin_kit_path(@kit), :icon => 'icon-edit' %>
+  <%= button_link_to "Edit Product", edit_admin_product_path(@kit.product), :icon => 'icon-edit' %>
+<% end %>
+
+<h5><%= @kit.name %></h5>
+<br />
+<div class="alpha four columns">
+    <label for="Seller">Seller Name :</label>
+    <input type="text" disabled="disabled" class="fullwidth" value="<%=@kit.seller.name %>" />
+</div>
+<div class="omega four columns">
+    <label for="MarketPlace">MarketPlaces :</label>
+    <input type="text" disabled="disabled" class="fullwidth" value="<%=@kit.product.try(:market_places).present? ? @kit.product.try(:market_places).pluck(:name).join(', ') : "-" %>" />
+</div>
+<div class="omega four columns">
+    <label for="Kit Name">Kit Name :</label>
+    <input type="text" disabled="disabled" class="fullwidth" value="<%=@kit.name %>" />
+</div>
+<div class="omega four columns">
+   <label for="Kit SKU">Kit SKU :</label><br />
+   <input type="text" disabled="disabled" class="fullwidth category-show" value="<%=@kit.sku %>" />
+</div><br />
+<div class="alpha sixteen columns">
+   <label for="Kit Description">Description :</label><br />
+   <div class="discription-show fullwidth">
+   	  <%= @kit.description.html_safe %>
+   </div>
+</div>
+<div class="alpha sixteen columns">
+    <label for="Taxon">Category :</label><br />
+    <% if @kit.product.taxons.present? && @kit.product.taxons.first.parent.present? && @kit.product.taxons.first.parent.parent.present? && @kit.product.taxons.first.parent.parent.parent.present? %>
+         <input type="text" disabled="disabled" class="fullwidth" value="<%=@kit.product.taxons.first.parent.parent.parent.name+" -> "+@kit.product.taxons.first.parent.parent.name+" -> "+@kit.product.taxons.first.parent.name+" -> "+@kit.product.taxons.first.name %>" />
+    <% elsif @kit.product.taxons.present? && @kit.product.taxons.first.parent.present? && @kit.product.taxons.first.parent.parent.present? %>
+         <input type="text" disabled="disabled" class="fullwidth" value="<%=@kit.product.taxons.first.parent.parent.name+" -> "+@kit.product.taxons.first.parent.name+" -> "+@kit.product.taxons.first.name %>" />
+    <% elsif @kit.product.taxons.present? && @kit.product.taxons.first.parent.present? %>
+         <input type="text" disabled="disabled" class="fullwidth" value="<%=@kit.product.taxons.first.parent.name+" -> "+@kit.product.taxons.first.name %>" />
+    <% end %>
+</div>
+<div class="alpha four columns">
+    <label for="Stock Option">Stock Option :</label>
+    <input type="text" disabled="disabled" class="fullwidth" value="<%=@kit.is_common_stock? ? "Common Stock" : "Seperate Stock" %>" />
+</div>
+
+<div class="omega four columns">
+    <label for="Qty">Quantity :</label>
+    <input type="text" disabled="disabled" class="fullwidth" value="<%=@kit.quantity.present? ? @kit.quantity : "-" %>" />
+</div>
+
+<div class="omega four columns">
+   <label for="Kit Active">Kit Active :</label>
+   <input type="text" disabled="disabled" class="fullwidth" value="<%=@kit.is_active %>" />
+</div>
+
+<div class="omega four columns">
+    <label for="Cost Currency">Cost Currency :</label>
+    <input type="text" disabled="disabled" class="fullwidth category-show" value="<%=@kit.product.cost_currency %>" />
+</div>
+
+<div class="alpha four columns">
+    <label for="Cost Price">Cost Price :</label>
+    <input type="text" disabled="disabled" class="fullwidth" value="<%=@kit.product.cost_price.present? ? @kit.product.cost_price : "-" %>" />
+</div>
+
+<div class="omega four columns">
+    <label for="Price">Retail Price :</label>
+    <input type="text" disabled="disabled" class="fullwidth" value="<%=@kit.product.price %>" />
+</div>
+
+<div class="omega four columns">
+    <label for="Selling Price">Selling Price :</label>
+    <input type="text" disabled="disabled" class="fullwidth" value="<%=@kit.product.selling_price.present? ? @kit.product.selling_price : "-" %>" />
+</div>
+
+<div class="omega four columns">
+    <label for="Special Price">Special Price :</label>
+    <input type="text" disabled="disabled" class="fullwidth category-show" value="<%=@kit.product.special_price.present? ? @kit.product.special_price : "-" %>" />
+</div>
+
+<div id="add_products_to_kit"></div>
+<div class="black_overlay"></div>
+
+<div id="index">
+<%= render :partial => 'spree/admin/kit_products/index', :locals => {:kit_products => @kit.kit_products} %>
+</div>
+

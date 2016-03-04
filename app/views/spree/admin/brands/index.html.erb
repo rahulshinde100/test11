@@ -1,0 +1,85 @@
+<%= render :partial => 'spree/admin/shared/configuration_menu' %>
+<br class='clear' />
+<div class='toolbar'>
+  <ul class='actions header-action-links inline-menu'>
+    <li style="float:left; margin-right:5px;">
+      <%#= form_tag upload_brands_admin_brands_path,  :multipart => true, :method => :post do %>
+        <%#= file_field_tag :attachment, :style => 'float:left;margin-right:10px;', :required => true%>
+        <!--<input type="submit" id="sub" value="Upload Brand" class="button"/>-->
+      <%#end%>
+    </li>
+    <li style="display:block;float:left; margin-right:5px;">
+      <%#= button_link_to Spree.t("export_brands"), admin_brands_path(:format => :xls), :icon => ''  %>
+    </li>
+    <li style="display:block;float:right;">
+      <%= button_link_to Spree.t("new_brand"), new_object_url, :icon => 'icon-plus' %>
+    </li>
+  </ul>
+  <br class='clear' />
+  <fieldset>
+    <legend align="center">BRAND :: SEARCH</legend>
+      <%= search_form_for [:admin, @search] do |f| %>
+        <%- locals = {:f => f} %>
+        <div data-hook="admin_products_index_search">
+          <div class="alpha twelve columns">
+              <%= f.label :name_cont, Spree.t(:name) %>
+              <%= f.text_field :name_cont, :class => 'fullwidth' %>
+          </div>
+        </div>
+        <div class="clear"></div>
+
+        <div class="form-buttons actions filter-actions" data-hook="admin_products_index_search_buttons">
+          <%= button Spree.t(:search), 'icon-search' %>
+        </div>
+      <% end %>
+  </fieldset>
+</div>
+<%if @brands.any?%>
+ <div class="custom_responsive CSSTableGenerator">
+  <table class="index">
+    <thead>
+      <tr data-hook="admin_relation_types_index_headers">
+        <th><%= Spree.t("brand") %></th>
+        <th><%= Spree.t("description") %></th>
+        <th><%= Spree.t("logo") %></th>
+        <th ><%= Spree.t("banner") %></th>
+        <th data-hook="admin_relation_types_index_header_actions">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @brands.each do |brand| %>
+        <tr id="<%= dom_id brand %>" data-hook="admin_relation_types_index_rows">
+          <td><%= brand.name %></td>
+          <td><%= truncate(brand.description)%></td>
+          <% if brand.present? && brand.logo.present? %>
+              <td><%= image_tag brand.logo.url(:small) %></td>
+          <%else%>
+              <td>-</td>
+          <%end%>
+          <% if brand.present? && brand.banner.present? %>
+              <td><%= image_tag brand.banner.url(:small) %></td>
+          <%else%>
+              <td>-</td>
+          <%end%>
+          <td width="60px" data-hook="admin_relation_types_index_row_actions">
+            <%= link_to_edit brand , :no_text => true, :class => 'edit' %> &nbsp;
+            <%= link_to '', admin_brand_path(brand), :no_text => true, :method => :delete, :class => 'icon-trash', :confirm => "Are you sure, you want to delete the brand?"%>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<% else %>
+  <div class="no-objects-found">
+    <%= Spree.t(:no_results) %>
+  </div>
+<% end %>
+
+<%= paginate @brands %>
+
+<style type="text/css">
+  #table-filter{
+    display: block !important;
+  }
+</style>

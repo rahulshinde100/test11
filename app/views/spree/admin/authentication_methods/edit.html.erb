@@ -1,0 +1,18 @@
+<%= render :partial => 'spree/admin/shared/configuration_menu' %>
+
+<% content_for :page_title do %>
+  <%= Spree.t("edit_social_authentication_methods") %>
+<% end %>
+
+<%= render 'spree/shared/error_messages', :target => @authentication_method %>
+
+<%= form_for(@authentication_method, :url => admin_authentication_method_path(@authentication_method), :method => :put) do |f| %>
+	<fieldset data-hook="new_label" class="no-top-border">
+  		<%= render :partial => "form", :locals => { :auth_form => f } %>
+  		<p class="form-buttons filter-actions actions ">
+  			<%= button Spree.t("update"), 'icon-refresh' %>
+  			<span class="or"><%= Spree.t(:or) %></span>
+  			<%= link_to_with_icon 'icon-remove', Spree.t('actions.cancel'), collection_url, :class => 'button' %>
+  		</p>
+  	</fieldset>	
+<% end %>

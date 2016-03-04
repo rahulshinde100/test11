@@ -1,0 +1,5 @@
+<% if can? :admin, Spree::User %>
+  <%= tab(:sellers, :url => spree.admin_sellers_path, :icon => 'icon-user seller-tab') %>
+<%elsif spree_current_user.has_spree_role? 'seller' %>  
+	<%= tab(:dashboard, :url => spree.admin_sellers_path, :icon => 'icon-user seller-tab') %>
+<% end %>

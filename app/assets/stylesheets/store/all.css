@@ -1,0 +1,169 @@
+/*
+ * This is a manifest file that'll automatically include all the stylesheets available in this directory
+ * and any sub-directories. You're free to add application-wide styles to this file and they'll appear at
+ * the top of the compiled file, but it's generally better to create a new file per style scope.
+ *
+
+ *= require store/spree_frontend
+ *= require_self
+ *= require_tree .
+ *= require store/spree_fancy
+ *= require store/spree_reviews
+ *= require store/spree_wishlist
+ *= require store/map
+ *= require store/spree_product_labels
+*/
+
+.profile_pic img{
+	width: 17px;
+}
+
+.ui-autocomplete-loading {
+	display: block;
+ }
+
+ .main-mainu-select{
+ 	 
+    
+ }
+ 
+ #main_nav_bar_container .main-mainu-select .horizontal-line-bar{
+     opacity: 1;
+     
+ }
+
+ .circleBase {
+    -webkit-border-radius: 999px;
+    -moz-border-radius: 999px;
+    border-radius: 999px;
+    behavior: url("PIE.htc");
+}
+
+.type1 {
+    /* width: 100px;
+    height: 100px; */
+    background: yellow;
+    border: 3px solid red
+}
+
+#products .warehouse_sale {
+   /* background: url("/assets/store/sale60x60.png") no-repeat scroll 0 0 transparent;
+    height: 58px;
+    margin-left: -2px;
+    margin-top: -2px;
+    position: absolute;
+    width: 59px;
+    z-index: 100;*/
+   
+   
+     background: none repeat scroll 0 0 #D71212;
+    color: #FFFFFF;
+    font-size: 11px;
+    overflow: hidden;
+    padding-left: 18px;
+    padding-right: 21px;
+    padding-top: 20px;
+    position: absolute;
+    text-align: center;
+    transform: translate(-28px, -8px) rotate(-45deg);
+    -ms-transform:translate(-28px, -8px) rotate(-45deg); /* IE 9 */
+    -webkit-transform:translate(-28px, -8px) rotate(-45deg); /* Safari and Chrome */
+    z-index: 1;
+}
+
+
+
+#products .discounted_sale {
+    background: none repeat scroll 0 0 #1080B4;
+    color: #FFFFFF;
+    font-size: 11px;
+    overflow: hidden;
+    padding-left: 18px;
+    padding-right: 21px;
+    padding-top: 20px;
+    position: absolute;
+    text-align: center; 
+     transform: translate(-28px, -8px) rotate(-45deg);
+    -ms-transform:translate(-28px, -8px) rotate(-45deg); /* IE 9 */
+    -webkit-transform:translate(-28px, -8px) rotate(-45deg); /* Safari and Chrome */
+    z-index: 1;
+}
+
+#prod-img .discounted_sale{
+	background: url("/assets/store/sale_blue.png") no-repeat scroll 0 0 transparent;
+    height: 152px;
+    margin-left: -3px;
+    margin-top: -3px;
+    overflow: visible;
+    position: absolute;
+    width: 154px;
+    z-index: 100;
+    
+    
+}
+#prod-img .discounted_sale div{
+    transform:rotate(315deg);
+-ms-transform:rotate(315deg); /* IE 9 */
+-webkit-transform:rotate(315deg); /* Safari and Chrome */
+   color: #FFFFFF;
+    font-size: 23px;
+    font-weight: bold;
+    height: 58px;
+   
+    width: 204px;
+}
+
+#prod-img .warehouse_sale{
+	background: url("/assets/store/sale.png") no-repeat scroll 0 0 transparent;
+    height: 152px;
+    margin-left: -3px;
+    margin-top: -3px;
+    overflow: visible;
+    position: absolute;
+    width: 154px;
+    z-index: 100;
+    
+    
+}
+#prod-img .warehouse_sale div{
+    transform:rotate(315deg);
+-ms-transform:rotate(315deg); /* IE 9 */
+-webkit-transform:rotate(315deg); /* Safari and Chrome */
+   color: #FFFFFF;
+    font-size: 23px;
+    font-weight: bold;
+    height: 58px;
+    width: 204px;
+}
+
+.main_new_arrival_activated{
+   background: url("/assets/store/NEW_ARRIVAL.png") no-repeat scroll 0 0 transparent;
+    height: 155px;
+    margin-left: -8px;
+    margin-top: -6px;
+    overflow: visible;
+    position: absolute;
+    width: 159px;
+    z-index: 100;
+}
+.new_arrival_activated{
+    background: url("/assets/store/NEW_ARRIVAL60x60.png") no-repeat scroll 0 0 transparent;
+    height: 58px;
+    margin-left: -4px;
+    margin-top: -3px;
+    position: absolute;
+    width: 59px;
+    z-index: 100;
+}
+.sale-header{
+    font-size: 15px;
+    margin-left: 5px;
+    margin-top: 20px;
+}
+
+#as_ul li{
+}
+
+#as_ul li.header{
+
+}

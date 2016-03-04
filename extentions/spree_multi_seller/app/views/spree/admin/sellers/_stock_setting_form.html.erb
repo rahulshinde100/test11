@@ -1,0 +1,78 @@
+<% if @product.present? && !@seller.present? %>
+	 <fieldset>
+	  <legend>Stock Setting</legend>
+	  <%= form_tag manage_stock_setting_product_admin_stock_transfers_path do %>
+	    <div class="left ten columns alpha" data-hook="admin_product_form_left">    
+	      <%= field_container :product, :stock_config_type do %>
+	        <%= label :product, :stock_config_type, Spree.t(:stock_config_type) %><br />
+	        <% STOCKCONFIG.values.each do |val| %>	
+	          <% checked_val = (STOCKCONFIG[@product.stock_config_type] == val) ? true : false %>
+	          <%= radio_button :product, :stock_config_type, val , :checked=>checked_val, :onclick=>"show_percentage_table(this);" %>
+	          &nbsp;&nbsp;<%= val.humanize %>&nbsp;&nbsp;&nbsp;&nbsp;
+	        <% end %>  
+	        <%= error_message_on :product, :stock_config_type %>
+	      <% end %>
+	      <%= field_container :seller_market_place, :stock_config_details do %>
+	        <%= label :seller_market_place, :stock_config_details, Spree.t(:stock_config_details) %><br />
+	         <% 
+	           mp_ids = @product.seller.seller_market_places.where(:is_active=>true).map(&:market_place_id)
+	           @seller_markert_places = @product.sellers_market_places_products.where("market_place_id IN (?)", mp_ids)
+	           avg_per = (100.00/@seller_markert_places.count).round(2) 
+	         %>
+	         <% @seller_markert_places.each do |smpp| %>
+	           <div id="percentage_collection" class="eight columns alpha">	
+	             <div class="one columns alpha">
+	               <%= smpp.market_place.name.humanize %>
+	              </div>
+	              <div class="two columns omega">	
+	                <%= number_field :seller_market_place_stock_config_details, "#{smpp.id}", :class=>"txt-number", :onkeyup=>"percentage_check(this);", :value=>avg_per, :readonly=>"readonly" %>&nbsp;%
+	              </div>
+	            </div>
+	            <br /><br />
+	          <% end %>  
+	        <% end %>
+	        <%= hidden_field_tag :product_id, :product_id, :value=>@product.id %>
+	        <%= button "Update", 'icon-ok','', :onclick=>"return settingCheckValidation();", data: { disable_with: "Please wait.." } %>
+	      </div>  
+		<% end %>
+	</fieldset>
+<% elsif @seller.present? %>
+ <fieldset>
+  <legend>Stock Setting</legend>
+  <%= form_tag manage_stock_settings_admin_sellers_path do %>
+    <div class="left ten columns alpha" data-hook="admin_product_form_left">    
+      <%= field_container :seller, :stock_config_type do %>
+        <%= label :seller, :stock_config_type, Spree.t(:stock_config_type) %><br />
+        <% STOCKCONFIG.values.each do |val| %>
+          <% if val != "default" %>	
+            <% checked_val = (STOCKCONFIG[@seller.stock_config_type] == val) ? true : false %>
+            <%= radio_button :seller, :stock_config_type, val , :checked=>checked_val, :onclick=>"show_percentage_table(this);" %>
+            &nbsp;&nbsp;<%= val.humanize %>&nbsp;&nbsp;&nbsp;&nbsp;
+          <% end %>  
+        <% end %>  
+        <%= error_message_on :seller, :stock_config_type %>
+      <% end %>
+      <%= field_container :seller_market_place, :stock_config_details do %>
+        <%= label :seller_market_place, :stock_config_details, Spree.t(:stock_config_details) %><br />
+        <% avg_per = (100.00/@seller.seller_market_places.where(:is_active=>true).count).round(2) %>
+         <% @seller.seller_market_places.where(:is_active=>true).each do |smp| %>
+           <div id="percentage_collection" class="eight columns alpha">	
+             <div class="one columns alpha">	
+               <%= smp.market_place.name.humanize %>
+              </div>
+              <div class="two columns omega">	
+                <%= number_field :seller_market_place_stock_config_details, "#{smp.id}", :class=>"txt-number", :onkeyup=>"percentage_check(this);", :value=>avg_per, :readonly=>"readonly" %>&nbsp;%
+              </div>
+            </div>
+            <br /><br />
+          <% end %>  
+        <% end %>
+        <%= field_container :seller_market_place, "apply_to_all_products" do %>
+          <%= label :seller_market_place, "apply_to_all_products", Spree.t("apply_to_all_products") %>&nbsp;&nbsp;
+          <%= check_box_tag :apply_to_all, true %>
+        <% end %>
+        <%= button "Update", 'icon-ok','', :onclick=>"return settingCheckValidation();", data: { disable_with: "Please wait.." } %>
+      </div>  
+	<% end %>
+  </fieldset>
+<% end %>

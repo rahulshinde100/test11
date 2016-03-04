@@ -1,0 +1,23 @@
+<% if flash[:alert] %>
+  <div class="flash errors"><%= flash[:alert] %></div>
+<% end %>
+
+<% @body_id = 'login' %>
+<div class="login-box columns six">
+  <div id="existing-customer">
+    <h6><%= Spree.t(:login_as_existing) %></h6>
+      <div data-hook="login">
+      	<div class="header-signin">
+          <span>SIGN IN</span>
+        </div>
+        <%= render :partial => 'spree/shared/login' %>
+        <%#= link_to Spree.t(:forgot_password), spree.recover_password_path %>
+      </div>
+    </div>
+</div>
+
+<style type="text/css">
+  .container .column, .container .columns{
+  	float: none;
+  }
+</style>

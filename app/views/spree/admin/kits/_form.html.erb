@@ -1,0 +1,173 @@
+<% if spree_current_user.has_spree_role?("admin") %>
+  <% tinymce %>
+  <div class="alpha ten columns">
+    <%= f.field_container :seller do %>
+        <%= f.label :seller_id, Spree.t(:seller) %><span class="required">*</span><br />
+        <% if params[:action] == "edit" %>
+          <input type="text" class='fullwidth' value='<%= @seller.name %>' readonly = true >
+          <%= f.hidden_field :seller_id, :input_html => {:value => @seller.id}%>
+        <% else %>
+          <%= f.collection_select :seller_id, @sellers, :id, :name, {:style=>"width:90%;"}, {:onChange=>"loadMarketPlacesForKit('#{@kit.id}');"} %>
+        <% end %>
+    <% end %>
+  </div>
+<% elsif spree_current_user.has_spree_role?("seller") %>
+        <%= f.hidden_field :seller_id, :as => :hidden, :input_html => {:value => spree_current_user.seller.id}%>
+<% end %>
+<% if params[:action] == 'edit' && @kit.kit_products.present? %>
+   <!--div id ="kit_market_place"></div-->
+<% elsif params[:action] == 'new' %>
+   <div><br /></div>
+<% end %>
+<div class="alpha eight columns">
+  <%= f.field_container :name do %>
+    <%= f.label :name, Spree.t(:name) %><span class="required">*</span><br />
+    <%= f.text_field :name, :class => 'fullwidth', :required => true %>
+    <%= f.error_message_on :name %>
+  <% end %>
+</div>
+<div class="alpha eight columns">
+  <%= f.field_container :sku do %>
+    <%= f.label :sku, Spree.t(:sku) %><span class="required">*</span><br />
+    <%= f.text_field :sku, :class => 'fullwidth', :required => true, :readonly=>(params[:action] == "edit" ? true : false) %>
+    <%= f.error_message_on :sku %>
+  <% end %>
+</div>
+<div class="alpha eight columns">
+  <%= f.field_container :taxon do %>
+    <%= f.label :taxon, raw(Spree.t(:category) + content_tag(:span, '*', :class => 'required')) %><br />
+    <% taxon_name = (@selected_taxon.present? ? (@selected_taxon.parent.parent.name+" -> "+@selected_taxon.parent.name+" -> "+@selected_taxon.name) : nil) rescue nil  %>
+    <input type="text" name="kit_taxon_id_autoselect" id="kit_taxon_id_autoselect", class='fullwidth' value='<%= taxon_name %>' required='true' />
+    <input type="hidden" name="kit_taxon_id" id="kit_taxon_id" value='<%= (@selected_taxon.present? ? @selected_taxon.id : nil) %>' />
+    <%= f.error_message_on :taxon_id %>
+  <% end %>
+</div>
+<div class="alpha eight columns">
+      <%= f.field_container :cost_currency do %>
+            <%= f.label :cost_currency, Spree.t(:cost_currency) %><span class="required">*</span></br>
+            <%= f.text_field :cost_currency, :value => @product.present? ? @product.cost_currency : "", :required => true, :class => 'fullwidth' %>
+            <%= f.error_message_on :cost_currency %>
+      <% end %>
+</div>
+<div class="alpha eight columns">
+  <%= f.field_container :description do %>
+    <%= f.label :description, Spree.t(:description) %><br />
+    <%= f.text_area :description, :class => "tinymce fullwidth" %>
+    <%= f.error_message_on :description %>
+  <% end %>
+</div>
+<div class="alpha eight columns" style="display: none;">
+<%= f.field_container :is_common_stock do %>
+<% if @kit.is_common_stock == false %>
+    <label class="radio-label"><input type="radio"  name="kit[is_common_stock]" value=1>   Common Stock</label>&nbsp;
+    <label class="radio-label"><input type="radio"  name="kit[is_common_stock]" value=0 checked="checked">   Seperate Stock</label>
+<% elsif @kit.is_common_stock == true %>
+    <label class="radio-label"><input type="radio"  name="kit[is_common_stock]" value=1 checked="checked">   Common Stock</label>&nbsp;
+    <label class="radio-label"><input type="radio"  name="kit[is_common_stock]" value=0>   Seperate Stock</label>
+<% end %>
+    <%= f.error_message_on :is_common_stock %>
+<% end %>
+</div>
+<div id="seperate_stock_option" style="display:none;">
+  <div class="alpha eight columns">
+    <%= f.field_container :quantity do %>
+      <%= f.label :quantity, Spree.t(:quantity) %><span class="required">*</span></br>
+      <%= f.text_field :quantity, :value=>(@product.present? ? @product.master.fba_quantity : 0) %>
+      <%= f.error_message_on :quantity %>
+    <% end %>
+  </div>
+</div>
+<fieldset class="alpha sixteen columns">
+<legend align="center">Kit :: Prices</legend>
+<div class="alpha eight columns">
+        <%= f.field_container :cost_price do %>
+            <%= f.label :cost_price, Spree.t(:cost_price) %></br>
+            <%= f.text_field :cost_price, :value => (@product.present? ? @product.cost_price : ""), :readonly=>(params[:action] == "edit" ? true : false), :class => 'fullwidth' %>
+            <%= f.error_message_on :cost_price %>
+        <% end %>
+</div>
+<div class="alpha eight columns">
+      <%= f.field_container :price do %>
+        <%= f.label :price, raw(Spree.t(:retail_price) + content_tag(:span, '*', :class => "required")) %></br>
+        <%= f.text_field :price, :value => (@product.present? ? @product.price : ""), :required => true, :readonly=>(params[:action] == "edit" ? true : false), :class => 'fullwidth' %>
+        <%= f.error_message_on :price %>
+      <% end %>
+</div>
+<div class="alpha eight columns">
+      <%= f.field_container :selling_price do %>
+        <%= f.label :selling_price, raw(Spree.t(:selling_price) + content_tag(:span, '*', :class => "required")) %></br>
+        <%= f.text_field :selling_price, :value => (@product.present? ? @product.selling_price : ""), :required => true, :readonly=>(params[:action] == "edit" ? true : false), :class => 'fullwidth' %>
+        <%= f.error_message_on :selling_price %>
+      <% end %>
+</div>
+<div class="alpha eight columns">
+      <%= f.field_container :special_price do %>
+        <%= f.label :special_price, raw(Spree.t(:special_price)) %></br>
+        <%= f.text_field :special_price, :value => (@product.present? ? @product.special_price : ""), :readonly=>(params[:action] == "edit" ? true : false), :class => 'fullwidth' %>
+        <%= f.error_message_on :special_price %>
+      <% end %>
+</div>
+<div class="alpha eight columns">
+  <%= f.field_container :attachment do %>
+    <%= f.label Spree.t(:image) %><span class="required">*</span><br>
+    <%= f.file_field :attachment, :required => (params[:action] == "edit" ? false : true) ,:onchange =>"validateFiles(this);", accept: 'image/png,image/gif,image/jpeg' %>
+  <% end %>
+  <% if params[:action] == "edit" %>
+  <% if @kit.product.images.present? %>
+      <%= image_tag @kit.product.images.first.attachment.url(:small), :class => 'field' %>
+  <% end %>
+  <% end %>
+</div>
+<div class="alpha eight columns">
+  <%= f.field_container :is_active do %>
+    <%= f.label :is_active, Spree.t(:active) %>
+    <%= f.check_box :is_active, :class => 'custom_checkbox' %>
+    <%= f.error_message_on :is_active %>
+  <% end %>
+</div>
+</fieldset>
+<div class="clear"></div>
+
+<script type="text/javascript">
+
+  $(document).ready(function()
+  {
+        console.log("---- before click ----");
+        loadMarketPlacesForKit('<%= @kit.id %>');
+
+        if($('input[type="radio"]:checked').val()==1)
+        {
+            console.log("---- 1 ----");
+            $("#seperate_stock_option").hide();
+        }
+        else if($('input[type="radio"]:checked').val()==0)
+        {
+            console.log("---- 0 ----");
+            $("#seperate_stock_option").show();
+        }
+
+    $('input[type="radio"]').click(function(){
+      console.log("---- after click ----");
+        if($(this).attr("value")==1)
+        {
+            $("#seperate_stock_option").hide();
+        }
+        if($(this).attr("value")==0)
+        {
+            $("#seperate_stock_option").show();
+        }
+    });
+
+  });
+
+    // Load categories
+    $('#kit_taxon_id_autoselect').autocomplete({
+      source: '/admin/kits/taxonomies_json',
+      minLength: 2,
+      select: function (event, ui) {
+        $("#kit_taxon_id").val(ui.item.id);
+      }
+   });
+
+</script>
+

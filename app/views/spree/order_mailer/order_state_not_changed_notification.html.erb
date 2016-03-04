@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <div id="order-detail">
+      <div id="header">
+      </div>
+      Hello Team, <br/>
+
+      <p>Please take neccessary action for following orders are refuse to delivered on FBA: </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>FBA Order #</th>
+            <th>Reason of Fail</th>
+          </tr>
+        </thead>
+        <tbody>
+        	<% @errors.keys.each do |cart_no| %>
+        	  <tr>
+	            <td><%= cart_no %></td>
+	            <td><%= @errors[cart_no] %></td>
+        	  </tr>
+        	<% end %>
+        </tbody>
+      </table>
+
+      <br/>
+      Regards,<br/>
+      Team CM
+    </div>
+
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

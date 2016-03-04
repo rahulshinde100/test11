@@ -1,0 +1,59 @@
+
+<div class="business-sign-up" data-hook="admin_product_form_left">    
+  <div class="signupmessage">Signup to start growing your business with ship.li</div>  
+  <table>
+    <tr>
+        <td>
+             <div class="fields">
+                <%= f.field_container :name do %>
+                  <%#= f.label :business_name, Spree.t(:business_name) %> <!--span class="required">*</span><br />-->
+                  <%= f.text_field :business_name, :size => 16, :class => 'fullwidth title', :required => true , :placeholder => "Business name *" %>
+                  <%= f.error_message_on :business_name %>
+                <% end %>      
+              </div>
+        </td>
+        <td>
+             <div class="fields">
+               <%= f.field_container :contact_person_name do %>
+                 <%#= f.label :contact_person_name, "Contact Person Name" %><!--<span class="required">*</span><br />-->
+                 <%= f.text_field :contact_person_name, :size => 16, :class => 'fullwidth', :required => true, :placeholder => "Contact name *"  %>
+                 <%= f.error_message_on :contact_person_name %>
+               <% end %>
+             </div>        
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="fields">
+                <%= f.field_container :contact_person_email do %>
+                  <%#= f.label :contact_person_email, "Contact Person Email" %><!--<span class="required">*</span><br />-->
+                  <%= f.email_field :contact_person_email, :size => 16, :class => 'fullwidth email', :required => true, :placeholder => "Contact email *"  %>
+                  <%= f.error_message_on :contact_person_email %>
+                <% end %>
+              </div>  
+        </td>
+        <td>
+            <div class="fields">
+                <%= f.field_container :phone do %>
+                  <%#= f.label :phone, "Contact Number" %><!--<span class="required">*</span><br />-->
+                  <%= f.text_field :phone, :size => 16, :class => 'fullwidth phone', :required => true , :placeholder => "Contact number *" %>
+                  <%= f.error_message_on :phone %>
+                <% end %>
+              </div>    
+        </td>
+        </tr>
+        <tr><td></td>
+            <td align="right">
+                <div class="form-buttons filter-actions actions custom-top" data-hook="buttons">        
+                <input type="submit" value="Signup" onclick = "return false" id="business-button"/>
+                  </div>     
+        </td></tr>
+        <tr>
+            <td colspan="2"><div class="success-message"></div></td>
+        </tr>
+  </table>
+ 
+ 
+    
+  
+</div>

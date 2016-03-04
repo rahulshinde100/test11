@@ -1,0 +1,42 @@
+<!doctype html>
+<!--[if lt IE 7 ]> <html class="ie ie6" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if IE 9 ]><html class="ie ie9" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if gt IE 9]><!--><html lang="<%= I18n.locale %>"><!--<![endif]-->
+  <head data-hook="inside_head">
+    <%= render :partial => 'spree/shared/head' %>
+  </head>
+  <body class="<%= body_class %> <%if current_page?(root_url)%>home-page-slider-body<%end%>" id="<%= @body_id || 'default' %>" data-hook="body">
+    <%= render :partial => 'spree/shared/seller_header' %>
+    <%= render :partial => 'spree/shared/slider_seller', :locals => {:products => @seller_products, :seller => @seller}%>
+    <div class="container">
+      <div id="wrapper" class="row" data-hook>
+        <div class="clearboth brand-gap"></div>
+        <div data-hook="taxon_sidebar_navigation" style = "float: left;">
+          <%= render :partial => 'spree/sellers/seller_taxon_menu', :locals => {:categories => @categories, :products => @seller_products} unless controller.controller_name == 'products' && params[:action] == 'show'%>
+        </div>
+        <div id="seller-products" class="<% if controller.controller_name == "sellers" %>seller-home-products<%end%>"  >
+          <%= flash_messages %>
+          <div id="content" class="columns <%= !content_for?(:sidebar) ? "sixteen" : "twelve" %>" data-hook>
+            <%= yield %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%= render :partial => 'spree/shared/footer' %>
+    <%#= render :partial => 'spree/shared/google_analytics' %>
+    <%= render :partial => 'spree/shared/snapengage' %>
+  </body>
+</html>
+
+<style type="text/css">
+  div[data-hook="product_show"]{
+    margin-top: 0px !important;
+    margin-left: -12x;
+  }
+
+  #content #product-images #thumbnails {
+    margin-left: -12px !important;
+}
+</style>

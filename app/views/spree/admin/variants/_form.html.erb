@@ -1,0 +1,87 @@
+<% if params[:action] == "create" %>
+  <%= render :partial => 'spree/admin/shared/product_sub_menu' %>
+<% end %>
+<% content_for :page_actions do %>
+  <li><%= button_link_to Spree.t(:back_to_product_list), session[:return_to] || admin_products_url, :icon => 'icon-arrow-left' %></li>
+  <li><%= button_link_to Spree.t(:back_to_variant_list), admin_product_variants_url, :icon => 'icon-arrow-left' %></li>
+<% end %>
+
+	<% @product.option_types.each do |option_type| %>
+      <div class="field" data-hook="presentation">
+        <%= label :new_variant, option_type.presentation %>
+        <% @option_values = @variant.get_option_values(option_type,@product) %>
+		<% @selected_value = @variant.option_values.where(:option_type_id => option_type.id).first.id rescue nil %>
+		<%= select_tag :variant_option_value_ids, options_for_select(@option_values.collect {|p| [ p[:presentation], p[:id] ] }, :selected=>@selected_value), {:class=>'select2',:prompt => ' - - - Select Option Value - - -',:name =>'variant[option_value_ids]', :value=>@selected_value}%>
+      </div>
+    <% end %>
+<% if ((params[:action] != "create" && @variant.try(:parent_id).present?)) %>
+
+    <div class="field" data-hook="presentation">
+    <%= f.label :parent_sku, raw(Spree.t(:parent_variant) + content_tag(:span, '*',  :class => "required")) %> <br>
+      <% @parent = @variant.get_parent %>
+      <% if @parent.is_master? %>
+          <%= link_to @parent.sku, edit_admin_product_path(:id => @parent.product.permalink) %>
+      <% else %>
+          <%= link_to @parent.sku, edit_admin_product_variant_path(:product_id => @parent.product.permalink, :id => @parent.id) %>
+      <% end %>
+        </div>
+<% end %>
+<div data-hook="admin_variant_form_fields" class="label-block left six columns alpha">
+  <div data-hook="variants">
+    <div class="field" data-hook="sku">
+      <%= f.label :sku, raw(Spree.t(:sku) + content_tag(:span, '*',  :class => "required")) %>
+      <% if ((params[:action] != "create" && @variant.try(:sku).present?) rescue false) %>
+      <%= f.text_field :sku, :class => 'fullwidth', :required => true, :readOnly => true %>
+          <% else %>
+          <%= f.text_field :sku, :class => 'fullwidth', :required => true%>
+      <% end %>
+    </div>
+
+    <div class="field" data-hook="cost_price">
+      <%= f.label :cost_price, Spree.t(:cost_price) %>
+      <%= f.text_field :cost_price, :value => number_with_precision(@variant.cost_price, :precision => 2).to_f, :class => 'fullwidth' %>
+    </div>
+
+    <div class="field" data-hook="price">
+      <%= f.label :price, raw(Spree.t(:retail_price) + content_tag(:span, '*',  :class => "required"))%>
+      <%= f.text_field :price, :value => number_with_precision(@variant.price,:precision => 2).to_f, :class => 'fullwidth', :required => true %>
+    </div>
+
+    <div class="field" data-hook="selling_price">
+      <%= f.label :selling_price, Spree.t(:selling_price) + content_tag(:span, '*',  :class => "required") %>
+      <%= f.text_field :selling_price, :value => number_with_precision(@variant.selling_price,:precision => 2).to_f, :class => 'fullwidth', :required => true %>
+    </div>
+
+    <div class="field" data-hook="special_price">
+      <%= f.label :special_price, Spree.t(:special_price) %>
+      <%= f.text_field :special_price, :value => number_with_precision(@variant.special_price, :precision => 2).to_f, :class => 'fullwidth' %>
+    </div>
+    <%= hidden_field :api, :variant_check, :value=>params[:action] %>
+  </div>
+</div>
+
+<div class="right six columns omega label-block" data-hook="admin_variant_form_additional_fields">
+  <div class="field" data-hook="upc">
+      <%= f.label :upc, "UPC" %>
+      <%= f.text_field :upc, :class => 'fullwidth' %>
+  </div>
+
+  <% [:weight, :height, :width, :depth].each do |field| %>
+    <div class="field" data-hook="<%= field %>"><%= f.label field, Spree.t(field) %>
+      <% value = number_with_precision(@variant.send(field), :precision => 2) %>
+      <%= f.text_field field, :value => value, :class => 'fullwidth' %>
+    </div>
+  <% end %>
+  <% if @product.seller.type.try(:percentage_based?) %>
+  <div class="field" data-hook="special_price">
+    <%= f.label :rcp, "RCP : #{f.object.rcp}"%>
+  </div>
+<% end %>
+</div>
+
+<div class="clear"></div>
+<script type="text/javascript">
+  $(document).ready(function() {
+   $("select[id=variant_option_value_ids]").select2();
+  });
+</script>

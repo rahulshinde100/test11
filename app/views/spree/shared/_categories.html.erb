@@ -1,0 +1,92 @@
+<div class="home-page-gap-bar">
+  <div></div>
+</div>
+
+  <% home_taxonomy.each do |taxon| %>
+    <% next if taxon.parent.nil? || taxon.name.capitalize == 'sale'.capitalize %>
+    <% products = product_in_taxon(taxon) %>
+      <% if products.count > 0%>
+        <div class="prod-cat-box">
+          <hr class="legend-effect" />
+          <div class="cat-name-home"><span><%= taxon.name %></span></div>
+          <ul id="products" class="inline product-listing" data-hook>
+          <% (["promo"] + products).in_groups_of(6, false).each_with_index do |product_row, index| %>
+            <% break if index == 2%>
+            <li class="product-row">
+              <ul>
+                <% product_row.each_with_index do |product, index2| %>
+
+                  <%if index == 0 && index2 == 0%>
+                    <li id="product_promotion" class="columns homethree alpha"><div class="product-image"><a href="<%=ambassadors_path%>"><%=image_tag("/assets/products/refer_a_friend.png", :alt => "Refer a Friend")%></a></div><a href="ambassadors" class="info" title="Refer a Friend">Give $10 - Get $5</a><div class="clearboth"></div><span class="retailer-name" itemprop="seller">Be a hero, send your friends and family free goods + free delivery.</span><div class="clearboth"></div><span class="shipping-method-info " itemprop="shipping-method-info"></span><div class="clearboth"></div></li>
+                      <%next%>
+                    <%end%>
+
+                    <%next if product.nil?%>
+                    <% current_var = product.variants_and_option_values(current_currency).any? ? product.variants.first : product%>
+
+                    <li id="product_<%= product.id %>" class="columns homethree alpha" data-hook="products_list_item" itemscope itemtype="">
+
+                      <%if current_var.special_price.present? && product.is_new_arrival == true %>
+                        <% if current_var.warehouse_discount > 0 %>
+                          <a href="<%= product_path(product)%>">
+                            <div class="<%= product.is_warehouse ? 'warehouse_sale' : 'discounted_sale'%>">
+                              <div><%= current_var.warehouse_discount%>% OFF</div>
+                            </div>
+                          </a>
+                        <% end %>
+                      <% elsif current_var.special_price.present? %>
+                        <% if current_var.warehouse_discount > 0 %>
+                          <a href="<%= product_path(product)%>">
+                            <div class="<%= product.is_warehouse ? 'warehouse_sale' : 'discounted_sale'%>">
+                              <div><%= current_var.warehouse_discount%>% OFF</div>
+                            </div>
+                          </a>
+                        <% end %>
+                      <% elsif product.is_new_arrival == true %>
+                        <a href="<%= product_path(product)%>">
+                          <div class="new_arrival_activated"></div>
+                        </a>
+                      <%end%>
+
+                      <div class="product-image">
+                        <%= link_to small_image(product, :itemprop => "image"),product_path(product) , :temprop => 'url' %>
+                      </div>
+                      
+                      <%= link_to truncate(product.name, :length => 40), product_path(product), :class => 'info', :itemprop => "name", :title => product.name %>
+
+                      <div class="clearboth"></div>
+                      <span class="retailer-name" itemprop="seller"><%= product.seller.try(:name)%></span>
+                      <div class="clearboth"></div>
+
+                      <%if current_var.special_price%>
+                        <span class="price discounted" itemprop="price"><%= number_to_currency(current_var.special_price) %></span>
+                        <span class="price selling avail-discount" itemprop="price"><%= current_var.price_in(current_currency).display_price %></span>
+                      <% else %>
+                        <span class="price selling only-selling" itemprop="price"><%= current_var.price_in(current_currency).display_price %></span>
+                      <%end%>
+                      <div class="clearboth"></div>
+                      <% unless product.in_stock?%>
+                        <span class="shipping-method-info" itemprop="shipping-method-info">Out of stock</span>
+                      <% else%>
+                        <span class="shipping-method-info <% if product.shipping_category.present? && product.shipping_category.is_same_day_shipping? || product.shipping_category.present? && product.shipping_category.is_99minute? %>message-red<%end%>" itemprop="shipping-method-info">
+                          <%= product.delivery_time%>
+                        </span>
+                      <%end%>
+                      <div class="clearboth"></div>
+                    </li>
+                    <% end %>
+                  </ul>
+                </li>
+              <% end %>
+              <% reset_cycle("classes") %>
+            </ul>
+            <% unless products.count <= 12%>
+              <div class="more-products">
+                <a href="<%=seo_url(taxon)%>">view more in <%= taxon.name %></a>
+              </div>
+            <% end%>
+          </div>
+        <%end%>
+      <%end%>
+
+<div class="clearboth"></div>

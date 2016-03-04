@@ -1,0 +1,23 @@
+
+<%= render :partial => 'spree/admin/shared/seller_sub_menu', :locals => { :seller => @seller, :title => "Holiday List" } %>
+<%= render :partial => 'spree/shared/error_messages', :locals => { :target => @holiday_list } %>
+<%= form_for  @holiday_list ,:url => admin_seller_holiday_list_path(@seller, @holiday_list) do |f| %>
+  <fieldset data-hook="edit_holiday_list">
+    <legend align="center">Holiday Lists</legend>
+      <%= render :partial => 'form', :locals => {:f => f} %>
+      <div class="form-buttons filter-actions actions" data-hook="buttons">
+        <%= button "Save", 'icon-ok' %>
+        <span class="or"><%= Spree.t(:or) %></span>
+        <%= link_to_with_icon 'icon-remove', Spree.t('actions.cancel'), admin_seller_holiday_lists_path(@seller), :class => 'button' %>
+      </div>
+  </fieldset>
+<%end%>
+
+
+<script type="text/javascript">
+  //$(document).ready(function() {
+    <%@holiday_list.stock_locations.each do |store|%>
+          $("#store_<%=store.id%>").attr("checked", true);
+    <%end%>
+  //})
+</script>

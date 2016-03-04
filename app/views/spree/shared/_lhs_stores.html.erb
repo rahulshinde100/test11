@@ -1,0 +1,10 @@
+<h6>Stores in '<%= @taxon.present? ? @taxon.name.capitalize : "Warehouse Sale"%>'</h6>
+<div class="arrow-right"></div>
+<div class="lhs-ul-3-column">
+<ul class="lhs-ul">
+	<% sorted_sellers.each.with_index do |seller, index| %>	
+		<% count = products.where(:seller_id => seller.id).count %>
+		<li><%= link_to "#{seller.name.capitalize} (#{count})" , seller_url(seller) %></li>
+	<% end %>
+</ul>
+</div>

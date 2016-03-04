@@ -1,0 +1,33 @@
+<p class="field">
+  <% field_name = "#{param_prefix}[preferred_amount]" %>
+  <% p field_name %>
+  <%= label_tag field_name, "Discount" %>
+  <%= preference_field_tag(field_name,
+                           promotion_action.get_preference(:amount),
+                           :type => :integer, :max => 100, :step => 0.01) %>
+  <% field_name = "#{param_prefix}[preferred_validity]" %>
+
+  <%= select_tag "#{param_prefix}[preferred_operator]", options_for_select(Spree::Promotion::Actions::Discount::OPERATORS.map{|s| [Spree.t("promotion_action_types.discount.#{s}"),s] }, promotion_action.preferred_operator),{:class => 'select_product preferred_operator select2'} %>
+
+</p>
+</p>
+
+<script>
+  $(document).ready(function(){
+      if($('.preferred_operator :selected').val() == 'percentage'){
+          $('.input_integer').attr({max:100});
+      }else{
+          $('.input_integer').removeAttr('max');
+      }
+  });
+  $('.preferred_operator').change(function(e){
+      console.log('hi....');
+      if($(this).val() == 'percentage'){
+          $('.input_integer').attr({max:100});
+      }else{
+          $('.input_integer').removeAttr('max');
+      }
+
+
+  });
+</script>

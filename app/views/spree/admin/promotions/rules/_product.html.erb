@@ -1,0 +1,68 @@
+<div class="field alpha omega eight columns products_rule_products">
+  <%= label_tag "#{param_prefix}_product_ids_string", Spree.t('product_rule.choose_products') %>
+  <%= hidden_field_tag "#{param_prefix}[product_ids_string]", promotion_rule.product_ids.join(","), :class => "product_picker fullwidth" %>
+</div>
+<div class="field alpha omega eight columns">
+  <label>
+    <%= Spree.t('product_rule.label', :select => select_tag("#{param_prefix}[preferred_match_policy]", options_for_select(Spree::Promotion::Rules::Product::MATCH_POLICIES.map{|s| [Spree.t("product_rule.match_#{s}"),s] }, promotion_rule.preferred_match_policy), {:class => 'select_product select2'})).html_safe %>
+  </label>
+</div>
+<script type="text/javascript">
+    $.fn.productAutocomplete = function () {
+        'use strict';
+
+        this.select2({
+            minimumInputLength: 1,
+            multiple: true,
+            initSelection: function (element, callback) {
+                $.get(Spree.routes.product_search, {
+                    ids: element.val().split(',')
+                }, function (data) {
+                    callback(data.products);
+                });
+            },
+            ajax: {
+                //url: Spree.routes.product_search,
+                url: "/api/products/get_products_for_promotion",
+                datatype: 'json',
+                data: function (term, page) {
+                    return {
+                        q: {
+                            name_cont: term,
+                            sku_cont: term
+                        },
+                        m: 'OR'
+                    };
+                },
+                results: function (data, page) {
+                    var products = data.products ? data.products : [];
+                    console.log(products);
+                    $(".select2-result").removeClass('select2-result-unselectable').addClass('select2-result-selectable');
+                    return {
+                        results: products
+                    };
+                }
+            },
+            formatResult: function (product) {
+                return product.name
+            },
+            formatSelection: function (product) {
+//                $(".select2-result").removeClass('select2-result-unselectable').addClass('select2-result-selectable');
+//                var  name = '';
+//                if (product.product === undefined){
+//                    name = product.name;
+//                }else{
+//                    name = product.product.name;
+//                }
+                return product.name
+            }
+        });
+    };
+
+    $(document).ready(function () {
+        $('.product_picker').productAutocomplete();
+    });
+</script>
+<%= javascript_tag do %>
+    $('.product_picker').productAutocomplete();
+<% end %>

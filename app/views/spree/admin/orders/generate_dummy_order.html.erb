@@ -1,0 +1,157 @@
+<div data-hook="admin_product_form_fields">
+  <%= form_for @order, :method => :post do |f|%>
+      <div class="left eight columns alpha" data-hook="admin_product_form_left">
+        <%= f.field_container :market_place do %>
+        <label>Select Market Place</label>
+        <%= collection_select(:ordre, :market_place, Spree::MarketPlace.all,:code, :name,{ :class=>"col-sm-8", :required=>true})%>
+        <% end %>
+
+        <%= f.field_container :number do %>
+            <%= f.label :Order, raw('Order Number' + content_tag(:span, '*', :class => 'required')) %>
+            <%= f.text_field :number, :class => 'fullwidth', :require => true %>
+            <%#= f.error_message_on :name %>
+        <% end %>
+
+      </div>
+      <div class="right four columns omega" data-hook="admin_product_form_right">
+        <%= f.field_container :seller do %>
+            <%= f.label :select_seller, raw(Spree.t(:seller) + content_tag(:span, '*', :class => 'required')) %>
+            <%= collection_select(:order, :seller, Spree::Seller.all,:id, :name,{ :class=>"col-sm-8"})%>
+            <%#= f.error_message_on :name %>
+        <% end %>
+        <%= f.field_container :currency do %>
+            <%= f.label :currency, Spree.t(:currency)  %>
+            <%= f.text_field :currency, :class => 'fullwidth', :require => true %>
+            <%#= f.error_message_on :name %>
+        <% end %>
+      </div>
+<br>
+
+  <% end %>
+  </div>
+<div data-hook="admin_product_form_fields">
+  <%#= f.fields_for :line_items do |builder|%>
+  <table id="skillSet" width="90%">
+    <tr>
+      <td>SKU</td><td></td><td>Quantity</td><td></td><td>Item Price</td><td></td><td>Paid Price</td><td></td><td></td>
+    </tr>
+    <tr style="margin-bottom: 10px; height: 45px;" class="sku">
+      <td><%= text_field_tag 'sku[]'%></td><td style="width: 10px;"></td>
+      <td><%= text_field_tag 'quantity[]'%></td><td style="width: 10px;"></td>
+
+      <td> <%= text_field_tag 'item_price[]'%></td><td style="width: 10px;"></td>
+      <td> <%= text_field_tag 'paid_price[]'%></td><td></td><td></td>
+    </tr>
+
+  </table>
+
+  <%# end %>
+
+</div>
+<a href="javascript:;" id="addNewTag" class="button bg_darkfirst">Add New item</a>
+<a href="javascript:;" id="createOrder" class="button bg_darkfirst">Create Order</a>
+<div class="hide" id="new_skills_form" >
+  <%#= render partial: "dummy_item", locals: {:f => f} %>
+  <%= render partial: "dummy_item"   %>
+</div>
+
+  <script type="text/javascript">
+    var lazadaOrder = {OrderId:"127250", CustomerFirstName:"JUNtest", CustomerLastName:"Lee", OrderNumber:"205373278", PaymentMethod:"CashOnDelivery", Remarks:' ', DeliveryInfo:' ', Price:"1497.00", GiftOption:"0", GiftMessage:' ', VoucherCode:' ', CreatedAt:"<%= Time.zone.now %>", UpdatedAt:"<%= Time.zone.now %>",AddressBilling:{FirstName:"JUNtest", LastName:"Lee", Phone:"94331273", Phone2:"94331273", Address1:"Blk 602 B Punggol Central", Address2:"#04-666", Address3:' ', Address4:' ', Address5:' ', City:"Singapore", Ward:' ', Region:' ', PostCode:"822602", Country:"Singapore"},AddressShipping:{FirstName:"JUNtest", LastName:"Lee", Phone:"94331273", Phone2:"94331273", Address1:"Blk 602 B Punggol Central", Address2:"#04-666", Address3:' ', Address4:' ', Address5:' ', City:"Singapore", Ward:' ', Region:' ', PostCode:"822602", Country:"Singapore"},NationalRegistrationNumber:' ', ItemsCount:"3", PromisedShippingTime:' ', Statuses:{Status:"ready_to_ship"}}
+
+      $(document).ready(function(){
+          $("#addNewTag").click(function(){
+              $("#skillSet tbody").append('<%= escape_javascript(render :partial => 'dummy_item')%>');
+          });
+          
+          $("#createOrder").click(function() {
+              if (check_validate()) {
+              var OrderItem = new Array();
+              var Order;
+              if ($('#ordre_market_place').val() == 'qoo10') {
+
+              } else {
+                  lazadaOrder.OrderId = $("#order_number").val();
+                  lazadaOrder.OrderNumber = $("#order_number").val();
+                  Order = lazadaOrder;
+              }
+
+              $("#skillSet tr").each(function () {
+                  var cls = $(this).attr('class');
+                  if (cls == 'sku') {
+
+                      $this = $(this);
+                      var sku = $this.find("input#sku_").val();
+                      var quantity = parseInt($this.find("input#quantity_").val());
+                      var itemPrice = $this.find("input#item_price_").val();
+                      var paidPrice = $this.find("input#paid_price_").val();
+                      if ($('#ordre_market_place').val() == 'qoo10') {
+
+                      } else {
+                          var lazadaOrderItem = {OrderItemId:"91417", ShopId:"4957053", OrderId:"127250", Name:"Kit ACDrives and BrassHinges", Sku:"KitACDrives,BrassHinges", ShopSku:"MA619BE10NBDSG-1051143", ShippingType:"Dropshipping", ItemPrice:"499.00", PaidPrice:"499.00", Currency:"SGD", WalletCredits:"0.00", TaxAmount:"32.64", ShippingAmount:"0.00", ShippingServiceCost:' ', VoucherAmount:"0", VoucherCode:' ', Status:"ready_to_ship", ShipmentProvider:"Ninja Van Marketplace", TrackingCode:"ZNVMKP-2808-205373278-7945", Reason:' ', ReasonDetail:' ', PurchaseOrderId:"100176", PurchaseOrderNumber:"MPDS-M15512763796", PackageId:"MPDS-205373278-7945", PromisedShippingTime:' ', CreatedAt:"<%= Time.zone.now %>", UpdatedAt:"<%= Time.zone.now %>"}
+                          var item = lazadaOrderItem;
+                          item.OrderId = $("#order_number").val();
+                          item.Sku = sku;
+                          item.ItemPrice = itemPrice;
+                          item.PaidPrice = paidPrice;
+                          for (i = 0; i < quantity; i++) {
+                              OrderItem.push(item);
+                          }
+                      }
+                  }
+              });
+              $.ajax({
+                  url: 'create_dummy_order',
+                  datatype: 'json',
+                  type: 'POST',
+                  data: {
+                      market_place: $('#ordre_market_place').val(),
+                      seller_id: $('#order_seller').val(),
+                      Order: Order,
+                      OrderItem: OrderItem
+                  },
+                  success: function(message){
+                      console.log(message.message);
+                    alert(message.message);
+                      document.location.reload(true);
+                  }
+              });
+          }
+          });
+      });
+          function check_validate(){
+              if (!$("#order_number").val().trim()){
+                  alert('Please enter Order number');
+                  return false
+              }
+              $("#skillSet tr").each(function () {
+                  var cls = $(this).attr('class');
+                  if (cls == 'sku') {
+                      $this = $(this);
+                      if (!$this.find("input#sku_").val().trim()) {
+                          alert('Please enter SKU');
+                          return false
+                      }
+                      if (!$this.find("input#quantity_").val().trim()){
+                          alert('Please enter Quantity');
+                          return false
+                      }
+                      if (!$this.find("input#item_price_").val().trim()){
+                          alert('Please enter Item Price');
+                          return false
+                      }
+
+                      if (!$this.find("input#paid_price_").val().trim()){
+                          alert('Please enter paid price');
+                          return false
+                      }
+
+                  }
+              });
+              return true;
+          }
+  </script>
+<style>
+  .hide{
+      display: none;
+  }
+</style>

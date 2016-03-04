@@ -1,0 +1,76 @@
+<div data-hook="admin_stock_locations_form_fields" class="row">
+  <div class="row">
+    <div class="alpha six columns">
+      <div class="field ">
+        <%= f.label :name, Spree.t(:name) + ':' %><span class="required">*</span><br />
+        <%= f.text_field :name, :class => 'fullwidth', :required => true%>
+        <%= f.error_message_on :name %>
+      </div>
+    </div>
+
+    <div class="eight columns">
+      <div class="field ">
+        <%= f.label :description, Spree.t(:description) + ':' %>
+        <%= f.text_field :description, :class => 'fullwidth' %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="alpha four columns">
+      <div class="field ">
+        <%= f.label :from, Spree.t(:from) + ':' %><span class="required">*</span><br />
+        <%= f.text_field :from, :class => 'fullwidth datepicker', :required => true %>
+        <%= f.error_message_on :from %>
+      </div>
+    </div>
+
+    <div class="omega four columns">
+      <div class="field ">
+        <%= f.label :to, Spree.t(:to) + ':' %>
+        <%= f.text_field :to, :class => 'fullwidth datepicker' %>
+      </div>
+    </div>
+    
+    <div class="omega four columns">
+      <%= f.field_container :active do %>
+        <label for="active"><%= Spree.t(:Stores) %></label>
+        <div style="float: right">
+          <%= label "all", "All" %>
+          <%= check_box_tag "all" %>
+        </div>
+        <ul class="store-list">
+          <%@seller.stock_locations.each do |store|%>
+            <li>
+              <%= label "store_#{store.id}".to_sym,  "#{store.name}:" %>
+              <%= check_box_tag "store[#{store.id}]" %>
+            </li>
+          <%end%>
+        </ul>
+      <% end %>
+    </div>
+
+    <div class="omega four columns">
+      <div class="field checkbox">
+        <label>
+          <%= f.check_box :active %>
+          Is Pickup Point
+        </label>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#all").click(function(){
+      if($(this).is(":checked")){
+        $(".store-list input[type='checkbox']").attr("checked", true);
+      }else{
+        $(".store-list input[type='checkbox']").removeAttr("checked");
+      }
+    })
+  })
+</script>

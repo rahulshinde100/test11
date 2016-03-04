@@ -1,0 +1,26 @@
+<% if (spree_current_user && spree_current_user.store_credits_total > 0) %>
+	<div style="margin-top:-25px;">
+		<% usable_amount = number_with_precision(@order.store_credit_maximum_usable_amount, :precision => 2, :separator => '.', :delimiter => '') %>
+		<br style='clear:both;' />
+		<span>
+			<%= Spree.t('you_have_store_credit',
+	       :amount => number_to_currency(spree_current_user.store_credits_total))%>
+		</span>
+		<div style="width:71%;">
+		  	<label>
+	  			<%= Spree.t('enter_amount_to_redeem') %>
+	  		</label><br />
+	  		<%= form.text_field :store_credit_amount, :size => 19, :value => usable_amount, :data => { :store_credit_maximum_amount => usable_amount, :store_credit_maximum_amount_message => Spree.t('store_credit_maximum_amount', :amount => number_to_currency(@order.store_credit_maximum_usable_amount)) } %>
+	  		<input type="hidden" name="store_return_payment" id="store_return_payment"><br/>
+	  		<%= button_tag :class => 'primary',  :id => 'update-button', :onclick =>"$('#store_return_payment').val('true');" , :type => :submit do  %>
+	    	<%= Spree.t(:redeem_store_credit) %>
+			<% end %>
+		</div>
+	</div>
+<% end %>
+
+<style type="text/css">
+	#update-button{
+		margin-top: 8px;
+	}
+</style>

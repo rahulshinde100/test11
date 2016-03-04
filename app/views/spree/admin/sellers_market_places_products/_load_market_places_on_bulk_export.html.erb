@@ -1,0 +1,4 @@
+<div class="seller_selector">
+<label for="market_place" style = 'margin-left:20px;'>Market Place</label><span class="required">*</span><br />
+<%= select_tag :market_place_id, options_from_collection_for_select(@market_places, "id", "name"), class: 'select2', :style => 'margin-top:4px;margin-left:20px;' %>
+</div>

@@ -1,0 +1,14 @@
+<%= render :partial => 'spree/admin/shared/configuration_menu' %>
+
+<% content_for :page_title do %>
+  <%= Spree.t("new_social_authentication_methods") %>
+<% end %>
+
+<%= render :partial => 'spree/shared/error_messages', :locals => { :target => @zone } %>
+
+<%= form_for [:admin, @authentication_method] do |auth_form| %>
+	<fieldset data-hook="new_label" class="no-top-border">
+  		<%= render :partial => 'form', :locals => { :auth_form => auth_form } %>
+  		<%= render :partial => 'spree/admin/shared/new_resource_links' %>
+  	</fieldset>  		
+<% end %>

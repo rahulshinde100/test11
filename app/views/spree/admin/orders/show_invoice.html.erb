@@ -1,0 +1,28 @@
+<%= render :partial => 'spree/admin/shared/order_tabs', :locals => { :current => 'Invoice' } if spree_current_user.has_spree_role? 'admin'%>
+
+<%= csrf_meta_tags %>
+
+<% content_for :page_title do %>
+  <i class="icon-arrow-right"></i> <%= Spree.t(:invoice) %>
+<% end %>
+
+<% content_for :page_actions do %>
+  <li>
+    <% if @order.products.present? %>
+        <%#= button_link_to Spree.t(:back_to_orders_list), admin_orders_path, :icon => 'icon-arrow-left' %>
+        <% if @order.fulflmnt_state.present? && @order.fulflmnt_state == 'complete' %>
+            <%= button_link_to Spree.t(:back_to_orders_list), complete_orders_admin_orders_path, :icon => 'icon-arrow-left' %>
+        <% elsif @order.fulflmnt_state.present? && @order.fulflmnt_state == 'cancel' %>
+            <%= button_link_to Spree.t(:back_to_orders_list), cancel_orders_admin_orders_path, :icon => 'icon-arrow-left' %>
+        <% else %>
+            <%= button_link_to Spree.t(:back_to_orders_list), admin_orders_path, :icon => 'icon-arrow-left' %>
+        <% end %>
+    <% else %>
+        <%= button_link_to Spree.t(:back_to_orders_list), partial_orders_admin_orders_path, :icon => 'icon-arrow-left' %>
+    <% end %>
+  </li>
+<% end %>
+
+<div>
+  <%= raw Base64.decode64(@order.invoice_details) %>
+</div>

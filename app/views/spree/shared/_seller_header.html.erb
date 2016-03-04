@@ -1,0 +1,32 @@
+<style type="text/css">
+	#logo{
+	    font-family: "Arvo", Verdana;
+	    font-weight: 700;
+	}
+	nav #main-nav-bar, nav#top-nav-bar{
+	   text-align: left;
+	}
+	.page-wrapper #main_nav_bar_container .columns.seven{
+	    width: 100%;
+	}
+</style>
+<div id="styled-white-strip">
+  <div class="container">
+    <div id="ship-li-small-logo">
+      <% if spree_current_user.present? %>
+        <label><h4><span style="color:#000000;">Channel Manager</span></h4><label/>
+      <% else %>
+        <div id="left-align-box" style="padding-top: 5px;">
+          <label><h5><span style="color:#FFFFFF;">Channel Manager</span></h5><label/>
+        </div>
+      <% end %>
+    </div>
+    <%#= render :partial => 'spree/shared/search_bar' %>
+    <div id="singapore-flag">
+      <%#= image_tag "/assets/store/Flag_of_Singapore.png" %>
+    </div>
+    <div id="right-align-box">
+      <%= render :partial => 'spree/shared/nav_bar' %>
+    </div>
+  </div>
+</div>

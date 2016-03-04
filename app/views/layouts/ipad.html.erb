@@ -1,0 +1,76 @@
+<!doctype html>
+<!--[if lt IE 7 ]> <html class="ie ie6" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if IE 7 ]> <html class="ie ie7" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if IE 8 ]> <html class="ie ie8" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if IE 9 ]> <html class="ie ie9" lang="<%= I18n.locale %>"> <![endif]-->
+<!--[if gt IE 9]> <!--> <html lang="<%= I18n.locale %>"> <!--<![endif]-->
+  <head data-hook="inside_head">
+    <%= render :partial => 'spree/shared/head' %>
+  </head>
+  <body class="<%= body_class %>" id="<%= @body_id || 'default' %>" data-hook="body">
+    <div class="container">
+      <%#= render :partial => 'spree/shared/header' %>
+      <div id="wrapper" class="row" data-hook>
+      <%#= breadcrumbs(@taxon) %>
+        <%= render :partial => 'spree/shared/sidebar' if content_for? :sidebar %>
+        <div id="content" class="columns <%= !content_for?(:sidebar) ? "sixteen" : "twelve" %>" data-hook>
+          <%= flash_messages %>
+          <%= yield %>
+        </div>
+      </div>
+      <%#= render :partial => 'spree/shared/footer' %>
+    </div>
+    <%#= render :partial => 'spree/shared/google_analytics' %>
+  </body>
+</html>
+
+<style type="text/css">
+  @media only screen and (min-width: 0px) and (max-width: 320px){
+    html, body, .container, #wrapper, #content, div[data-hook="checkout_form_wrapper"] {
+      width: 281px !important;
+      margin-top: 5px;
+    }
+    .payment{
+      padding-left: 19px !important;
+    }
+    #order_coupon_code{
+      width: 77% !important;
+    }
+    #checkout-summary{
+      width: 100% !important;
+    }
+    .container .four.columns {
+      margin-left: 0px !important;
+    }
+    .coupon_code {
+      width: 155px;
+    }
+    #ppx {
+      margin-left: 27px !important;
+    }
+    .ssl-paypal.cart-page.checkout-page {
+      margin-left: -4px;
+    }
+  }
+  @media only screen and (min-width: 321px) and (max-width: 768px){
+    html, body, .container, #wrapper, #content, div[data-hook="checkout_form_wrapper"] {
+      width: 281px !important;
+      margin-top: 5px;
+    }
+    .payment{
+      padding-left: 245px !important;
+    }
+    #order_coupon_code{
+      width: 77% !important;
+    }
+    #checkout-summary{
+      width: 225px !important;
+    }
+    .container .four.columns {
+      margin-left: 0px !important;
+    }
+    .coupon_code {
+      width: 155px;
+    }
+  }
+</style>

@@ -1,0 +1,31 @@
+@import 'compass';
+@import 'compass/css3';
+@import 'admin/globals/_variables';
+@import 'admin/ship.li_admin';
+
+html.chrome{
+	// Fix select2 search input left padding to not overlap search icon
+	.select2-search input.select2-input {
+		padding-left: 25px !important;
+	}
+
+	#ui-datepicker-div:before{
+		border-bottom: 10px solid #1BC0D8;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    content: "";
+    left: 25px;
+    margin-top: -10px;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+	}
+
+	#new_product_link, #search_product, #search_kit {
+		vertical-align: top;
+	}
+
+	#ui-datepicker-div:before {
+		display:block;
+	}
+}

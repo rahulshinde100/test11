@@ -1,0 +1,11 @@
+<tr class="option_value fields" id="spree_<%= dom_id(f.object) %>"  data-hook="option_value">
+  <td width="1">
+    <span class="handle"></span>
+    <%= f.hidden_field :id %>
+  </td>
+<!--   <td class="name"><%#= f.text_field :name, :readonly => "readonly" %></td>
+  <td class="presentation"><%#= f.text_field :presentation, :readonly => "readonly" %></td> -->
+  <td><%= f.text_field :name, :class =>'fullwidth'  %></td>
+  <td><%= f.text_field :presentation, :class =>'fullwidth' %></td>
+<!--   <td class="actions"><%#= link_to_remove_fields Spree.t(:remove), f, :no_text => true %></td> -->
+</tr>

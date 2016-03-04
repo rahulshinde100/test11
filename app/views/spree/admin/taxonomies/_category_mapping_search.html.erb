@@ -1,0 +1,27 @@
+<% content_for :table_filter_title do %>
+      Category :: Search
+<% end %>
+<% content_for :table_filter do %>
+<p class="red">*Search will work with child/end category</p><br />
+  <%= form_tag category_mapping_admin_taxonomies_path , :method => :post do%>
+          <div class="alpha nine columns">
+            <div class="field">
+              <label><%= Spree.t(:name)%></label>
+              <%= text_field_tag 'name' %>
+            </div>
+          </div>
+
+          <div class="alpha three columns">
+             <div class="field" style="margin-top:10%;">
+              <%= button Spree.t(:search), 'icon-search search_button'%>
+            </div>
+          </div>
+    <% end %>
+<%end%>
+
+<div class="clear"></div>
+<style type="text/css">
+#table-filter{
+  margin-bottom: 3%;
+}
+</style>

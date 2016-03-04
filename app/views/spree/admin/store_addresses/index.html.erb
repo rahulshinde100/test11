@@ -1,0 +1,87 @@
+<%= render :partial => 'spree/admin/shared/seller_sub_menu', :locals => { :seller => @seller, :title => "Store Addresses" } %>
+<!-- <div class="header">
+    <div class="upload-file alpha eleven columns ">
+        <%#= form_tag admin_stock_locations_path(:return => admin_seller_store_addresses_path(@seller), :seller_id =>@seller.id), :multipart => true, :method => :post do %>
+            <%#= file_field_tag :sample_file, :accept => 'application/vnd.ms-excel', :class => :custom_input_file, :required => true  %>
+            <%#if spree_current_user.has_spree_role?("admin")%>
+                <%#= select_tag "stock_location[seller_id]", options_from_collection_for_select(Spree::Seller.where(:id =>@seller.id), "permalink", "name"), style: 'display:none;'  , class: 'select2' %>
+            <%#end%>
+            <input type="hidden" value="file_upload" name="file" />
+            <%#= submit_tag "Upload Store"%>
+        <%#end%>
+    </div>
+    <div class="omega columns download_sample" style="float:right;" >
+        <%#= link_to 'Download Sample', download_sample_admin_seller_store_addresses_path(@seller, :format => :xls), :icon => "icon-plus", :class => "button"%>
+    </div>
+</div>-->
+<div style="clear:both"></div>
+<% if @store_addresses.present? %>
+  <div class="custom_responsive custom_field">
+    <table>
+      <colgroup>
+         <col style="width: 10%;">
+         <col style="width: 10%;">
+         <col style="width: 20%;">
+         <col style="width: 10%;">
+         <col style="width: 15%;">
+         <col style="width: 10%;">
+         <col style="width: 1%;">
+      </colgroup>
+      <thead>
+        <tr>
+<!--           <th>#</th> -->
+          <th>Name</th>
+          <th>Address</th>
+          <th>Email</th>
+          <th>Contact</th>
+          <th>Operating Hours</th>
+          <th>Pickup</th>
+<!--           <th>Warehouse</th> -->
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @store_addresses.each_with_index do |store, index| %>
+          <tr>
+<!--             <td><%#= index + 1 %></td> -->
+            <td align="center"><%= link_to store.name, edit_admin_stock_location_path(store, :return => admin_seller_store_addresses_path(@seller)) %></td>
+            <td align="center"><%= raw store.address %></td>
+            <td align="center"><%= mail_to store.email%></td>
+            <td align="center"><%= store.phone%></td>
+            <td align="center"><%= store.operating_hours%></td>
+            <td align="center"><%= check(store.pickup_at, "Pickup Point") %></td>
+<!--             <td><%#= radio_button_tag "warehouse", "#{store.id}", store.is_warehouse, :class => "warehouse"%></td> -->
+            <td align="center">
+              <%= link_to '', edit_admin_stock_location_path(store, :return => admin_seller_store_addresses_path(@seller), :seller_id => @seller.id), :no_text => true, :class => 'edit icon_link with-tip icon-edit no-text'%>
+              &nbsp;
+              <%= link_to '', admin_stock_location_path(store), :no_text => true, :method => :delete, :class => 'delete-resource icon_link with-tip icon-trash no-text', :confirm => 'Are you sure, you want to delete this Store?'%>
+            </td>
+          </tr>
+        <% end%>
+      </tbody>
+    </table>
+  </div>
+<%else%>
+  <div class="no-objects-found field" style="text-align: center;">
+    <h2>No Stores are added, You can add new store</h2>
+  </div>
+<%end%>
+
+<% if !@seller.stock_locations.present? %>
+<%= button_link_to "New Store", new_admin_stock_location_path(:seller_id => @seller.id, :return => admin_seller_store_addresses_path(@seller)) %>
+<% end %>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $(".warehouse").change(function(){
+      var store_id = $(this).val();
+      var url = "/admin/sellers/<%=@seller.permalink%>/"+store_id+"/change_warehouse";
+      $.ajax({
+        type: 'GET',
+        url: url,
+           success: function(r){
+        }
+    });
+    });
+  });
+</script>

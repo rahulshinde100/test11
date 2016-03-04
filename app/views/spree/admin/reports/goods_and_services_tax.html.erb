@@ -1,0 +1,23 @@
+<%= render :partial => "sub_menu_report"%>
+<% content_for :page_title do %>
+  <%= Spree.t(:goods_and_services_tax) %>
+<% end %>
+
+<% content_for :page_actions do %>
+  <li><%= link_to_with_icon 'icon-arrow-left', Spree.t(:back_to_reports_list), spree.admin_reports_url, :class => 'button' %></li>
+<% end %>
+
+
+<% content_for :table_filter_title do %>
+  <%= Spree.t(:date_range) %>
+<% end %>
+
+<% content_for :table_filter do %>
+  <%= render :partial => 'spree/admin/shared/report_criteria', :locals => {:search => @search, :path => "goods_and_services_tax_admin_reports"} %>
+<% end %>
+
+<%unless @orders.blank?%>
+	<%= render :partial => 'gst_details', :locals => {:orders => @orders, :totals => @totals} %>
+<%else%>
+  <%= Spree.t(:no_orders) %>
+<%end%>

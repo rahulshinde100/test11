@@ -1,0 +1,24 @@
+<p> 
+  <%= f.text_field :firstname, :class => 'title', :required => true, :placeholder => "First Name" %>
+</p>
+<p>
+  
+  <%= f.email_field :email, :class => 'title email', :required => true, :placeholder => "Email" %>
+</p>
+<div id="password-credentials">
+  <p>    
+    <%= f.password_field :password, :class => 'title', :required => true, :placeholder => "Password" %>
+  </p>
+
+  <p>    
+    <%= f.password_field :password_confirmation, :class => 'title', :required => true, :placeholder => "Password Confirmation" %>
+  </p>
+  <p style="width:200px;" class="pop-up">    
+    <%= f.check_box :terms_and_condition, :class => 'title', :checked => true, :required => true %>
+    <%= f.label :terms_and_condition, t(:i_agree_to) %>
+    <a href="/info/terms-of-use/" target="_blank" title="Terms and Conditions"><%= Spree.t(:terms_of_use)%></a> &amp;
+    <a href="/info/ship-dot-li-privacy-policy/"target="_blank" title="Terms and Conditions"><%=Spree.t(:privacy_policy)%></a>
+  </p>
+</div>
+
+<div data-hook="signup_below_password_fields"></div>

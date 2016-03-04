@@ -1,0 +1,56 @@
+<% if !@order.nil? %>
+<% content_for :page_title do %>
+  <%#= link_to "#{Spree.t(:order)} ##{@order.number}", edit_admin_order_path(@order) %>
+  <%= "#{Spree.t(:order)} ##{@order.market_place_order_no}" %>
+<% end %>
+
+<% content_for :sidebar_title do %>
+  <%= Spree.t(:order_information) %>
+<% end %>
+
+<% content_for :sidebar do %>
+    <nav class="menu">
+    <ul data-hook="admin_order_tabs">
+      <% if can? :update, @order %>
+        <li<%== ' class="active"' if current == 'Order Details' %>>
+          <%= link_to_with_icon 'icon-edit', Spree.t(:order_details), admin_order_url(@order) %>
+        </li>
+      <% end %>
+
+      <% if can? :update, @order %>
+        <li<%== ' class="active"' if current == 'Customer Details' %>>
+          <%= link_to_with_icon 'icon-user', Spree.t(:customer_details), admin_order_customer_url(@order) %>
+        </li>
+      <% end %>
+
+      <% if can? :update, @order %>
+        <% if @order.invoice_details.present? %>
+          <li<%== ' class="active"' if current == 'Invoice' %>>
+            <%= link_to_with_icon 'icon-file', Spree.t(:invoice), admin_order_invoice_url(@order) %>
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+  </nav>
+
+  <div class="alpha four columns" id ="order-details">
+       <div class='<%= @order.line_items.present? && @order.line_items.first.is_pick_at_store == true ? "icon-user" : "" %> alpha two columns'>Order #</div><div class="alpha two columns label-bold"><%= @order.market_place_order_no.present? ? @order.market_place_order_no : "-" %></div>
+       <div class='<%= @order.line_items.present? && @order.line_items.first.is_pick_at_store == true ? "icon-user" : "" %> alpha two columns'>FBA Order # </div><div class="alpha two columns label-bold"><%= @order.cart_no.present? ? @order.cart_no : "-" %></div>
+      <% if @order.fulflmnt_tracking_no.present? %>
+          <div class="alpha two columns">FBA Tracking #</div><div class="alpha two columns label-bold"><%= link_to @order.fulflmnt_tracking_no, "#{FULFLMNT_PATH}/order/#{@order.fulflmnt_tracking_no}", :target => "_blank" %></div>
+      <% else %>
+          <div class="alpha two columns">FBA Tracking #</div><div class="alpha two columns label-bold">-</div>
+      <% end %>
+      <div class="alpha two columns">Marketplace</div><div class="alpha two columns label-bold"><%= (@order.market_place.present? ? @order.market_place.name.capitalize : "-") %></div>
+      <div class="alpha two columns">FBA State</div><div class="alpha two columns label-bold"><%= (@order.fulflmnt_state.present? ? @order.fulflmnt_state.humanize : "-") %></div>
+      <div class="alpha two columns">MP State</div><div class="alpha two columns label-bold"><%= (@order.market_place_order_status.present? ? @order.market_place_order_status : "-") %></div>
+      <div class="alpha two columns">Order Date</div><div class="alpha two columns label-bold"><%= (@order.order_date.present? ? @order.order_date.strftime("%d %b %y") : "-") %></div>
+      <div class="alpha two columns">Updated on FBA </div><div class="alpha two columns label-bold"><%= (@order.last_updated_date.present? ? @order.last_updated_date.strftime("%d %b %y") : "-") %></div>
+      <div class="alpha two columns">Item Total</div><div class="alpha two columns label-bold">$<%= (@order.item_total) %></div>
+      <div class="alpha two columns">Discount</div><div class="alpha two columns label-bold">$<%= @order.adjustment_total %><%#= @order.market_place_details.present? ? -@order.market_place_details["discount"].to_f : 0.0 %></div>
+      <div class="alpha two columns">Order Total</div><div class="alpha two columns label-bold">$<%= @order.total %></div>
+  </div>
+
+  <%end %>
+
+<% end %>

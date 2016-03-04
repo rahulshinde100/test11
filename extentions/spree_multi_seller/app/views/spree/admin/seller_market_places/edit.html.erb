@@ -1,0 +1,109 @@
+<%= render :partial => 'spree/shared/error_messages', :locals => { :target => @seller_market_place } %>
+
+<%= form_for [:admin, @seller, @seller_market_place], :html => { :multipart => true } do |f| %>
+  <fieldset data-hook="new_product">
+    <legend align="center"><%= Spree.t(:edit_seller_market_place) %></legend>
+
+      <div class="four columns">
+         <%= f.field_container :market_place do %>
+         <%= f.label :market_place_id, Spree.t(:market_place) %><span class="required">*</span><br />
+         <%= f.label Spree::SellerMarketPlace.find(@seller_market_place.id).market_place.name, :class => 'fullwidth' %>
+        <% end %>
+      </div>
+
+     <div class="four columns">
+      <%= f.field_container :api_key do %>
+        <%= f.label :api_key, Spree.t(:api_key) %><span class="required">*</span><br />
+        <%= f.text_field :api_key, :class => 'fullwidth', :required => true %>
+        <%= f.error_message_on :api_key %>
+      <% end %>
+      </div>
+
+      <div class="four columns">
+      <%= f.field_container :fba_api_key do %>
+         <%= f.label :fba_api_key, Spree.t(:fba_api_key) %><span class="required">*</span><br />
+         <%= f.text_field :fba_api_key, :size => 16, :class => 'fullwidth', :required => true %>
+         <%= f.error_message_on :fba_api_key %>
+      <% end %>
+      </div>
+
+      <div class="four columns">
+      <%= f.field_container :fba_signature do %>
+         <%= f.label :fba_signature, Spree.t(:fba_signature) %><span class="required">*</span><br />
+         <%= f.text_field :fba_signature, :size => 16, :class => 'fullwidth', :required => true %>
+         <%= f.error_message_on :fba_signature %>
+      <% end %>
+      </div>
+
+      <div class="four columns">
+        <%= f.field_container :shipping_carrier_code do %>
+          <%= f.label :shipping_carrier_code, Spree.t(:shipping_carrier_code) %><span class="required">*</span><br />
+          <%= f.text_field :shipping_carrier_code, :class => 'fullwidth', :required => true %>
+          <%= f.error_message_on :shipping_carrier_code %>
+        <% end %>
+      </div>
+
+      <%= f.hidden_field :api_secret_key, :value=>nil %>
+
+      <div class="four columns">
+        <%= f.field_container :country do %>
+          <%= f.label :country, Spree.t(:country) %> <span class="required">*</span><br />
+          <%= f.text_field :country, :class => 'fullwidth', :required => true %>
+          <%= f.error_message_on :country %>
+        <% end %>
+      </div>
+
+      <div class="four columns">
+        <%= f.field_container :currency_code do %>
+          <%= f.label :currency_code, Spree.t(:currency_code) %><span class="required">*</span><br />
+          <%= f.text_field :currency_code, :class => 'fullwidth', :required => true %>
+          <%= f.error_message_on :currency_code %>
+        <% end %>
+      </div>
+
+      <div class="four columns">
+        <%= f.field_container :contact_name do %>
+          <%= f.label :contact_name, Spree.t(:contact_name) %><br />
+          <%= f.text_field :contact_name, :class => 'fullwidth' %>
+          <%= f.error_message_on :contact_name %>
+        <% end %>
+      </div>
+
+      <div class="four columns">
+        <%= f.field_container :contact_number do %>
+          <%= f.label :contact_number, Spree.t(:contact_number) %><br />
+          <%= f.text_field :contact_number, :class => 'fullwidth' %>
+          <%= f.error_message_on :contact_number %>
+        <% end %>
+      </div>
+
+      <div class="four columns">
+        <%= f.field_container :contact_email do %>
+          <%= f.label :contact_email, Spree.t(:contact_email) %><br />
+          <%= f.text_field :contact_email, :class => 'fullwidth' %>
+          <%= f.error_message_on :contact_email %>
+        <% end %>
+      </div>
+
+      <div class="four columns">
+        <%= f.field_container :shipping_code do %>
+          <%= f.label :shipping_code, Spree.t(:shipping_code) %><br />
+          <%= f.text_field :shipping_code, :class => 'fullwidth' %>
+          <%= f.error_message_on :shipping_code %>
+        <% end %>
+      </div>
+
+      <div class="four columns">
+        <%= f.field_container :is_active do %>
+          <%= f.label :is_active, Spree.t(:active) %></br>
+          <%= f.check_box :is_active %>
+          <%= f.error_message_on :is_active %>
+        <% end %>
+      </div>
+
+      <%= f.hidden_field :seller_id, :value => @seller.id %>
+      <%= f.hidden_field :market_place_id, :value => Spree::SellerMarketPlace.find(@seller_market_place.id).market_place.id %>
+    </fieldset>
+    <%= render :partial => 'spree/admin/shared/edit_resource_links' %>
+<% end %>
+

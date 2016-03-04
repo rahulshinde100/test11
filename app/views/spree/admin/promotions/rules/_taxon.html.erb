@@ -1,0 +1,8 @@
+<div class="field alpha omega eight columns">
+  <label>Choose Taxons<%#= Spree.t('seller_rule.choose_sellers') %></label><br>
+  <input type='hidden' name='<%= param_prefix %>[taxon_ids_string]' class='rule_attr taxon_picker fullwidth' value='<%= promotion_rule.taxon_ids.join(",") %>'>
+</div>
+
+<%= javascript_tag do %>
+    $('.taxon_picker').taxonAutocomplete();
+<% end %>

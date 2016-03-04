@@ -1,0 +1,7 @@
+<fieldset id = "pre_mapped_categories">
+	<legend align='center'>Mapped Categories</legend>
+	<% @taxon_market_places.each do |tmp| %>
+	  <%= button_link_to Spree.t(tmp.name), "javascript:void(0)", :id =>'taxon_id', :onclick=>"unmappedCategory('#{tmp.id}', '#{@taxon.id}');", :style => "height: 100%; margin-top: 3px" %>
+	<% end %>
+	<%= "No Category Mapped" if @taxon_market_places.blank? %>
+</fieldset>

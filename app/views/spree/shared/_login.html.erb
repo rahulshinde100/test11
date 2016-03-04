@@ -1,0 +1,19 @@
+<%= form_for Spree::User.new, :as => :spree_user,  :url => spree_user_session_path do |f| %>
+  <div id="password-credentials">
+    <p>
+      <%= f.email_field :email, :class => 'title email', :tabindex => 1, :required => true, :placeholder => 'Email', :style => "color:black" %>
+    </p>
+    <p>
+      <%= f.password_field :password, :class => 'title', :tabindex => 2, :required => true, :placeholder => "Password", :style => "color:black" %>
+    </p>
+    <input type="hidden" value="<%= params[:return] %>" name="return_path" />
+  </div>
+  <p>
+    <label>
+      <%= f.check_box :remember_me, :tabindex => 3 %>
+      <%= f.label :remember_me, Spree.t(:remember_me) %>
+    </label>
+  </p>
+
+  <p><%= f.submit "Login", :class => 'button primary', :tabindex => 4 %></p>
+<% end %>

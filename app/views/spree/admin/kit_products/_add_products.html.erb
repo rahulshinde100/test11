@@ -1,0 +1,31 @@
+<a href="javascript:void(0);" onclick="closePopup('add_products_to_kit');" class="close-link red">x</a>
+<br />
+<fieldset>
+<legend align="center"><%= "Add Product To Kit" %></legend>
+
+<div data-hook="admin_inside_taxonomy_form" class="field align-left">
+  <input type="hidden" name="kit_id" id="kit_id" value="<%= @kit.id %>" />
+  <label for="kit">Product : </label>
+  <input type="text" name="product_variant" id="product_variant" size="60" />
+  <input type="hidden" name="product_variant_id" id="product_variant_id" />
+  <br /><br />
+  <label for="quantity">Quantity :</label>
+  <input type="number" min="1" name="quantity" id="qty_id" value=1>
+  <br />
+  <br />
+  <%= button_link_to Spree.t(:Add), "javascript:void(0)", :icon => 'icon-plus', :onClick=>"addVariants('#{@kit.id}');" %>
+  <span class="or"><%= Spree.t(:or) %></span>
+  <%= button_link_to Spree.t(:cancel), "javascript:void(0)", :icon => 'icon-remove', :onClick=>"closePopup('add_products_to_kit');" %>
+</div>
+</fieldset>
+
+<script type="text/javascript">
+  // Load product variants 
+  $('#product_variant').autocomplete({
+    source: '/admin/kit_products/product_variants_json?kit_id='+"<%= @kit.id.to_s %>",
+    minLength: 2,
+    select: function (event, ui) {
+      $("#product_variant_id").val(ui.item.id);
+     }
+   });
+</script>

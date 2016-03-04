@@ -1,0 +1,4 @@
+<% get_seller_list.each do |seller|%>
+	<li> <%= link_to seller.try(:name), seller_path(seller.permalink)%></li>
+<% end %>
+	

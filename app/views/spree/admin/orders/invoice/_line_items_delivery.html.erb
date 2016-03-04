@@ -1,0 +1,25 @@
+<thead>
+<tr>
+  <th style="border-bottom: 2px solid black;">SKU</th>
+  <th style="border-bottom: 2px solid black;">Product</th>
+  <th style="border-bottom: 2px solid black;">Price</th>
+  <th style="border-bottom: 2px solid black;">Quantity</th>
+  <th style="border-bottom: 2px solid black;">Total</th>
+</tr>
+</thead>
+<tbody>    
+  <% line_items.each do |item| %>    
+    <%next if item.is_pick_at_store %>
+    <tr>
+      <td style="text-align:left; vertical-align:top;"><%= item.variant.try(:sku)%></td>
+      <td style="text-align:left; padding-left: 10px"><%= item.variant.try(:name)%></td>
+      <% if item.variant.special_price.present? %>
+        <td style="text-align:right;"><span style="text-decoration:line-through;font-size: 12px;"><%= number_to_currency item.price %></span>&nbsp;<%= number_to_currency item.variant.special_price %></td>
+      <% else %>
+        <td style="text-align:right;"><%= number_to_currency item.price %></td>
+      <% end%>
+      <td style="text-align:center;"><%= item.quantity %></td>
+      <td style="text-align:right;"><%= number_to_currency item.amount %></td>
+    </tr>    
+  <% end %>  
+</tbody>

@@ -1,0 +1,76 @@
+<div class="field alpha omega eight columns">
+  <label>Choose Variants<%#= Spree.t('seller_rule.choose_sellers') %></label><br>
+  <input type='hidden' name='<%= param_prefix %>[variant_ids_string]' class='rule_attr variant_rule_picker fullwidth' value='<%= promotion_rule.variant_ids.join(",") %>'>
+</div>
+<div class="field alpha omega eight columns">
+  <label>
+    <%= Spree.t('variant_rule.label', :select => select_tag("#{param_prefix}[preferred_match_policy]", options_for_select(Spree::Promotion::Rules::Variant::MATCH_POLICIES.map{|s| [Spree.t("variant_rule.match_#{s}"),s] }, promotion_rule.preferred_match_policy), {:class => 'select_product select2'})).html_safe %>
+  </label>
+</div>
+  <div class="field alpha omega eight columns">
+
+    <!--<div class="field alpha three columns">-->
+    <%#= select_tag "#{param_prefix}[preferred_operator]", options_for_select(Spree::Promotion::Rules::ItemCount::OPERATORS.map{|o| [Spree.t("item_count_rule.operators.#{o}"),o]}, promotion_rule.preferred_operator), {:class => 'select2 select_item_count fullwidth'} %>
+      <!--</div>-->
+    <div class="field alpha omega eight columns"><label>Buy
+      <%= preference_field_tag("#{param_prefix}[preferred_count]",
+                               promotion_rule.preferred_count,:class => 'fullwidth',
+                               :type => :integer, :min => 1)%> quantity</label>
+      <%#= text_field_tag "#{param_prefix}[preferred_count]", promotion_rule.preferred_count, :class => 'fullwidth', :min => 0, :type =>'integer' %>
+      </div>
+    <%#= Spree.t('variant_rule.label', :select => select_tag("#{param_prefix}[preferred_operator]", options_for_select(Spree::Promotion::Rules::Variant::OPERATORS.map{|o| [Spree.t("variant_rule.operators.#{o}"),o]}, promotion_rule.preferred_operator), {:class => 'select2 select_variant '})).html_safe %>
+    <%#= text_field_tag "#{param_prefix}[preferred_count]", promotion_rule.preferred_count, :html => {:style => 'width:100px !important'} %>
+
+</div>
+
+<script>
+    $.fn.variantruleAutocomplete = function () {
+        'use strict';
+        this.select2({
+            minimumInputLength: 1,
+            multiple: true,
+            initSelection: function (element, callback) {
+                $.get(Spree.routes.variants_search, {
+                    ids: element.val()
+                }, function (data) {
+                    console.log(data);
+                    callback(data.variants);
+                });
+            },
+            ajax: {
+                url: Spree.routes.variants_search,
+                datatype: 'json',
+                data: function (term) {
+                    return {
+                        q: {
+                            sku_cont: term,
+                            name_cont: term,
+                            short_name_count: term
+
+                        },
+                        promotion_id: <%= promotion_rule.promotion.id %>
+                    };
+                },
+                results: function (data) {
+                    var variants = data.variants ? data.variants : [];
+                    return {
+                        results: variants
+                    };
+                }
+            },
+            formatResult: function (variant) {
+                console.log(variant);
+                var name = variant.name + ' -> ' + variant.sku;
+                return name;
+            },
+            formatSelection: function (variant) {
+                var name = variant.name + ' -> ' + variant.sku;
+                return name;
+            }
+        });
+    };
+
+    $(document).ready(function () {
+        $('.variant_rule_picker').variantruleAutocomplete();
+    });
+</script>

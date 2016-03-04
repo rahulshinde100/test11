@@ -1,0 +1,8 @@
+<% if (!spree_current_user || !spree_current_user.user_authentications) && Spree::AuthenticationMethod.active_authentication_methods? %>
+  
+<% end %>
+
+<% Spree::AuthenticationMethod.available_for(@spree_user).each do |method| %>
+  <% img = "store/btn_facebook.png" %>
+  <%= link_to(image_tag(img , :alt => "#{method.provider}"), spree_user_omniauth_authorize_path(provider: method.provider), :id => 'btn-facebook', :title => Spree.t(:sign_in_with, :provider => method.provider)) if method.active %>
+<% end %>

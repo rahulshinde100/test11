@@ -1,0 +1,13 @@
+$("div.flash").remove();
+$('#content').prepend("<div class='flash success'></div>");
+setTimeout('$(".flash").fadeOut(1000)', 5000);
+$("div.flash").html("This product is successfully added to your <a href='/cart' style='color: #fff;'>cart</a>.");
+
+$("ul#nav-bar li#link-to-cart").remove();
+$("ul#nav-bar").prepend("<li id='link-to-cart' data-hook><a href='/cart'><%= escape_javascript link_to_cart %></a></li>");
+//$("#link-to-cart a").replaceWith('<%= escape_javascript link_to_cart %>');
+
+
+$('html, body').animate({
+    scrollTop: $(".flash").offset().top - 120
+}, 300);

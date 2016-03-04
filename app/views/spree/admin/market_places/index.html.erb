@@ -1,0 +1,46 @@
+<% if spree_current_user.has_spree_role?('admin') %>
+    <% content_for :page_title do %>
+        <%= Spree.t(:listing_market_places) %>
+    <% end %>
+<% end %>
+
+<% if spree_current_user.has_spree_role?('admin') %>
+<% content_for :page_actions do %>
+  <div class="new-market-place">
+    <%= button_link_to 'New Market Place', new_admin_market_place_path, :class => "button", :icon => 'icon-plus'%>
+  </div>
+<% end %>
+
+  <%if @market_places.present? %>
+    <div class="custom_responsive CSSTableGenerator">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Code</th>
+            <th width="60">Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%@market_places.each do |mp| %>
+            <tr>
+              <td align="center"><%= link_to mp.name, edit_admin_market_place_path(mp.id) %></td>
+              <td align="center"><%= mp.code %></td>
+              <td align="center">
+                <%= link_to '', edit_admin_market_place_path(mp.id), :no_text => true, :class => 'edit icon_link with-tip icon-edit no-text'%>
+<!--                 &nbsp; -->
+                <%#= link_to '', admin_market_place_path(mp.id), :no_text => true, :method => :delete, :class => 'delete-resource icon_link with-tip icon-trash no-text', :confirm => "Are you sure, you want to delete '#{mp.name}' Market Place?"%>
+              </td>
+            </tr>
+          <%end%>
+        </tbody>
+      </table>
+    </div>
+  <%else%>
+    <div class="no-objects-found field" style="text-align: center;">
+      <h5>No market places are added, You can add new market place</h5>
+    </div>
+  <%end%>
+  <%= paginate @market_places %>
+<%end%>
+

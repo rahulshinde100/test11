@@ -1,0 +1,60 @@
+
+  <table id="wishlist" class="custom_width">
+    <thead>
+      <tr>
+        <th colspan=2><%= Spree.t(:item_description) %></th>
+        <th><%= Spree.t(:availability) %></th>
+        <th class='custom_date'><%= Spree.t(:date_added) %></th>
+        <th><%= Spree.t(:price) %></th>
+        <% if @user == spree_current_user %>
+          <th><%= Spree.t(:wishlist_actions) %></th>
+        <% end -%>
+      </tr>
+    </thead>
+    <tbody id="line_items">
+        <% @user.wishlist.wished_products.each do |wish|
+          variant = wish.variant
+          next if variant.nil?
+          product = variant.product %>
+          <tr class="<%= cycle('', 'alt') %>">
+            <td>
+              <% if variant.images.length == 0 %>
+                <%= (mini_image(variant.product) rescue "") %>
+              <% else %>
+                <%= image_tag variant.images.first.attachment.url(:mini) %>
+              <% end %>
+            </td>
+            <td>
+              <h4><%= link_to product.name, edit_admin_product_path(product) %></h4>
+              <p><%= variant_options variant %></p>
+              <%= raw truncate(product.description, :length => 100, :omission => "...") %>
+            </td>
+            <td class='custom_data'>
+              <%= variant.in_stock? ? Spree.t(:in_stock) : Spree.t(:out_of_stock) %>
+            </td>
+            <td class='custom_date custom_data'>
+              <%= wish.created_at.strftime "%m/%d/%Y" %>
+            </td>
+            <td class='custom_data'>
+              <%= variant.special_price.present? ? number_to_currency(variant.special_price) : number_to_currency(variant.price)  %>
+            </td>
+            <% if @user == spree_current_user %>
+              <td class="custom_data">
+                <div class="custom_delete">
+                  <%= link_to image_tag('store/delete-icon.png', :size => '20x20'),wish, :method => :delete, :class => 'delete-item', :title=> "Remove from wishlist" %>
+                </div>
+                
+                <% if spree_current_user.wishlists.count > 1 %>
+                  <%= Spree.t(:move_to_another_wishlist) %>:
+                  <%= form_for wish do |f| %>
+                    <%= f.select :wishlist_id, spree_current_user.wishlists.map{|wl| [wl.name, wl.id]} %>
+                    <%= f.submit Spree.t(:move) %>
+                  <% end %>
+                <% end %>
+                <br />
+              </td>
+            <% end -%>
+          </tr>
+        <% end -%>
+    </tbody>
+  </table>

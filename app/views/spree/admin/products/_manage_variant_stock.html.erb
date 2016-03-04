@@ -1,0 +1,82 @@
+<div>
+<% if @market_places.present? %>
+  <%
+    @variants = @product.variants.present? ? @product.variants : Spree::Variant.where("product_id=?", @product.id)
+    type = STOCKCONFIG[@product.stock_config_type] == "default" ? STOCKCONFIG[@product.seller.stock_config_type] : STOCKCONFIG[@product.stock_config_type]
+    is_inflate = @product.is_quantity_inflated
+  %>
+  <table class="CSSTableGenerator">
+    <tr><th>SKU</th><th>Name</th><th>Stock</th><th>MP</th><th width="120">Allocated Stock</th>
+      <% if type != "percentage_quantity" %>
+      <th width="100">Action</th>
+      <% end %>
+      <% if is_inflate %>
+        <th>Promotion</th>
+      <% end %>
+    </tr>
+    <% @variants.each do |variant| %>
+        <tr>
+          <td rowspan=<%= @market_places.count %>><%= variant.sku %></td>
+          <td rowspan=<%= @market_places.count %>><%= variant.options_text %></td>
+          <td rowspan=<%= @market_places.count %>><%= variant.fba_quantity %></td>
+          <td><%= @market_places[0].name %></td>
+          <% smp = Spree::SellersMarketPlacesProduct.where("seller_id=? AND product_id=? AND market_place_id=?", @product.seller.id, @product.id, @market_places[0].id).try(:first) %>
+          <% allocated_stock = Spree::StockProduct.where("variant_id=? AND sellers_market_places_product_id=?", variant.id, smp.id).first.blank? ? 0 : Spree::StockProduct.where("variant_id=? AND sellers_market_places_product_id=?", variant.id, smp.id).try(:first).count_on_hand %>
+          <%= form_for [:admin, Spree::StockMovement.new], url: admin_stock_items_path do |f| %>
+              <td>
+                <input type="number" id="stock_movement_quantity" name="stock_movement[quantity]" min="0" max="<%= variant.fba_quantity %>" value="<%= allocated_stock %>" <%= type != "percentage_quantity" ? "" : "readonly" %> pattern="\d*" required/>
+              </td>
+            <% if type != "percentage_quantity" %>
+              <td><%= button Spree.t(:submit) %></td>
+            <% end %>
+            <input type="hidden" value="<%= smp.id %>" name="sellers_market_places_product_id">
+            <input type="hidden" value="<%= variant.id %>" name="variant_id">
+          <% end %>
+          <% if is_inflate %>
+            <td><%= link_to Spree.t('actions.end'), quantity_inflation_end_of_promotion_admin_products_path(:variant_id=>variant.id, :market_place_id=>@market_places[0].id), :class => 'button', :confirm=>"Do you really to end this promotion?" if variant.quantity_inflations.where(:market_place_id=>@market_places[0].id).present? %></td>
+          <% end %>  
+        </tr>
+        <% @market_places.offset(1).each_with_index do |mp, index| %>
+          <%= form_for [:admin, Spree::StockMovement.new], url: admin_stock_items_path do |f| %>
+            <% smp = Spree::SellersMarketPlacesProduct.where("seller_id=? AND product_id=? AND market_place_id=?", @product.seller.id, @product.id, mp.id).first %>
+            <% allocated_stock = Spree::StockProduct.where("variant_id=? AND sellers_market_places_product_id=?", variant.id, smp.id).first.blank? ? 0 : Spree::StockProduct.where("variant_id=? AND sellers_market_places_product_id=?", variant.id, smp.id).first.count_on_hand %>
+            <tr>
+              <td>
+                <%= mp.name %>
+              </td>
+                <td>
+                  <input type="number" id="stock_movement_quantity" name="stock_movement[quantity]" min="0" max="<%= variant.fba_quantity %>" value="<%= allocated_stock %>" <%= type != "percentage_quantity" ? "" : "readonly" %> pattern="\d*" required/>
+                </td>
+              <% if type != "percentage_quantity" %>
+                <td>
+                  <%= button Spree.t(:submit) %>
+                </td>
+              <% end %>
+              <% if is_inflate %>
+                <td><%= link_to Spree.t('actions.end'), quantity_inflation_end_of_promotion_admin_products_path(:variant_id=>variant.id, :market_place_id=>mp.id), :class => 'button', :confirm=>"Do you really to end this promotion?" if variant.quantity_inflations.where(:market_place_id=>mp.id).present? %></td>
+              <% end %>  
+            </tr>
+            <input type="hidden" value="<%= smp.id %>" name="sellers_market_places_product_id">
+            <input type="hidden" value="<%= variant.id %>" name="variant_id">
+          <% end %>
+        <% end %>
+
+    <% end %>
+  </table>
+ <% else %>
+   <div class="no-objects-found">Please list product on Market Place</div>
+ <% end %>
+</div>
+<script type="text/javascript">
+  function endQuantityInflationPromotion(VId, MpId)
+  {
+  	var r = confirm("Do you really want to end this promotion?");
+	if (r == true) {
+	  var host = "";
+	  var port = "";
+	  host = "<%= request.host %>";
+	  port = "<%= request.port %>";	
+      window.location.href = host+":"+port+"/admin/products/end_of_promotion"
+	} 
+  }
+</script>

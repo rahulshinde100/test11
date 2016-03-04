@@ -1,0 +1,69 @@
+
+<%= render :partial => "sub_menu_report"%>
+<% content_for :page_title do %>
+  <%= Spree.t(:seller_wise_sales_totals) if spree_current_user.has_spree_role? 'admin'%>
+  <%= Spree.t(:sales_totals) if spree_current_user.has_spree_role? 'seller'%>
+<% end %>
+
+<% content_for :page_actions do %>
+  <li><%= link_to_with_icon 'icon-arrow-left', Spree.t(:back_to_reports_list), spree.admin_reports_url, :class => 'button' %></li>
+<% end %>
+
+
+<% content_for :table_filter_title do %>
+  <%= Spree.t(:date_range) %>
+<% end %>
+
+<% content_for :table_filter do %>
+  <%= render :partial => 'spree/admin/shared/report_criteria', :locals => {:search => @search, :path => "seller_wise_sale_total_admin_reports"} if defined?(@search)%>
+<% end %>
+<%unless @sellers.blank?%>
+  <table class="admin-report display" border="0" cellpadding="0" cellspacing="0" width="100%">
+    <thead>
+      <tr>
+      	<th>
+          <%if spree_current_user.has_spree_role? 'seller'%>
+            <%= Spree.t(:order_details) %>
+          <%else%>
+            <%= Spree.t(:seller_name) %>
+          <%end%>
+        </th>
+        <th><%= Spree.t(:total_orders) %></th>
+        <th><%= Spree.t(:order_value) %></th>
+        <th><%= Spree.t(:revenue_shared) %></th>
+        <th><%= Spree.t(:net_revenue) %></th>
+      </tr>
+    </thead>
+    <tbody>
+    		<% @sellers.each do |seller|%>
+        <% next if @totals[seller.permalink].nil? %>
+  	      <tr>
+  	      	<td>
+              <%if spree_current_user.has_spree_role? 'seller'%>
+                <% date_range = "#{params[:q][:completed_at_gt].to_date.strftime("%Y-%m-%d")} => #{params[:q][:completed_at_lt].to_date.strftime("%Y-%m-%d")}" rescue "Sale Detail"%>
+                <%= link_to date_range, seller_detail_sale_total_admin_reports_path(:permalink => seller.permalink) %>
+              <%else%>
+                <%= link_to seller.name, seller_detail_sale_total_admin_reports_path(:permalink => seller.permalink) %>
+              <%end%>              
+            </td>
+  	        <td><%= @totals[seller.permalink][:count] %></td>
+  	        <td><%= @totals[seller.permalink][:item_total].to_f.round(2) %></td>
+  	        <td><%= @totals[seller.permalink][:revenue_shared].to_f.round(2) %></td>
+  	        <td><%= @totals[seller.permalink][:net_revenue].to_f.round(2) %></td>
+  	      </tr>
+        <%end%>
+    </tbody>
+  	<tfoot>
+  	  <tr class="table_footer">
+  	  	<th><%= Spree.t(:total) %></th>
+  	    <th><%= @totals[:sellers_count] %></th>
+  	  	<th><%= @totals[:sellers_item_total].to_f.round(2) %></th>
+  	  	<th><%= @totals[:sellers_revenue_shared].to_f.round(2) %></th>
+  	  	<th><%= @totals[:sellers_net_revenue].to_f.round(2) %></th>
+  	  </tr>
+  </tfoot>
+  </table>
+<%else%>
+  <%= Spree.t(:no_sellers_having_orders) %>
+<%end%>
+<%= paginate(@sellers)%>
